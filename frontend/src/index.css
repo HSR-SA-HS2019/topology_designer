@@ -1,0 +1,23 @@
+/* ======= Základ ======= */
+html,
+body {
+  min-height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 992px) {
+  /* Sticky Footer */
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    font-size: 14px;
+  }
+}
