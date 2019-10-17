@@ -1,7 +1,7 @@
 FROM node
 
 WORKDIR /app/frontend
-COPY package.json /app/frontend
+COPY frontend/package.json /app/frontend
 
 RUN npm install
 
