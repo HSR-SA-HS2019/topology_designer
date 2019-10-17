@@ -5,8 +5,8 @@ version: '3'
 services:
   db:
     image: postgres
-  web:
-    build: .
+  backend:
+    build: ./backend/src
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
@@ -14,14 +14,14 @@ services:
       - "8000:8000"
     links:
       - db
-frontend:
-  build: ./frontend
-  command: ["npm", "start"]
-  volumes:
-    - ./frontend:/app/frontend
-    - node-modules:/app/frontend/node_modules
-  ports:
-    - "3000:3000"
+  frontend:
+    build: ./frontend
+    command: ["npm", "start"]
+    volumes:
+      - ./frontend:/app/frontend
+      - node-modules:/app/frontend/node_modules
+    ports:
+      - "3000:3000"
 
 volumes:
   node-modules:
