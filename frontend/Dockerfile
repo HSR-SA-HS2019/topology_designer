@@ -7,7 +7,7 @@ COPY frontend/package.json /app/frontend
 RUN npm install
 
 # Bundle app source
-COPY . /usr/src/app
+COPY . /app/frontend
 
 EXPOSE 3000
 
