@@ -10,6 +10,7 @@ RUN npm install
 # Bundle app source
 COPY frontend /app/frontend
 
+RUN chmod a+x /app/forntend/node_modules/.bin/react-scripts
 
 EXPOSE 3000
 
