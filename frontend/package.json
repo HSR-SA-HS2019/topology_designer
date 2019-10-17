@@ -20,7 +20,12 @@
     "start:server": "nodemon server/index.js"
   },
   "devDependencies": {
-    "gh-pages": "^1.2.0"
+    "gh-pages": "^1.2.0",
+    "nodemon": "^1.15.0",
+    "webpack": "^3.11.0",
+    "webpack-bundle-analyzer": "^2.10.0",
+    "webpack-dev-server": "^2.11.1",
+    "webpack-pwa-manifest": "^3.5.0"
   },
   "browserslist": {
     "production": [
