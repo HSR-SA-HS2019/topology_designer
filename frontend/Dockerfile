@@ -18,6 +18,5 @@ ENV NODE_ENV production
 ENV PORT 3000
 ENV PUBLIC_PATH "/"
 
-RUN npm run start:build
 
-CMD ["npm", "run", "start:server"]
+CMD ["npm", "start"]
