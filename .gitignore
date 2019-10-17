@@ -283,7 +283,6 @@ typings/
 .dynamodb/
 
 #node fil
-*node_modules
 .idea/.gitignore
 .idea/inspectionProfiles/
 .idea/misc.xml
@@ -297,3 +296,4 @@ backend/.idea/libraries/
 backend/.idea/misc.xml
 backend/.idea/modules.xml
 backend/.idea/vcs.xml
+
