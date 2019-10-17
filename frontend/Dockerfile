@@ -8,6 +8,7 @@ RUN npm install
 
 # Bundle app source
 COPY . /app/frontend
+COPY package-lock.json /usr/frontend
 
 EXPOSE 3000
 
