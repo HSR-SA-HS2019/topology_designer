@@ -1,5 +1,6 @@
 FROM node
 
+RUN mkdir -p /app/frontend
 WORKDIR /app/frontend
 COPY frontend/package.json /app/frontend
 COPY frontend/package-lock.json /app/frontend
