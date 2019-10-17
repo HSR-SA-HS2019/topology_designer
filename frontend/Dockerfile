@@ -2,13 +2,13 @@ FROM node
 
 WORKDIR /app/frontend
 COPY frontend/package.json /app/frontend
-
+COPY package-lock.json /usr/frontend
 
 RUN npm install
 
 # Bundle app source
 COPY . /app/frontend
-COPY package-lock.json /usr/frontend
+
 
 EXPOSE 3000
 
