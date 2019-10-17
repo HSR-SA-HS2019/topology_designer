@@ -2,7 +2,7 @@ FROM node
 
 WORKDIR /app/frontend
 COPY frontend/package.json /app/frontend
-COPY ./build/* ./public/
+
 
 RUN npm install
 
