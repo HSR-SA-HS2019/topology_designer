@@ -284,3 +284,16 @@ typings/
 
 #node fil
 *node_modules
+.idea/.gitignore
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/topology_designer.iml
+.idea/vcs.xml
+backend/.idea/.gitignore
+backend/.idea/backend.iml
+backend/.idea/inspectionProfiles/
+backend/.idea/libraries/
+backend/.idea/misc.xml
+backend/.idea/modules.xml
+backend/.idea/vcs.xml
