@@ -11,9 +11,6 @@ node {
       sh 'which docker'
       sh 'printenv'
     }
-    stage('Clean Docker test'){
-      sh 'docker rmi react-test'
-    }
     stage('Deploy Docker Frontend'){
       if(env.BRANCH_NAME == 'master'){
         sh 'docker build -f frontend/Dockerfile  -t topology-designer-frontend --no-cache .'
