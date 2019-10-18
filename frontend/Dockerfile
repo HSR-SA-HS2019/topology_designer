@@ -1,4 +1,6 @@
-FROM node
+
+
+FROM node:9.6.1
 
 #set working directory
 RUN mkdir /usr/src/app
@@ -14,14 +16,14 @@ RUN npm install
 RUN npm install serve
 
 # Bundle app source
-COPY frontend /usr/src/app
+#COPY frontend /usr/src/app
 
-EXPOSE 3000
+#EXPOSE 3000
 
 # Environment variables
-ENV NODE_ENV production
-ENV PORT 3000
-ENV PUBLIC_PATH "/"
+#ENV NODE_ENV production
+#ENV PORT 3000
+#ENV PUBLIC_PATH "/"
 
 
 CMD ["npm", "start"]
