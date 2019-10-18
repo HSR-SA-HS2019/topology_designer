@@ -6,11 +6,11 @@ FROM django
 # Project Files and Settings
 RUN mkdir /code
 WORKDIR /code
-ADD requirements.txt /code/
+ADD backend/src/requirements.txt /code/
 
 RUN pip install -r requirements.txt
 
-ADD . /code/
+ADD backend/src /code/
 
 # Expose the application on port 8000
 EXPOSE 8000
