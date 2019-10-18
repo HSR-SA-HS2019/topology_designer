@@ -10,6 +10,7 @@ ADD backend/src/requirements.txt /code/
 
 RUN pip install -r requirements.txt
 RUN pip install djangorestframework
+RUN pip install django-cors-headers
 
 ADD backend/src /code/
 
