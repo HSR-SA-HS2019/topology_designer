@@ -9,6 +9,7 @@ WORKDIR /code
 ADD backend/src/requirements.txt /code/
 
 RUN pip install -r requirements.txt
+RUN pip install djangorestframework
 
 ADD backend/src /code/
 
