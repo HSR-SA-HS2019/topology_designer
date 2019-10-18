@@ -16,7 +16,9 @@ RUN npm install
 RUN npm install serve
 
 # Bundle app source
-#COPY frontend /usr/src/app
+COPY frontend /usr/src/app
+
+
 
 #EXPOSE 3000
 
