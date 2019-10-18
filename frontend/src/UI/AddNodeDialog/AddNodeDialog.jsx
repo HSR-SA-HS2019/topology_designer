@@ -7,7 +7,7 @@ const AddNodeDialog = () => (
         </div>
 
         <form>
-            <input type="text" id="device" />
+            <input type="text" id="device"/>
         </form>
     </div>
 );
