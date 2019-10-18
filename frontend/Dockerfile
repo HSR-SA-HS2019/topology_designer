@@ -3,10 +3,10 @@
 FROM node:9.6.1
 
 #set working directory
-RUN mkdir /usr/src/app
-WORKDIR /usr/src/app
-COPY frontend/package.json /usr/src/app
-COPY frontend/package-lock.json /usr/src/app
+RUN mkdir /home/app
+WORKDIR /home/app
+COPY frontend/package.json /home/app
+COPY frontend/package-lock.json /home/app
 
 # add `/usr/src/app/node_modules/.bin` to $PATH
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
@@ -16,7 +16,7 @@ RUN npm install
 RUN npm install serve
 
 # Bundle app source
-COPY frontend /usr/src/app
+COPY frontend /home/app
 
 
 
@@ -26,7 +26,5 @@ EXPOSE 3000
 ENV NODE_ENV production
 ENV PORT 3000
 ENV PUBLIC_PATH "/"
-
-RUN chown -R $USER:$USER '/home/root/.npm/'
 
 CMD ["npm", "start"]
