@@ -16,6 +16,7 @@ node {
         sh 'docker build -f frontend/Dockerfile  -t topology-designer-frontend --no-cache .'
         sh 'docker tag topology-designer-frontend localhost:5000/topology-designer-frontend'
         sh 'docker push localhost:5000/topology-designer-frontend'
+        sh 'docker push martinhug/topology-designer-frontend'
         sh 'docker rmi -f topology-designer-frontend localhost:5000/topology-designer-frontend'
 
     }
