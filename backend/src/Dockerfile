@@ -1,6 +1,6 @@
 # topology-designer backend
 # Version: 1.0
-FROM python:3.7
+FROM django
 # Install Python and Package Libraries
 
 # Project Files and Settings
