@@ -22,7 +22,7 @@ COPY frontend /usr/src/app
 
 EXPOSE 3000
 
- Environment variables
+#Environment variables
 ENV NODE_ENV production
 ENV PORT 3000
 ENV PUBLIC_PATH "/"
