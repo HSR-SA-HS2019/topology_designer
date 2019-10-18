@@ -4,7 +4,6 @@ FROM python:3.7
 # Install Python and Package Libraries
 
 # Project Files and Settings
-FROM python:2.7
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 WORKDIR /code
