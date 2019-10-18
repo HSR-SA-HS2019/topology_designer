@@ -1,10 +1,18 @@
+FROM node:carbon
 
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get -y install autoconf automake libtool nasm make pkg-config git apt-utils
 
-FROM node:9.6.1
+# Versions
+RUN npm -v
+RUN node -v
 
 #set working directory
 RUN mkdir /home/app
 WORKDIR /home/app
+
+#install app dependencies
 COPY frontend/package.json /home/app
 COPY frontend/package-lock.json /home/app
 
@@ -18,8 +26,7 @@ RUN npm install serve
 # Bundle app source
 COPY frontend /home/app
 
-
-
+#port to listener
 EXPOSE 3000
 
 #Environment variables
