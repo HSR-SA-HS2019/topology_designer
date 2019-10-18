@@ -14,4 +14,4 @@ ADD backend /code/
 # Expose the application on port 8000
 EXPOSE 8000
 # Run test server
-CMD ["python", "/src/manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "backend/src/manage.py", "runserver", "0.0.0.0:8000"]
