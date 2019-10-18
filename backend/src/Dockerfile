@@ -9,4 +9,4 @@ RUN mkdir /code
 WORKDIR /code
 ADD backend/src/requirements.txt /code/
 RUN pip install -r requirements.txt
-ADD bakend /code/
+ADD backend /code/
