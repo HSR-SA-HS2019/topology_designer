@@ -1,18 +1,20 @@
 FROM node
 
 #set working directory
-RUN mkdir -p /app/frontend
-WORKDIR /app/frontend
-COPY frontend/package.json /app/frontend
-COPY frontend/package-lock.json /app/frontend
+RUN mkdir /usr/src/app
+WORKDIR /usr/src/app
+COPY frontend/package.json /usr/src/app
+COPY frontend/package-lock.json /usr/src/app
 
 # add `/usr/src/app/node_modules/.bin` to $PATH
-ENV PATH /app/frontend/node_modules/.bin:$PATH
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
+# install and cache app dependencies
 RUN npm install
+RUN npm install serve
 
 # Bundle app source
-COPY frontend /app/frontend
+COPY frontend /usr/src/app
 
 EXPOSE 3000
 
