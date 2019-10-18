@@ -19,5 +19,3 @@ ENV PUBLIC_PATH "/"
 
 
 CMD ["npm", "start"]
-
-RUN chmod a+x /app/forntend/node_modules/.bin/react-scripts
