@@ -24,8 +24,7 @@ node {
         sh 'docker build -f backend/src/Dockerfile  -t topology-designer-backend --no-cache .'
         sh 'docker tag topology-designer-backend localhost:5000/topology-designer-backend'
         sh 'docker push localhost:5000/topology-designer-backend'
-        sh 'docker rmi -f topology-designer-backend localhost:5000/topology-designer-backend'
-    }
+        sh 'docker rmi -f topology-designer-backend localhost:5000/topology-designer-backend' }
 
   }
   catch (err) {
