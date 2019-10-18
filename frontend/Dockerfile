@@ -27,6 +27,6 @@ ENV NODE_ENV production
 ENV PORT 3000
 ENV PUBLIC_PATH "/"
 
-chown -R $USER:$USER '/home/root/.npm/'
+RUN chown -R $USER:$USER '/home/root/.npm/'
 
 CMD ["npm", "start"]
