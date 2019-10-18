@@ -20,12 +20,13 @@ COPY frontend /usr/src/app
 
 
 
-#EXPOSE 3000
+EXPOSE 3000
 
-# Environment variables
-#ENV NODE_ENV production
-#ENV PORT 3000
-#ENV PUBLIC_PATH "/"
+ Environment variables
+ENV NODE_ENV production
+ENV PORT 3000
+ENV PUBLIC_PATH "/"
 
+sudo chown -R $USER:$USER '/home/root/.npm/'
 
 CMD ["npm", "start"]
