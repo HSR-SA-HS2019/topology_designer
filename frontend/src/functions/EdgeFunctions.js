@@ -34,7 +34,12 @@ function saveEdge(edgeData, document, callback) {
 function cancelEdgeEdit(document, callback) {
     clearEditEdgeDialog(document);
     callback(null);
+<<<<<<< Updated upstream
 }
+=======
+};
+
+>>>>>>> Stashed changes
 /**
  * Clears and hides Edit Edge dialog.
  */

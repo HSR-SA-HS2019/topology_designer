@@ -1,6 +1,10 @@
 import GraphVis from 'react-graph-vis';
 import React from 'react';
+<<<<<<< Updated upstream
 import {graphVisLocales, palette} from '../functions/GlobalConstants';
+=======
+import {palette, graphVisLocales} from '../functions/GlobalConstants';
+>>>>>>> Stashed changes
 import {addNode, showEditNodeDialog} from '../functions/NodeFunctions';
 import {addEdge, showEditEdgeDialog} from '../functions/EdgeFunctions';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
@@ -66,6 +70,7 @@ class SingleDrawing extends React.Component {
         };
         const network = null;
         this.initNetworkInstance = this.initNetworkInstance.bind(this);
+<<<<<<< Updated upstream
 
 
     }
@@ -84,6 +89,11 @@ class SingleDrawing extends React.Component {
               console.log(res.data.name)
             })
       };*/
+=======
+
+
+    }
+>>>>>>> Stashed changes
 
     initNetworkInstance(networkInstance) {
         this.network = networkInstance;
@@ -92,7 +102,10 @@ class SingleDrawing extends React.Component {
     setNetworkInstance = nw => {
         this.network = nw;
     };
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
     DeleteTopology = () => {
         this.network.setData(null, null);

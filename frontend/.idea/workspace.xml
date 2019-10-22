@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="daa44ed9-404f-45c0-a4b5-d9b994cc961e" name="Default" comment="Backend Codestyle Anpassungen" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\Surfy\Documents\HSR\Semester 5\SA\ReactTutorial\TopologyTest\TopologyTest\.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1RxQe68c4BwQZmF1sehXN2e6wB6" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.jscs" value="true" />
+    <property name="node.js.detected.package.prettier" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.jscs" value="project" />
+    <property name="node.js.path.for.package.prettier" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.jscs" value="" />
+    <property name="node.js.selected.package.prettier" value="" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="Settings.JavaScript.Linters.JSLint" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.2.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\public\assets\image" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\public\assets" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\exercises" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\UI" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Surfy\Documents\HSR\Semester 5\SA\ReactTutorial\proof-vis\proof-vis-default\src\components" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\public" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\exercises\Exercise20" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\UI\MainHeader" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\UI\CustomNavbar" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="start" />
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="daa44ed9-404f-45c0-a4b5-d9b994cc961e" name="Default" comment="" />
+      <created>1522684891725</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1522684891725</updated>
+      <workItem from="1522684895578" duration="3155000" />
+      <workItem from="1522748232746" duration="598000" />
+      <workItem from="1522873944483" duration="598000" />
+      <workItem from="1523266676381" duration="597000" />
+      <workItem from="1523557524692" duration="19975000" />
+      <workItem from="1523719720293" duration="15827000" />
+      <workItem from="1523893550661" duration="17786000" />
+      <workItem from="1524430960177" duration="796000" />
+      <workItem from="1524494983721" duration="39122000" />
+      <workItem from="1524823467832" duration="34529000" />
+      <workItem from="1525077110312" duration="80830000" />
+      <workItem from="1525332924867" duration="96641000" />
+      <workItem from="1525681733183" duration="48976000" />
+      <workItem from="1526058960606" duration="7017000" />
+      <workItem from="1526147229273" duration="35000" />
+      <workItem from="1526147326304" duration="3712000" />
+      <workItem from="1526227312918" duration="9428000" />
+      <workItem from="1570606363864" duration="3041000" />
+      <workItem from="1570613942516" duration="779000" />
+      <workItem from="1570615014792" duration="530000" />
+      <workItem from="1570615889652" duration="245000" />
+      <workItem from="1570616340233" duration="6570000" />
+      <workItem from="1570694984075" duration="22304000" />
+      <workItem from="1571228850222" duration="14000" />
+      <workItem from="1571230795661" duration="13771000" />
+      <workItem from="1571727577947" duration="1113000" />
+    </task>
+    <task id="LOCAL-00040" summary="Install react-sketch package">
+      <created>1525174107614</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1525174107614</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Implement initial sketch drawing functionality">
+      <created>1525176058065</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1525176058065</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Fix GitHub pages deploy">
+      <created>1525178613434</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1525178613434</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Exclude repeated layout components into App.js">
+      <created>1525185498555</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1525185498555</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Add basename prop to BrowserRouter">
+      <created>1525186790837</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1525186790837</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Rearrange layout, add favicon and logo">
+      <created>1525196814404</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1525196814404</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Install react-mathjax (SamyPesse) and react-mathjax2 (wko27) packages">
+      <created>1525253098328</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1525253098328</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Uninstall react-mathjax package, add MathJaxNode component">
+      <created>1525254885034</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1525254885034</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Move graph functions into separate file">
+      <created>1525273311977</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1525273311977</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Add Exercise 17a">
+      <created>1525283390637</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1525283390637</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Add Description box (Exercise 17a)">
+      <created>1525337648617</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1525337648619</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Move ClearAllTimers function into GraphFunctions file">
+      <created>1525338619571</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1525338619571</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Add initial Proof box implementation (Exercise 17a)">
+      <created>1525423365078</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1525423365078</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Install Font Awesome packages by @fortawesome&#10;&#10;(fontawesome, react-fontawesome, fontawesome-free-solid)">
+      <created>1525434803638</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1525434803638</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Add Font Awesome icons">
+      <created>1525437806153</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1525437806153</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Implement drawing tools">
+      <created>1525450392300</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1525450392300</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Improve sticky footer">
+      <created>1525466973979</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1525466973979</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Link vis.js Manipulation module files by CDN">
+      <created>1525512168250</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1525512168251</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Fix sending invalid type for Button active and disabled parameters">
+      <created>1525520739053</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1525520739054</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Add Exercise26 visualization">
+      <created>1525521719365</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1525521719365</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Add Exercise 26 texts">
+      <created>1525543553890</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1525543553891</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Add miscellaneous improvements">
+      <created>1525608569595</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1525608569597</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Implement disabling and enabling of step buttons">
+      <created>1525611546089</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1525611546090</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Add initial implementation of SingleDrawing page">
+      <created>1525623275316</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1525623275316</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Add Overview">
+      <created>1525630619046</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1525630619046</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Fix GitHub pages routing by adding basename">
+      <created>1525631069094</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1525631069094</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Update Exercise 20 (vis)">
+      <created>1525635890081</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1525635890081</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Implement network camera movement">
+      <created>1525685921899</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1525685921901</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Add next steps visualization to Exercise 20">
+      <created>1525900678948</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1525900678948</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Reimplement Exercise 20&#10;&#10;TODO Fix reusing camera movements">
+      <created>1525944581395</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1525944581396</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Add editNode dialog (SingleDrawing)">
+      <created>1525945807403</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1525945807403</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Improve layout">
+      <created>1525966236315</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1525966236315</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Delete unnecessary code and layout files">
+      <created>1525967029263</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1525967029263</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Add DefinitionPanel component">
+      <created>1526059812358</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1526059812358</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Move Sketch handlers into GraphFunctions file&#10;&#10;Use DefinitionPanel in other exercises">
+      <created>1526061425655</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1526061425655</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Move graphVis options and locales into GraphFunctions file">
+      <created>1526143632098</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1526143632098</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Add links to Overview">
+      <created>1526229620136</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1526229620138</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Resolve 'Add ExerciseWrapper component' commit 3fecfb26ef63aae5e31fa63a674a187e229253d0&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml">
+      <created>1527534351770</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1527534351770</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Resolve 'Try out SVG content cover implementation' commit e77bf034fea1e4b8d3b053eccba5b552a645d353&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css">
+      <created>1527534545623</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1527534545623</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Resolve 'Try out SVG content cover implementation' commit e77bf034fea1e4b8d3b053eccba5b552a645d353&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css">
+      <created>1527534604217</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1527534604217</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Resolve 'Add various layout improvements' commit 3980260ff290798326128b52f9cad074e08ecbe9&#10;&#10;Remove Grid component.&#10;Remove componentClass Link from Overview.&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css">
+      <created>1527534785001</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1527534785001</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Resolve customMainTheme&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css">
+      <created>1527535042452</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1527535042452</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Resolve 'Change version naming convention' commit 1781ecf9d73b031285e1451945988154160b4d6d&#10;&#10;Switch aside position.&#10;Add new mobile devices styles.&#10;Edit Exercise26 and Exercise26v2 texts.&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css">
+      <created>1527535178540</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1527535178541</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Commit customMainTheme before merge&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css">
+      <created>1527535394277</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1527535394277</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Repo erstellt">
+      <created>1570695272200</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1570695272203</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Dependencies updated">
+      <created>1570695588157</created>
+      <option name="number" value="00085" />
+      <option name="presentableId" value="LOCAL-00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1570695588157</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Dependencies updated">
+      <created>1570695865551</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1570695865551</updated>
+    </task>
+    <task id="LOCAL-00087" summary="deleted unnecessary dependencies">
+      <created>1570698519700</created>
+      <option name="number" value="00087" />
+      <option name="presentableId" value="LOCAL-00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1570698519700</updated>
+    </task>
+    <task id="LOCAL-00088" summary="Backend Codestyle Anpassungen">
+      <created>1571728051200</created>
+      <option name="number" value="00088" />
+      <option name="presentableId" value="LOCAL-00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1571728051200</updated>
+    </task>
+    <option name="localTasksCounter" value="89" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Implement disabling and enabling of step buttons" />
+    <MESSAGE value="Add initial implementation of SingleDrawing page" />
+    <MESSAGE value="Add Overview" />
+    <MESSAGE value="Fix GitHub pages routing by adding basename" />
+    <MESSAGE value="Update Exercise 20 (vis)" />
+    <MESSAGE value="Implement network camera movement" />
+    <MESSAGE value="Add next steps visualization to Exercise 20" />
+    <MESSAGE value="Reimplement Exercise 20&#10;&#10;TODO Fix reusing camera movements" />
+    <MESSAGE value="Add editNode dialog (SingleDrawing)" />
+    <MESSAGE value="Improve layout" />
+    <MESSAGE value="Delete unnecessary code and layout files" />
+    <MESSAGE value="Add DefinitionPanel component" />
+    <MESSAGE value="Move Sketch handlers into GraphFunctions file&#10;&#10;Use DefinitionPanel in other exercises" />
+    <MESSAGE value="Move graphVis options and locales into GraphFunctions file" />
+    <MESSAGE value="Add links to Overview" />
+    <MESSAGE value="Resolve 'Add ExerciseWrapper component' commit 3fecfb26ef63aae5e31fa63a674a187e229253d0&#10;&#10;# Conflicts:&#10;#&#9;.idea/workspace.xml" />
+    <MESSAGE value="Resolve 'Try out SVG content cover implementation' commit e77bf034fea1e4b8d3b053eccba5b552a645d353&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css" />
+    <MESSAGE value="Resolve 'Add various layout improvements' commit 3980260ff290798326128b52f9cad074e08ecbe9&#10;&#10;Remove Grid component.&#10;Remove componentClass Link from Overview.&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css" />
+    <MESSAGE value="Resolve customMainTheme&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css" />
+    <MESSAGE value="Resolve 'Change version naming convention' commit 1781ecf9d73b031285e1451945988154160b4d6d&#10;&#10;Switch aside position.&#10;Add new mobile devices styles.&#10;Edit Exercise26 and Exercise26v2 texts.&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css" />
+    <MESSAGE value="Commit customMainTheme before merge&#10;&#10;# Conflicts:&#10;#&#9;src/customMainTheme.css" />
+    <MESSAGE value="Repo erstellt" />
+    <MESSAGE value="Dependencies updated" />
+    <MESSAGE value="deleted unnecessary dependencies" />
+    <MESSAGE value="Backend Codestyle Anpassungen" />
+    <option name="LAST_COMMIT_MESSAGE" value="Backend Codestyle Anpassungen" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/components/exercises/Exercise20vis/Exercise20vis.js</url>
+          <line>8</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
