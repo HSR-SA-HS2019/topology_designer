@@ -5,33 +5,19 @@ import axios from "axios";
  */
 export function addNode(nodeData, callback) {
     // Set parameters of the new node
-<<<<<<< Updated upstream
-    axios.get('http://127.0.0.1:8000/api/1')
+    axios.get('http://10.20.1.12:8000/api/1')
         .then(res => {
             nodeData.label = res.data.name;
-            console.log(res.data.name)
-        });
-    nodeData.shape = 'square';
-    nodeData.margin = 16;
-    //nodeData.label = '   ';
-    nodeData.color = {background: 'white', border: '#000000'};
-    nodeData.borderWidth = 1;
-    nodeData.shadow = {enabled: false};
-    callback(nodeData);
-=======
-
-    axios.get('http://127.0.0.1:8000/api/1')
-        .then(res => {
-            nodeData.label = res.data.name;
-            console.log(nodeData.label);
+            console.log(res.data.name);
             nodeData.shape = 'square';
             nodeData.margin = 16;
+            //nodeData.label = '   ';
             nodeData.color = {background: 'white', border: '#000000'};
             nodeData.borderWidth = 1;
             nodeData.shadow = {enabled: false};
             callback(nodeData);
         });
->>>>>>> Stashed changes
+
 }
 
 
@@ -72,12 +58,7 @@ function saveNode(nodeData, document, callback) {
 function cancelNodeEdit(document, callback) {
     clearEditNodeDialog(document);
     callback(null);
-<<<<<<< Updated upstream
 }
-=======
-};
-
->>>>>>> Stashed changes
 /**
  * Clears and hides Edit Node dialog.
  */
