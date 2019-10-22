@@ -4,6 +4,16 @@ import axios from "axios";
  * Callback function for adding new node to GraphVis.
  */
 export function addNode(nodeData, callback) {
+
+    let labelInput = nodeData.label;
+    if (labelInput === '   ')
+        labelInput = '';
+
+    document.getElementById('inpNodeLabel').value = labelInput;
+    document.getElementById('btnSave').onclick = saveNode.bind(this, nodeData, document, callback);
+    document.getElementById('btnCancel').onclick = cancelNodeEdit.bind(this, document, callback);
+    document.getElementById('editNodeDialog').style.display = 'block';
+
     // Set parameters of the new node
     axios.get('http://10.20.1.12:8000/api/1')
         .then(res => {
@@ -59,6 +69,7 @@ function cancelNodeEdit(document, callback) {
     clearEditNodeDialog(document);
     callback(null);
 }
+
 /**
  * Clears and hides Edit Node dialog.
  */

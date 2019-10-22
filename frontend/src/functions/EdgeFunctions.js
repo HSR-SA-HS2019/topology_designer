@@ -12,10 +12,8 @@ export function addEdge(edgeData, callback) {
  */
 export function showEditEdgeDialog(edgeData, callback) {
     document.getElementById('inpEdgeLabel').value = edgeData.label;
-    document.getElementById('btnSaveEdge').onclick =
-        saveEdge.bind(this, edgeData, document, callback);
-    document.getElementById('btnCancelEdgeEdit').onclick =
-        cancelEdgeEdit.bind(this, document, callback);
+    document.getElementById('btnSaveEdge').onclick = saveEdge.bind(this, edgeData, document, callback);
+    document.getElementById('btnCancelEdgeEdit').onclick = cancelEdgeEdit.bind(this, document, callback);
     document.getElementById('editEdgeDialog').style.display = 'block';
 }
 
