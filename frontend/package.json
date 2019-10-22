@@ -15,16 +15,9 @@
     "test": "react-scripts test --env=jsdom",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "eject": "react-scripts eject",
-    "start:build": "webpack -p",
-    "start:server": "nodemon server/index.js"
+    "eject": "react-scripts eject"
   },
-  "devDependencies": {
-    "@types/webpack": ">=4.39.3",
-    "gh-pages": ">=1.2.0",
-    "nodemon": ">=1.15.0",
-    "typescript": ">=3.0"
-  },
+  "devDependencies": {},
   "browserslist": {
     "production": [
       ">0.2%",
