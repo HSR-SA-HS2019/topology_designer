@@ -18,7 +18,7 @@ node {
         sh 'docker tag topology-designer-frontend localhost:5000/topology-designer-frontend'
         sh 'docker push localhost:5000/topology-designer-frontend'
         sh 'docker commit localhost:5000/topology-designer-frontend martinhug/topology-designer-frontend:latest'
-        sh 'docker push martinhug/topology-designer-frontend:${env.GIT_COMMIT}'
+        sh 'docker push martinhug/topology-designer-frontend:latest'
         sh 'docker rmi -f topology-designer-frontend localhost:5000/topology-designer-frontend'
 
     }
