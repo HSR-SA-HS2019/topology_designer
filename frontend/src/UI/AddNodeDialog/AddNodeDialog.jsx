@@ -3,7 +3,7 @@ import React from 'react';
 const AddNodeDialog = () => (
     <div id={AddNodeDialog}>
         <div>
-            Choode a Device
+            Choose a Device
         </div>
 
         <form>

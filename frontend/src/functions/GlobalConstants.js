@@ -17,12 +17,13 @@ export const palette = {
 };
 
 
-export const graphVisLocales = {
+export let graphVisLocales;
+graphVisLocales = {
     en: {
         edit: 'Edit',
         del: 'Delete',
         back: 'Back',
-        addNode: 'Add Node',
+        addNode: 'Add Nuts',
         addEdge: 'Add Edge',
         editNode: 'Edit Node',
         editEdge: 'Edit Edge',
@@ -32,6 +33,7 @@ export const graphVisLocales = {
         createEdgeError: 'You cannot attach edges to a cluster.',
         deleteClusterError: 'Clusters cannot be deleted.',
         editClusterError: 'Clusters cannot be modified.',
+        exportTopology: 'Export Topology',
     }
 };
 
