@@ -3,7 +3,11 @@
  */
 export function addEdge(edgeData, callback) {
     // Set new edge properties
+
     edgeData.label = '';
+    var edgeCopy = this.state.graphVis.edges;
+    edgeCopy.push({edgeData})
+    this.setState({ graphVis: {edges: edgeCopy}});
     callback(edgeData);
 }
 

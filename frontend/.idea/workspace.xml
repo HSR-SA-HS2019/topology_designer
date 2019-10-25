@@ -11,12 +11,17 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="yaml-File_export" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="IgnoredFileRootStore">
@@ -51,23 +56,23 @@
     <property name="node.js.selected.package.prettier" value="" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="Settings.JavaScript.Linters.JSLint" />
+    <property name="settings.editor.selected.configurable" value="vcs.Subversion" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.2.2\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\public\assets\image" />
-      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\public\assets" />
-      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\exercises" />
-      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src" />
-      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\UI" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Surfy\Documents\HSR\Semester 5\SA\ReactTutorial\proof-vis\proof-vis-default\src\components" />
       <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\public" />
       <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\exercises\Exercise20" />
       <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\UI\MainHeader" />
       <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\UI\CustomNavbar" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\public\assets\image" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\public\assets" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\exercises" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src" />
+      <recent name="C:\Users\Tomas\WebstormProjects\proof-vis\src\components\UI" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -92,7 +97,7 @@
     </configuration>
   </component>
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>C:\Users\Surfy\AppData\Roaming\Subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -126,7 +131,9 @@
       <workItem from="1570694984075" duration="22304000" />
       <workItem from="1571228850222" duration="14000" />
       <workItem from="1571230795661" duration="13771000" />
-      <workItem from="1571727577947" duration="1113000" />
+      <workItem from="1571727577947" duration="1310000" />
+      <workItem from="1571746037770" duration="14726000" />
+      <workItem from="1572002529235" duration="464000" />
     </task>
     <task id="LOCAL-00040" summary="Install react-sketch package">
       <created>1525174107614</created>
@@ -480,6 +487,54 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="range">
+                    <value>
+                      <list>
+                        <option value="HEAD..origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$/.." />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+        <entry key="2">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="range">
+                    <value>
+                      <list>
+                        <option value="HEAD..origin/master" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$/.." />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>

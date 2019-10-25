@@ -5,7 +5,7 @@ import axios from "axios";
  */
 export function addNode(nodeData, callback) {
     // Set parameters of the new node
-    axios.get('http://10.20.1.12:8000/api/1')
+    axios.get('http://10.20.1.12:8000/api/1')   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
         .then(res => {
             nodeData.label = res.data.name;
             console.log(res.data.name);
