@@ -26,6 +26,8 @@ export function addNode(nodeData, callback) {
  */
 export function showEditNodeDialog(nodeData, callback) {
     // Fill node edit dialog's inputs by selected node data
+    //var nodesCopy = this.state.graphVis.nodes.slice();
+    //this.state.graphVis.nodes.
     let labelInput = nodeData.label;
     if (labelInput === '   ')
         labelInput = '';

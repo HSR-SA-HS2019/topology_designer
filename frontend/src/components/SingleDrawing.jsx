@@ -88,7 +88,17 @@ class SingleDrawing extends React.Component {
     };
 
     exportTopology = () => {
-        console.log("blub");
+
+        for (var key in this.network.body.data.nodes._data) {
+            if (this.network.body.data.nodes._data.hasOwnProperty(key)) {
+                console.log(key + " -> " + this.network.body.data.nodes._data[key].label);
+            }
+        }
+        console.log(this.network.body.data.nodes._data);
+
+        for (var i = 0; i < this.state.graphVis.nodes.length; i++) {
+            console.log(this.state.graphVis.nodes[i].label);
+        }
 
     };
 
@@ -117,10 +127,16 @@ class SingleDrawing extends React.Component {
 
     };
 
+
+
     render() {
         return (
             <div className="single-drawing-box">
                 <div>
+                    <form>
+                        Enter Topology Name:
+                        <input type="text" name="firstname"/>
+                    </form>
                     <EditNodeDialog/>
                     <EditEdgeDialog/>
                     <button onClick={this.addNewNode.bind(this)}>Add Node</button>
@@ -133,9 +149,9 @@ class SingleDrawing extends React.Component {
                         getNetwork={this.setNetworkInstance}/>
                 </div>
                 <div>
-                    <div>   /* buttons mit handlebars implementieren?*/
+                    <div> {/* handlebars? */}
                         <button onClick={() => this.deleteTopology()}>
-                            Delete Topology /* Button */
+                            Delete Topology
                         </button>
                         <button onClick={() => this.exportTopology()}>
                             Export Topology
