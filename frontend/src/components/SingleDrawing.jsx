@@ -41,11 +41,14 @@ class SingleDrawing extends React.Component {
                 manipulation: {
                     enabled: true,
                     initiallyActive: true,
-                    addNode: addNode,
+                    addNode: false,
                     editNode: showEditNodeDialog,
-                    addEdge: addEdge,
+                    addEdge: function (data, callback) {
+                        console.log('add edge', data);
+
+                        callback(data);
+                    },
                     editEdge: showEditEdgeDialog,
-                    exportTopology: addEdge,
                     deleteNode: true,
                     deleteEdge: true,
                 },
@@ -68,23 +71,7 @@ class SingleDrawing extends React.Component {
         const network = null;
         this.initNetworkInstance = this.initNetworkInstance.bind(this);
 
-
     }
-
-    /*
-      componentDidMount() {
-        axios.get('http://127.0.0.1:8000/api/1')
-            .then(res => {
-              this.setState({
-                options:{
-                  nodes:{
-                    label: res.data.name
-                  }
-                }
-              });
-              console.log(res.data.name)
-            })
-      };*/
 
 
     initNetworkInstance(networkInstance) {
@@ -96,36 +83,76 @@ class SingleDrawing extends React.Component {
     };
 
 
-    DeleteTopology = () => {
+    deleteTopology = () => {
         this.network.setData(null, null);
     };
 
     exportTopology = () => {
 
-        console.log(this.network.nodes)
+        for (var key in this.network.body.data.nodes._data) {
+            if (this.network.body.data.nodes._data.hasOwnProperty(key)) {
+                console.log(key + " -> " + this.network.body.data.nodes._data[key].label);
+            }
+        }
+        console.log(this.network.body.data.nodes._data);
+
+        for (var i = 0; i < this.state.graphVis.nodes.length; i++) {
+            console.log(this.state.graphVis.nodes[i].label);
+        }
+
     };
+
+    addNewNode() {
+        var nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
+        nodesCopy.push({label: 'blub',
+            shape: "circle",
+            color: {
+                background: 'white',
+                border: '#000000',
+            },
+
+            borderWidth: 1});
+        this.setState({ graphVis: {nodes: nodesCopy}});
+    }
+
+    addNewEdge (edgedata) {
+/*        console.log('add edge', edgedata);
+        var edgesCopy = this.state.graphVis.edges;
+        edgesCopy.push({label: "",
+            from: this.network.body.from,
+            to: this.network.body.to,
+        })
+        this.setState({grapgVis: {edges: edgesCopy}})*/
+        console.log(this.network.body.data.edges);
+
+    };
+
 
 
     render() {
         return (
             <div className="single-drawing-box">
                 <div>
+                    <form>
+                        Enter Topology Name:
+                        <input type="text" name="firstname"/>
+                    </form>
                     <EditNodeDialog/>
                     <EditEdgeDialog/>
+                    <button onClick={this.addNewNode.bind(this)}>Add Node</button>
+                    <button onClick={this.addNewEdge.bind(this)}>Add Edge</button>
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
                         events={{}}
-                        style={{width: "100%", height: '750px'}}
+                        style={{width: "100%", height: '500px'}}
                         getNetwork={this.setNetworkInstance}/>
                 </div>
                 <div>
-                    <div>
-                        <button onClick={() => this.DeleteTopology()}>
+                    <div> {/* handlebars? */}
+                        <button onClick={() => this.deleteTopology()}>
                             Delete Topology
                         </button>
-                    </div>
-                    <div>
                         <button onClick={() => this.exportTopology()}>
                             Export Topology
                         </button>

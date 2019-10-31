@@ -15,7 +15,7 @@ export function addNode(nodeData, callback) {
     document.getElementById('editNodeDialog').style.display = 'block';
 
     // Set parameters of the new node
-    axios.get('http://10.20.1.12:8000/api/1')
+    axios.get('http://10.20.1.12:8000/api/1')   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
         .then(res => {
             nodeData.label = res.data.name;
             console.log(res.data.name);
@@ -36,6 +36,8 @@ export function addNode(nodeData, callback) {
  */
 export function showEditNodeDialog(nodeData, callback) {
     // Fill node edit dialog's inputs by selected node data
+    //var nodesCopy = this.state.graphVis.nodes.slice();
+    //this.state.graphVis.nodes.
     let labelInput = nodeData.label;
     if (labelInput === '   ')
         labelInput = '';
