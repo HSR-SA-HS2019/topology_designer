@@ -1,8 +1,8 @@
 import GraphVis from 'react-graph-vis';
 import React from 'react';
 import {graphVisLocales, palette} from '../functions/GlobalConstants';
-import {addNode, showEditNodeDialog} from '../functions/NodeFunctions';
-import {addEdge, showEditEdgeDialog} from '../functions/EdgeFunctions';
+import {showEditNodeDialog} from '../functions/NodeFunctions';
+import {showEditEdgeDialog} from '../functions/EdgeFunctions';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import './SingleDrawing.css';
@@ -62,7 +62,16 @@ class SingleDrawing extends React.Component {
                     selectable: true,
                 },
                 // Turn automatic graph rearranging off
-                physics: false,
+                physics: {
+                    barnesHut: {
+                        enabled: true,
+                        gravitationalConstant: 100,
+                        centralGravity: 0.1,
+                        springLength: 50,
+                        springConstant: 0.04,
+                        damping: 0.3
+                    }
+                },
                 // Turn configuration panel off
                 configure: false,
 
@@ -113,6 +122,7 @@ class SingleDrawing extends React.Component {
 
             borderWidth: 1});
         this.setState({ graphVis: {nodes: nodesCopy}});
+
     }
 
     addNewEdge (edgedata) {
