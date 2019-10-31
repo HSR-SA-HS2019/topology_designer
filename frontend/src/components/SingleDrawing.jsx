@@ -45,6 +45,7 @@ class SingleDrawing extends React.Component {
                     editNode: showEditNodeDialog,
                     addEdge: addEdge,
                     editEdge: showEditEdgeDialog,
+                    exportTopology: addEdge,
                     deleteNode: true,
                     deleteEdge: true,
                 },
@@ -99,6 +100,11 @@ class SingleDrawing extends React.Component {
         this.network.setData(null, null);
     };
 
+    exportTopology = () => {
+
+        console.log(this.network.nodes)
+    };
+
 
     render() {
         return (
@@ -110,13 +116,18 @@ class SingleDrawing extends React.Component {
                         graph={this.state.graphVis}
                         options={this.state.options}
                         events={{}}
-                        style={{width: "100%", height: '500px'}}
+                        style={{width: "100%", height: '750px'}}
                         getNetwork={this.setNetworkInstance}/>
                 </div>
                 <div>
                     <div>
                         <button onClick={() => this.DeleteTopology()}>
                             Delete Topology
+                        </button>
+                    </div>
+                    <div>
+                        <button onClick={() => this.exportTopology()}>
+                            Export Topology
                         </button>
                     </div>
                 </div>
