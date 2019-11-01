@@ -23,7 +23,7 @@ graphVisLocales = {
         edit: 'Edit',
         del: 'Delete',
         back: 'Back',
-        addNode: 'Add Nuts',
+        addNode: 'Add Node',
         addEdge: 'Add Edge',
         editNode: 'Edit Node',
         editEdge: 'Edit Edge',

@@ -6,8 +6,12 @@ import {showEditEdgeDialog} from '../functions/EdgeFunctions';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import './SingleDrawing.css';
+import axios from "axios";
 
 class SingleDrawing extends React.Component {
+    routerurl = "http://10.20.1.12:8000/api/1";
+    switchrurl = "http://10.20.1.12:8000/api/2";
+
     constructor(props) {
         super(props);
         this.state = {
@@ -64,11 +68,10 @@ class SingleDrawing extends React.Component {
                 // Turn automatic graph rearranging off
                 physics: {
                     barnesHut: {
-                        enabled: true,
-                        gravitationalConstant: 100,
-                        centralGravity: 0.1,
-                        springLength: 50,
-                        springConstant: 0.04,
+                        gravitationalConstant: -2000,
+                        centralGravity: 0.01,
+                        springLength: 100,
+                        springConstant: 0.1,
                         damping: 0.3
                     }
                 },
@@ -85,6 +88,7 @@ class SingleDrawing extends React.Component {
 
     initNetworkInstance(networkInstance) {
         this.network = networkInstance;
+
     }
 
     setNetworkInstance = nw => {
@@ -94,6 +98,7 @@ class SingleDrawing extends React.Component {
 
     deleteTopology = () => {
         this.network.setData(null, null);
+
     };
 
     exportTopology = () => {
@@ -111,32 +116,40 @@ class SingleDrawing extends React.Component {
 
     };
 
-    addNewNode() {
-        var nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
-        nodesCopy.push({label: 'blub',
-            shape: "circle",
-            color: {
-                background: 'white',
-                border: '#000000',
-            },
 
-            borderWidth: 1});
-        this.setState({ graphVis: {nodes: nodesCopy}});
+    addNewNode(url) {
+        axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
+            .then(res => {
+                var nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
+                nodesCopy.push({
+                    label: res.data.name,
+                    shape: "circle",
+                    color: {
+                        background: 'white',
+                        border: '#000000',
+                    },
 
-    }
+                    borderWidth: 1
+                });
+                this.setState({graphVis: {nodes: nodesCopy}});
+            });
 
-    addNewEdge (edgedata) {
-/*        console.log('add edge', edgedata);
-        var edgesCopy = this.state.graphVis.edges;
-        edgesCopy.push({label: "",
-            from: this.network.body.from,
-            to: this.network.body.to,
-        })
-        this.setState({grapgVis: {edges: edgesCopy}})*/
-        console.log(this.network.body.data.edges);
 
     };
 
+
+    addNewEdge(edgedata) {
+        /*        console.log('add edge', edgedata);
+                var edgesCopy = this.state.graphVis.edges;
+                edgesCopy.push({label: "",
+                    from: this.network.body.from,
+                    to: this.network.body.to,
+                })
+                this.setState({grapgVis: {edges: edgesCopy}})*/
+        console.log(edgedata);
+        console.log(this.network.body.data.edges);
+
+    };
 
 
     render() {
@@ -149,13 +162,14 @@ class SingleDrawing extends React.Component {
                     </form>
                     <EditNodeDialog/>
                     <EditEdgeDialog/>
-                    <button onClick={this.addNewNode.bind(this)}>Add Node</button>
+                    <button onClick={this.addNewNode.bind(this, this.routerurl)}>Add Router</button>
+                    <button onClick={this.addNewNode.bind(this, this.switchrurl)}>Add Switch</button>
                     <button onClick={this.addNewEdge.bind(this)}>Add Edge</button>
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
                         events={{}}
-                        style={{width: "100%", height: '500px'}}
+                        style={{width: "100%", height: '750px'}}
                         getNetwork={this.setNetworkInstance}/>
                 </div>
                 <div>
