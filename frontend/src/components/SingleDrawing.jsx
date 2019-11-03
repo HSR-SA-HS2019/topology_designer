@@ -25,8 +25,12 @@ class SingleDrawing extends React.Component {
                 },
                 edges: {
                     arrows: {
-                        to: {enabled: false},
-                        from: {enabled: false},
+                        to: {enabled: true,
+                            type: "circle",
+                            scaleFactor: 0.5},
+                        from: {enabled: true,
+                            type: "circle",
+                            scaleFactor: 0.5},
                     },
                     color: {color: palette.black, hover: palette.black},
                     width: 2,
@@ -43,11 +47,7 @@ class SingleDrawing extends React.Component {
                     initiallyActive: true,
                     addNode: false,
                     editNode: showEditNodeDialog,
-                    addEdge: function (data, callback) {
-                        console.log('add edge', data);
-
-                        callback(data);
-                    },
+                    addEdge: addEdge,
                     editEdge: showEditEdgeDialog,
                     deleteNode: true,
                     deleteEdge: true,
@@ -62,15 +62,21 @@ class SingleDrawing extends React.Component {
                     selectable: true,
                 },
                 // Turn automatic graph rearranging off
-                physics: false,
+                physics: true,
                 // Turn configuration panel off
-                configure: false,
+                configure: true,
 
             },
+            topology_name: 'topology designer',
         };
         const network = null;
         this.initNetworkInstance = this.initNetworkInstance.bind(this);
-
+        this.network_nodes = [];
+        this.network_edges = [];
+        this.network_devices = [];
+        this.exportTopology = this.exportTopology.bind(this);
+        this.deleteTopology = this.deleteTopology.bind(this);
+        this.addNewNode = this.addNewNode.bind(this);
     }
 
 
@@ -88,25 +94,69 @@ class SingleDrawing extends React.Component {
     };
 
     exportTopology = () => {
+        this.network_nodes = [];
+        this.network_edges = [];
+        this.network_devices = [];
 
         for (var key in this.network.body.data.nodes._data) {
             if (this.network.body.data.nodes._data.hasOwnProperty(key)) {
-                console.log(key + " -> " + this.network.body.data.nodes._data[key].label);
+                this.network_nodes.push([this.network.body.data.nodes._data[key].id,
+                                        this.network.body.data.nodes._data[key].label,
+                                        this.network.body.data.nodes._data[key].color.title,
+                                        this.network.body.data.nodes._data[key].color.group,
+                                        1]);
+                if(!this.network_devices.includes(this.network.body.data.nodes._data[key].color.group)){
+                    this.network_devices.push(this.network.body.data.nodes._data[key].color.group);
+                }
+                //console.log(key + " label: " + this.network.body.data.nodes._data[key].label);
             }
         }
-        console.log(this.network.body.data.nodes._data);
-
-        for (var i = 0; i < this.state.graphVis.nodes.length; i++) {
-            console.log(this.state.graphVis.nodes[i].label);
+        for (var key in this.network.body.data.edges._data) {
+            if (this.network.body.data.edges._data.hasOwnProperty(key)) {
+                this.network_edges.push(this.network.body.data.edges._data[key]);
+                // console.log(key + " from: " + this.network.body.data.edges._data[key].from);
+                // console.log(key + " to: " + this.network.body.data.edges._data[key].to);
+                // console.log(key + " label: " + this.network.body.data.edges._data[key].label);
+            }
+        }
+        console.log(this.network_nodes);
+        console.log(this.network_edges);
+        console.log(this.network_devices);
+        console.log("---\n description: " + this.state.topology_name);
+        for (var i in this.network_devices){
+            console.log(this.network_devices[i]);
+            for (var j in this.network_nodes){
+                if(this.network_nodes[j][3] == this.network_devices[i]){
+                    console.log("\t" + this.network_nodes[j][1] + ":");
+                    console.log("\t\ttype: " + this.network_nodes[j][2]);
+                }
+            }
+        }
+        console.log("connections:")
+        for (var i in this.network_edges){
+            for (var j in this.network_nodes){
+                if (this.network_edges[i].from == this.network_nodes[j][0]){
+                    console.log("\t-\t" + this.network_nodes[j][1] + ": " + this.network_nodes[j][4]);
+                    this.network_nodes[j][4] = this.network_nodes[j][4] + 1;
+                }
+            }
+            for (var j in this.network_nodes){
+                if (this.network_edges[i].to == this.network_nodes[j][0]){
+                    console.log("\t\t" + this.network_nodes[j][1] + ": " + this.network_nodes[j][4]);
+                    this.network_nodes[j][4] = this.network_nodes[j][4] + 1;
+                }
+            }
         }
 
     };
 
     addNewNode() {
         var nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
-        nodesCopy.push({label: 'blub',
-            shape: "circle",
+        nodesCopy.push({label: 'Router',
+            shape: "square",
             color: {
+                group: 'virtual_network_devices',
+                title: 'blub',
                 background: 'white',
                 border: '#000000',
             },
@@ -114,18 +164,6 @@ class SingleDrawing extends React.Component {
             borderWidth: 1});
         this.setState({ graphVis: {nodes: nodesCopy}});
     }
-
-    addNewEdge (edgedata) {
-/*        console.log('add edge', edgedata);
-        var edgesCopy = this.state.graphVis.edges;
-        edgesCopy.push({label: "",
-            from: this.network.body.from,
-            to: this.network.body.to,
-        })
-        this.setState({grapgVis: {edges: edgesCopy}})*/
-        console.log(this.network.body.data.edges);
-
-    };
 
 
 
@@ -135,12 +173,14 @@ class SingleDrawing extends React.Component {
                 <div>
                     <form>
                         Enter Topology Name:
-                        <input type="text" name="firstname"/>
+                        <input type="text"
+                            value={this.state.topology_name}
+                            onChange={(event) => this.setState({topology_name: event.target.value})}
+                        />
                     </form>
                     <EditNodeDialog/>
                     <EditEdgeDialog/>
-                    <button onClick={this.addNewNode.bind(this)}>Add Node</button>
-                    <button onClick={this.addNewEdge.bind(this)}>Add Edge</button>
+                    <button onClick={this.addNewNode}>Add Node</button>
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
@@ -150,10 +190,10 @@ class SingleDrawing extends React.Component {
                 </div>
                 <div>
                     <div> {/* handlebars? */}
-                        <button onClick={() => this.deleteTopology()}>
+                        <button onClick={this.deleteTopology}>
                             Delete Topology
                         </button>
-                        <button onClick={() => this.exportTopology()}>
+                        <button onClick={this.exportTopology}>
                             Export Topology
                         </button>
                     </div>
