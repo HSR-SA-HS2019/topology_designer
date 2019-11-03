@@ -97,16 +97,18 @@ class SingleDrawing extends React.Component {
         this.network_nodes = [];
         this.network_edges = [];
         this.network_devices = [];
+        let StringData = '';
+        let filename = this.state.topology_name + '.yaml';
 
         for (var key in this.network.body.data.nodes._data) {
             if (this.network.body.data.nodes._data.hasOwnProperty(key)) {
                 this.network_nodes.push([this.network.body.data.nodes._data[key].id,
                                         this.network.body.data.nodes._data[key].label,
-                                        this.network.body.data.nodes._data[key].color.title,
-                                        this.network.body.data.nodes._data[key].color.group,
+                                        this.network.body.data.nodes._data[key].title,
+                                        this.network.body.data.nodes._data[key].group,
                                         1]);
-                if(!this.network_devices.includes(this.network.body.data.nodes._data[key].color.group)){
-                    this.network_devices.push(this.network.body.data.nodes._data[key].color.group);
+                if(!this.network_devices.includes(this.network.body.data.nodes._data[key].group)){
+                    this.network_devices.push(this.network.body.data.nodes._data[key].group);
                 }
                 //console.log(key + " label: " + this.network.body.data.nodes._data[key].label);
             }
@@ -122,41 +124,53 @@ class SingleDrawing extends React.Component {
         console.log(this.network_nodes);
         console.log(this.network_edges);
         console.log(this.network_devices);
-        console.log("---\n description: " + this.state.topology_name);
+
+        StringData = StringData + "---\ndescription: " + this.state.topology_name;
         for (var i in this.network_devices){
-            console.log(this.network_devices[i]);
+            StringData = StringData + "\n" + this.network_devices[i];
             for (var j in this.network_nodes){
                 if(this.network_nodes[j][3] == this.network_devices[i]){
-                    console.log("\t" + this.network_nodes[j][1] + ":");
-                    console.log("\t\ttype: " + this.network_nodes[j][2]);
+                    StringData = StringData + "\n\t" + this.network_nodes[j][1] + ":";
+                    StringData = StringData + "\n\t\ttype: " + this.network_nodes[j][2];
                 }
             }
         }
-        console.log("connections:")
+        StringData = StringData + "\nconnections:";
         for (var i in this.network_edges){
             for (var j in this.network_nodes){
                 if (this.network_edges[i].from == this.network_nodes[j][0]){
-                    console.log("\t-\t" + this.network_nodes[j][1] + ": " + this.network_nodes[j][4]);
+                    StringData = StringData + "\n\t-\t" + this.network_nodes[j][1] + ": " + this.network_nodes[j][4];
                     this.network_nodes[j][4] = this.network_nodes[j][4] + 1;
                 }
             }
             for (var j in this.network_nodes){
                 if (this.network_edges[i].to == this.network_nodes[j][0]){
-                    console.log("\t\t" + this.network_nodes[j][1] + ": " + this.network_nodes[j][4]);
+                    StringData = StringData + "\n\t\t" + this.network_nodes[j][1] + ": " + this.network_nodes[j][4];
                     this.network_nodes[j][4] = this.network_nodes[j][4] + 1;
                 }
             }
         }
+        console.log(StringData);
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(StringData));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
 
     };
 
     addNewNode() {
         var nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
         nodesCopy.push({label: 'Router',
+            group: 'virtual_network_devices',
+            title: 'blub',
             shape: "square",
             color: {
-                group: 'virtual_network_devices',
-                title: 'blub',
                 background: 'white',
                 border: '#000000',
             },
