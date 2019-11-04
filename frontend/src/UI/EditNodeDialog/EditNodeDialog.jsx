@@ -15,7 +15,14 @@ const EditNodeDialog = () => (
                 <div className="col-sm-7">
                     <input type="text" className="form-control" id="inpNodeLabel"/>
                 </div>
+                <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
+                    Run Config
+                </label>
+                <div className="col-sm-7">
+                    <textarea id="inpNodeLabel" name="text" rows="4"></textarea>
+                </div>
             </div>
+
 
             {/*      <div className="form-group">
         <label htmlFor="inpLabelColor" className="col-sm-4 control-label">

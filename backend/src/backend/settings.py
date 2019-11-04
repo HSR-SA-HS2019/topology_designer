@@ -25,7 +25,7 @@ SECRET_KEY = '$dztm32_@(@6dhc2y%rt(v2^w2hqdr&u%gc8a$ym_d*9ief4nk'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['10.20.1.12', '127.0.0.1']
 
 
 # Application definition

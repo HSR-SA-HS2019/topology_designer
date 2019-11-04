@@ -1,10 +1,10 @@
 import React from 'react';
-import './AddNodeDialog.css.css';
+import './ExportDialog.css';
 
-const AddNodeDialog = () => (
-    <div id="addNodeDialog">
+const ExportDialog = () => (
+    <div id="exportNodeDialog">
         <div className="operationName">
-            Add Node
+            Export Topology
         </div>
 
         <form className="form-horizontal">
@@ -50,4 +50,4 @@ const AddNodeDialog = () => (
     </div>
 );
 
-export default AddNodeDialog;
+export default ExportDialog;

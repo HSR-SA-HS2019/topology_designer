@@ -3,3 +3,5 @@ psycopg2
 south
 django-registration
 stripe
+djangorestframework
+django-cors-headers

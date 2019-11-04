@@ -1,13 +1,17 @@
 import GraphVis from 'react-graph-vis';
 import React from 'react';
 import {graphVisLocales, palette} from '../functions/GlobalConstants';
-import {addNode, showEditNodeDialog} from '../functions/NodeFunctions';
-import {addEdge, showEditEdgeDialog} from '../functions/EdgeFunctions';
+import {showEditNodeDialog} from '../functions/NodeFunctions';
+import {showEditEdgeDialog} from '../functions/EdgeFunctions';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import './SingleDrawing.css';
+import axios from "axios";
 
 class SingleDrawing extends React.Component {
+    routerurl = "http://10.20.1.12:8000/api/1";
+    switchrurl = "http://10.20.1.12:8000/api/2";
+
     constructor(props) {
         super(props);
         this.state = {
@@ -25,12 +29,8 @@ class SingleDrawing extends React.Component {
                 },
                 edges: {
                     arrows: {
-                        to: {enabled: true,
-                            type: "circle",
-                            scaleFactor: 0.5},
-                        from: {enabled: true,
-                            type: "circle",
-                            scaleFactor: 0.5},
+                        to: {enabled: false},
+                        from: {enabled: false},
                     },
                     color: {color: palette.black, hover: palette.black},
                     width: 2,
@@ -47,7 +47,11 @@ class SingleDrawing extends React.Component {
                     initiallyActive: true,
                     addNode: false,
                     editNode: showEditNodeDialog,
-                    addEdge: addEdge,
+                    addEdge: function (data, callback) {
+                        console.log('add edge', data);
+
+                        callback(data);
+                    },
                     editEdge: showEditEdgeDialog,
                     deleteNode: true,
                     deleteEdge: true,
@@ -62,9 +66,18 @@ class SingleDrawing extends React.Component {
                     selectable: true,
                 },
                 // Turn automatic graph rearranging off
-                physics: true,
+                physics: {
+                    barnesHut: {
+                        gravitationalConstant: -2000,
+                        centralGravity: 0.01,
+                        springLength: 100,
+                        springConstant: 0.1,
+                        damping: 0.3
+                    }
+                },
                 // Turn configuration panel off
                 configure: false,
+
             },
             topology_name: 'topology designer',
         };
@@ -83,7 +96,6 @@ class SingleDrawing extends React.Component {
         this.network = networkInstance;
     }
 
-
     setNetworkInstance = nw => {
         this.network = nw;
     };
@@ -92,7 +104,6 @@ class SingleDrawing extends React.Component {
     deleteTopology = () => {
         this.network.setData(null, null);
     };
-
 
     exportTopology = () => {
         this.network_nodes = [];
@@ -155,20 +166,40 @@ class SingleDrawing extends React.Component {
         document.body.removeChild(element);
     };
 
-    addNewNode() {
-        var nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
-        nodesCopy.push({label: 'Router',
-            group: 'virtual_network_devices',
-            title: 'blub',
-            shape: "square",
-            color: {
-                background: 'white',
-                border: '#000000',
-            },
 
-            borderWidth: 1});
-        this.setState({ graphVis: {nodes: nodesCopy}});
-    }
+    addNewNode(url) {
+        axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
+            .then(res => {
+                var nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
+                nodesCopy.push({
+                    label: res.data.name,
+                    shape: "circle",
+                    color: {
+                        background: 'white',
+                        border: '#000000',
+                    },
+
+                    borderWidth: 1
+                });
+                this.setState({graphVis: {nodes: nodesCopy}});
+            });
+
+
+    };
+
+
+    addNewEdge(edgedata) {
+        /*        console.log('add edge', edgedata);
+                var edgesCopy = this.state.graphVis.edges;
+                edgesCopy.push({label: "",
+                    from: this.network.body.from,
+                    to: this.network.body.to,
+                })
+                this.setState({grapgVis: {edges: edgesCopy}})*/
+        console.log(edgedata);
+        console.log(this.network.body.data.edges);
+
+    };
 
 
     render() {
@@ -184,12 +215,14 @@ class SingleDrawing extends React.Component {
                     </form>
                     <EditNodeDialog/>
                     <EditEdgeDialog/>
-                    <button onClick={this.addNewNode}>Add Node</button>
+                    <button onClick={this.addNewNode.bind(this, this.routerurl)}>Add Router</button>
+                    <button onClick={this.addNewNode.bind(this, this.switchrurl)}>Add Switch</button>
+                    <button onClick={this.addNewEdge.bind(this)}>Add Edge</button>
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
                         events={{}}
-                        style={{width: "100%", height: '500px'}}
+                        style={{width: "100%", height: '750px'}}
                         getNetwork={this.setNetworkInstance}/>
                 </div>
                 <div>
