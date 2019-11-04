@@ -64,8 +64,7 @@ class SingleDrawing extends React.Component {
                 // Turn automatic graph rearranging off
                 physics: true,
                 // Turn configuration panel off
-                configure: true,
-
+                configure: false,
             },
             topology_name: 'topology designer',
         };
@@ -84,6 +83,7 @@ class SingleDrawing extends React.Component {
         this.network = networkInstance;
     }
 
+
     setNetworkInstance = nw => {
         this.network = nw;
     };
@@ -93,6 +93,7 @@ class SingleDrawing extends React.Component {
         this.network.setData(null, null);
     };
 
+
     exportTopology = () => {
         this.network_nodes = [];
         this.network_edges = [];
@@ -100,68 +101,58 @@ class SingleDrawing extends React.Component {
         let StringData = '';
         let filename = this.state.topology_name + '.yaml';
 
-        for (var key in this.network.body.data.nodes._data) {
-            if (this.network.body.data.nodes._data.hasOwnProperty(key)) {
-                this.network_nodes.push([this.network.body.data.nodes._data[key].id,
-                                        this.network.body.data.nodes._data[key].label,
-                                        this.network.body.data.nodes._data[key].title,
-                                        this.network.body.data.nodes._data[key].group,
+        for (let key1 in this.network.body.data.nodes._data) {
+            if (this.network.body.data.nodes._data.hasOwnProperty(key1)) {
+                this.network_nodes.push([this.network.body.data.nodes._data[key1].id,
+                                        this.network.body.data.nodes._data[key1].label,
+                                        this.network.body.data.nodes._data[key1].title,
+                                        this.network.body.data.nodes._data[key1].group,
                                         1]);
-                if(!this.network_devices.includes(this.network.body.data.nodes._data[key].group)){
-                    this.network_devices.push(this.network.body.data.nodes._data[key].group);
+                if(!this.network_devices.includes(this.network.body.data.nodes._data[key1].group)){
+                    this.network_devices.push(this.network.body.data.nodes._data[key1].group);
                 }
-                //console.log(key + " label: " + this.network.body.data.nodes._data[key].label);
             }
         }
-        for (var key in this.network.body.data.edges._data) {
-            if (this.network.body.data.edges._data.hasOwnProperty(key)) {
-                this.network_edges.push(this.network.body.data.edges._data[key]);
-                // console.log(key + " from: " + this.network.body.data.edges._data[key].from);
-                // console.log(key + " to: " + this.network.body.data.edges._data[key].to);
-                // console.log(key + " label: " + this.network.body.data.edges._data[key].label);
+        for (let key2 in this.network.body.data.edges._data) {
+            if (this.network.body.data.edges._data.hasOwnProperty(key2)) {
+                this.network_edges.push(this.network.body.data.edges._data[key2]);
             }
         }
-        console.log(this.network_nodes);
-        console.log(this.network_edges);
-        console.log(this.network_devices);
 
         StringData = StringData + "---\ndescription: " + this.state.topology_name;
-        for (var i in this.network_devices){
+        for (let i in this.network_devices){
             StringData = StringData + "\n" + this.network_devices[i];
-            for (var j in this.network_nodes){
-                if(this.network_nodes[j][3] == this.network_devices[i]){
+            for (let j in this.network_nodes){
+                if(this.network_nodes[j][3] === this.network_devices[i]){
                     StringData = StringData + "\n\t" + this.network_nodes[j][1] + ":";
                     StringData = StringData + "\n\t\ttype: " + this.network_nodes[j][2];
                 }
             }
         }
         StringData = StringData + "\nconnections:";
-        for (var i in this.network_edges){
-            for (var j in this.network_nodes){
-                if (this.network_edges[i].from == this.network_nodes[j][0]){
-                    StringData = StringData + "\n\t-\t" + this.network_nodes[j][1] + ": " + this.network_nodes[j][4];
-                    this.network_nodes[j][4] = this.network_nodes[j][4] + 1;
+        for (let k in this.network_edges){
+            for (let m in this.network_nodes){
+                if (this.network_edges[k].from === this.network_nodes[m][0]){
+                    StringData = StringData + "\n\t-\t" + this.network_nodes[m][1] + ": " + this.network_nodes[m][4];
+                    this.network_nodes[m][4] = this.network_nodes[m][4] + 1;
                 }
             }
-            for (var j in this.network_nodes){
-                if (this.network_edges[i].to == this.network_nodes[j][0]){
-                    StringData = StringData + "\n\t\t" + this.network_nodes[j][1] + ": " + this.network_nodes[j][4];
-                    this.network_nodes[j][4] = this.network_nodes[j][4] + 1;
+            for (let n in this.network_nodes){
+                if (this.network_edges[k].to === this.network_nodes[n][0]){
+                    StringData = StringData + "\n\t\t" + this.network_nodes[n][1] + ": " + this.network_nodes[n][4];
+                    this.network_nodes[n][4] = this.network_nodes[n][4] + 1;
                 }
             }
         }
         console.log(StringData);
+
         var element = document.createElement('a');
         element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(StringData));
         element.setAttribute('download', filename);
-
         element.style.display = 'none';
         document.body.appendChild(element);
-
         element.click();
-
         document.body.removeChild(element);
-
     };
 
     addNewNode() {
@@ -178,7 +169,6 @@ class SingleDrawing extends React.Component {
             borderWidth: 1});
         this.setState({ graphVis: {nodes: nodesCopy}});
     }
-
 
 
     render() {
