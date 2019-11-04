@@ -79,16 +79,21 @@ class SingleDrawing extends React.Component {
                 configure: false,
 
             },
+            topology_name: 'topology designer',
         };
         const network = null;
         this.initNetworkInstance = this.initNetworkInstance.bind(this);
-
+        this.network_nodes = [];
+        this.network_edges = [];
+        this.network_devices = [];
+        this.exportTopology = this.exportTopology.bind(this);
+        this.deleteTopology = this.deleteTopology.bind(this);
+        this.addNewNode = this.addNewNode.bind(this);
     }
 
 
     initNetworkInstance(networkInstance) {
         this.network = networkInstance;
-
     }
 
     setNetworkInstance = nw => {
@@ -98,22 +103,67 @@ class SingleDrawing extends React.Component {
 
     deleteTopology = () => {
         this.network.setData(null, null);
-
     };
 
     exportTopology = () => {
+        this.network_nodes = [];
+        this.network_edges = [];
+        this.network_devices = [];
+        let StringData = '';
+        let filename = this.state.topology_name + '.yaml';
 
-        for (var key in this.network.body.data.nodes._data) {
-            if (this.network.body.data.nodes._data.hasOwnProperty(key)) {
-                console.log(key + " -> " + this.network.body.data.nodes._data[key].label);
+        for (let key1 in this.network.body.data.nodes._data) {
+            if (this.network.body.data.nodes._data.hasOwnProperty(key1)) {
+                this.network_nodes.push([this.network.body.data.nodes._data[key1].id,
+                                        this.network.body.data.nodes._data[key1].label,
+                                        this.network.body.data.nodes._data[key1].title,
+                                        this.network.body.data.nodes._data[key1].group,
+                                        1]);
+                if(!this.network_devices.includes(this.network.body.data.nodes._data[key1].group)){
+                    this.network_devices.push(this.network.body.data.nodes._data[key1].group);
+                }
             }
         }
-        console.log(this.network.body.data.nodes._data);
-
-        for (var i = 0; i < this.state.graphVis.nodes.length; i++) {
-            console.log(this.state.graphVis.nodes[i].label);
+        for (let key2 in this.network.body.data.edges._data) {
+            if (this.network.body.data.edges._data.hasOwnProperty(key2)) {
+                this.network_edges.push(this.network.body.data.edges._data[key2]);
+            }
         }
 
+        StringData = StringData + "---\ndescription: " + this.state.topology_name;
+        for (let i in this.network_devices){
+            StringData = StringData + "\n" + this.network_devices[i];
+            for (let j in this.network_nodes){
+                if(this.network_nodes[j][3] === this.network_devices[i]){
+                    StringData = StringData + "\n\t" + this.network_nodes[j][1] + ":";
+                    StringData = StringData + "\n\t\ttype: " + this.network_nodes[j][2];
+                }
+            }
+        }
+        StringData = StringData + "\nconnections:";
+        for (let k in this.network_edges){
+            for (let m in this.network_nodes){
+                if (this.network_edges[k].from === this.network_nodes[m][0]){
+                    StringData = StringData + "\n\t-\t" + this.network_nodes[m][1] + ": " + this.network_nodes[m][4];
+                    this.network_nodes[m][4] = this.network_nodes[m][4] + 1;
+                }
+            }
+            for (let n in this.network_nodes){
+                if (this.network_edges[k].to === this.network_nodes[n][0]){
+                    StringData = StringData + "\n\t\t" + this.network_nodes[n][1] + ": " + this.network_nodes[n][4];
+                    this.network_nodes[n][4] = this.network_nodes[n][4] + 1;
+                }
+            }
+        }
+        console.log(StringData);
+
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(StringData));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
     };
 
 
@@ -158,7 +208,10 @@ class SingleDrawing extends React.Component {
                 <div>
                     <form>
                         Enter Topology Name:
-                        <input type="text" name="firstname"/>
+                        <input type="text"
+                            value={this.state.topology_name}
+                            onChange={(event) => this.setState({topology_name: event.target.value})}
+                        />
                     </form>
                     <EditNodeDialog/>
                     <EditEdgeDialog/>
@@ -174,10 +227,10 @@ class SingleDrawing extends React.Component {
                 </div>
                 <div>
                     <div> {/* handlebars? */}
-                        <button onClick={() => this.deleteTopology()}>
+                        <button onClick={this.deleteTopology}>
                             Delete Topology
                         </button>
-                        <button onClick={() => this.exportTopology()}>
+                        <button onClick={this.exportTopology}>
                             Export Topology
                         </button>
                     </div>
