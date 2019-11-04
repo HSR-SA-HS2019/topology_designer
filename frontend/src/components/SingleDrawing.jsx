@@ -173,6 +173,8 @@ class SingleDrawing extends React.Component {
                 var nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
                 nodesCopy.push({
                     label: res.data.name,
+                    title: res.data.type,
+                    group: res.data.name,
                     shape: "circle",
                     color: {
                         background: 'white',
