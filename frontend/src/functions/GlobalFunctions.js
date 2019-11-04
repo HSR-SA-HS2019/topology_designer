@@ -1,32 +1,8 @@
-import axios from "axios";
-
 /**
  * Callback function for adding new node to GraphVis.
  */
-export function addNode(nodeData, callback) {
-
-    let labelInput = nodeData.label;
-    if (labelInput === '   ')
-        labelInput = '';
-
-    document.getElementById('inpNodeLabel').value = labelInput;
-    document.getElementById('btnSave').onclick = saveNode.bind(this, nodeData, document, callback);
-    document.getElementById('btnCancel').onclick = cancelNodeEdit.bind(this, document, callback);
-    document.getElementById('editNodeDialog').style.display = 'block';
-
-    // Set parameters of the new node
-    axios.get('http://10.20.1.12:8000/api/1')   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
-        .then(res => {
-            nodeData.label = res.data.name;
-            console.log(res.data.name);
-            nodeData.shape = 'square';
-            nodeData.margin = 16;
-            //nodeData.label = '   ';
-            nodeData.color = {background: 'white', border: '#000000'};
-            nodeData.borderWidth = 1;
-            nodeData.shadow = {enabled: false};
-            callback(nodeData);
-        });
+export function showExportTopologyDialog(nodeData, callback) {
+    console.log(nodeData);
 
 }
 
@@ -36,8 +12,6 @@ export function addNode(nodeData, callback) {
  */
 export function showEditNodeDialog(nodeData, callback) {
     // Fill node edit dialog's inputs by selected node data
-    //var nodesCopy = this.state.graphVis.nodes.slice();
-    //this.state.graphVis.nodes.
     let labelInput = nodeData.label;
     if (labelInput === '   ')
         labelInput = '';
