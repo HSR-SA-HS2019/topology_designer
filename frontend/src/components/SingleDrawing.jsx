@@ -187,7 +187,7 @@ class SingleDrawing extends React.Component {
             });
 
 
-    };
+    }
 
 
     addNewEdge(edgedata) {
@@ -224,7 +224,7 @@ class SingleDrawing extends React.Component {
                         graph={this.state.graphVis}
                         options={this.state.options}
                         events={{}}
-                        style={{width: "100%", height: '750px'}}
+                        style={{width: "100%", height: '600px'}}
                         getNetwork={this.setNetworkInstance}/>
                 </div>
                 <div>
