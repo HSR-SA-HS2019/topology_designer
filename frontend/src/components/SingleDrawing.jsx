@@ -81,7 +81,7 @@ class SingleDrawing extends React.Component {
             },
             topology_name: 'topology designer',
         };
-        const network = null;
+        // const network = null;
         this.initNetworkInstance = this.initNetworkInstance.bind(this);
         this.network_nodes = [];
         this.network_edges = [];
@@ -98,6 +98,11 @@ class SingleDrawing extends React.Component {
 
     setNetworkInstance = nw => {
         this.network = nw;
+        this.network.on("afterDrawing", function (ctx) {
+            let dataURL = ctx.canvas.toDataURL();
+            document.getElementById('canvasImg').src = dataURL;
+        });
+
     };
 
 
@@ -115,11 +120,11 @@ class SingleDrawing extends React.Component {
         for (let key1 in this.network.body.data.nodes._data) {
             if (this.network.body.data.nodes._data.hasOwnProperty(key1)) {
                 this.network_nodes.push([this.network.body.data.nodes._data[key1].id,
-                                        this.network.body.data.nodes._data[key1].label,
-                                        this.network.body.data.nodes._data[key1].title,
-                                        this.network.body.data.nodes._data[key1].group,
-                                        1]);
-                if(!this.network_devices.includes(this.network.body.data.nodes._data[key1].group)){
+                    this.network.body.data.nodes._data[key1].label,
+                    this.network.body.data.nodes._data[key1].title,
+                    this.network.body.data.nodes._data[key1].group,
+                    1]);
+                if (!this.network_devices.includes(this.network.body.data.nodes._data[key1].group)) {
                     this.network_devices.push(this.network.body.data.nodes._data[key1].group);
                 }
             }
@@ -131,25 +136,25 @@ class SingleDrawing extends React.Component {
         }
 
         StringData = StringData + "---\ndescription: " + this.state.topology_name;
-        for (let i in this.network_devices){
+        for (let i in this.network_devices) {
             StringData = StringData + "\n" + this.network_devices[i];
-            for (let j in this.network_nodes){
-                if(this.network_nodes[j][3] === this.network_devices[i]){
+            for (let j in this.network_nodes) {
+                if (this.network_nodes[j][3] === this.network_devices[i]) {
                     StringData = StringData + "\n\t" + this.network_nodes[j][1] + ":";
                     StringData = StringData + "\n\t\ttype: " + this.network_nodes[j][2];
                 }
             }
         }
         StringData = StringData + "\nconnections:";
-        for (let k in this.network_edges){
-            for (let m in this.network_nodes){
-                if (this.network_edges[k].from === this.network_nodes[m][0]){
+        for (let k in this.network_edges) {
+            for (let m in this.network_nodes) {
+                if (this.network_edges[k].from === this.network_nodes[m][0]) {
                     StringData = StringData + "\n\t-\t" + this.network_nodes[m][1] + ": " + this.network_nodes[m][4];
                     this.network_nodes[m][4] = this.network_nodes[m][4] + 1;
                 }
             }
-            for (let n in this.network_nodes){
-                if (this.network_edges[k].to === this.network_nodes[n][0]){
+            for (let n in this.network_nodes) {
+                if (this.network_edges[k].to === this.network_nodes[n][0]) {
                     StringData = StringData + "\n\t\t" + this.network_nodes[n][1] + ": " + this.network_nodes[n][4];
                     this.network_nodes[n][4] = this.network_nodes[n][4] + 1;
                 }
@@ -166,6 +171,16 @@ class SingleDrawing extends React.Component {
         document.body.removeChild(element);
     };
 
+
+    exportTopologyAsImage = () => {
+        let filename = this.state.topology_name + '.png';
+        var image = document.getElementById("canvasImg");
+        console.log(image);
+        var link = document.createElement('a');
+        link.setAttribute('href', image.src);
+        link.setAttribute('download', filename);
+        link.click();
+    };
 
     addNewNode(url) {
         axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
@@ -211,8 +226,8 @@ class SingleDrawing extends React.Component {
                     <form>
                         Enter Topology Name:
                         <input type="text"
-                            value={this.state.topology_name}
-                            onChange={(event) => this.setState({topology_name: event.target.value})}
+                               value={this.state.topology_name}
+                               onChange={(event) => this.setState({topology_name: event.target.value})}
                         />
                     </form>
                     <EditNodeDialog/>
@@ -235,6 +250,10 @@ class SingleDrawing extends React.Component {
                         <button onClick={this.exportTopology}>
                             Export Topology
                         </button>
+                        <button onClick={this.exportTopologyAsImage}>
+                            Export Topology as Image
+                        </button>
+                        <img id="canvasImg"/>
                     </div>
                 </div>
             </div>
