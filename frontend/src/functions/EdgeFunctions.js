@@ -3,7 +3,10 @@
  */
 export function addEdge(edgeData, callback) {
     // Set new edge properties
-    edgeData.label = 'edge';
+    edgeData.label = '';
+    edgeData.runConfigFrom = "furzindhosa";
+    edgeData.runConfigTo = "furzindchuchi";
+    console.log(edgeData);
     callback(edgeData);
 }
 
@@ -11,17 +14,31 @@ export function addEdge(edgeData, callback) {
  * Displays dialog with form for editing selected edge.
  */
 export function showEditEdgeDialog(edgeData, callback) {
+    // let runConfigFrom = edgeData.runConfigFrom;
+    // let runConfigTo = edgeData.runConfigTo;
+    console.log(edgeData);
+    let runConfigFrom = edgeData.runConfigFrom;
+    let runConfigTo = edgeData.runConfigTo;
     document.getElementById('inpEdgeLabel').value = edgeData.label;
+    document.getElementById('runConfigFrom').value = runConfigFrom;
+    document.getElementById('runConfigTo').value = runConfigTo;
     document.getElementById('btnSaveEdge').onclick = saveEdge.bind(this, edgeData, document, callback);
     document.getElementById('btnCancelEdgeEdit').onclick = cancelEdgeEdit.bind(this, document, callback);
     document.getElementById('editEdgeDialog').style.display = 'block';
+    console.log(runConfigFrom);
+    console.log(runConfigTo);
 }
 
 /**
  * Sets inputed data to the selected edge, saves the edge and hides the Edge Edit dialog.
  */
 function saveEdge(edgeData, document, callback) {
-    edgeData.label = document.getElementById('inpEdgeLabel').value;
+    let newRunConfigFrom = document.getElementById('runConfigFrom').value;
+    let newRunConfigTo = document.getElementById('runConfigTo').value;
+    // edgeData.label = document.getElementById('inpEdgeLabel').value;
+    edgeData.runConfigFrom = newRunConfigFrom;
+    edgeData.runConfigTo = newRunConfigTo;
+    console.log(edgeData);
     clearEditEdgeDialog(document);
     callback(edgeData);
 }

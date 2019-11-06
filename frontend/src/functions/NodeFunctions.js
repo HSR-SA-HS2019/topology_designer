@@ -1,39 +1,34 @@
 import axios from "axios";
 
-/**
- * Callback function for adding new node to GraphVis.
- */
-export function addNode(nodeData, callback) {
-
-    let labelInput = nodeData.label;
-    if (labelInput === '   ')
-        labelInput = '';
-
-    document.getElementById('inpNodeLabel').value = labelInput;
-    document.getElementById('btnSave').onclick = saveNode.bind(this, nodeData, document, callback);
-    document.getElementById('btnCancel').onclick = cancelNodeEdit.bind(this, document, callback);
-    document.getElementById('editNodeDialog').style.display = 'block';
-
-    // Set parameters of the new node
-    axios.get('http://10.20.1.12:8000/api/1')   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
-        .then(res => {
-            nodeData.label = res.data.name;
-            console.log(res.data.name);
-            nodeData.shape = 'square';
-            nodeData.margin = 16;
-            //nodeData.label = '   ';
-            nodeData.color = {background: 'white', border: '#000000'};
-            nodeData.borderWidth = 1;
-            nodeData.shadow = {enabled: false};
-            callback(nodeData);
-        });
-
-}
-
 
 /**
  * Displays dialog with form for editing selected node.
  */
+export function addNewNode(url, existingNodes) {
+    axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
+        .then(res => {
+            // this will create a copy with the same items
+
+            existingNodes.push({
+                label: res.data.name,
+                title: res.data.type,
+                group: res.data.name,
+                shape: "circle",
+                color: {
+                    background: 'white',
+                    border: '#000000',
+                },
+
+                borderWidth: 1,
+                runConfig: ""
+            });
+
+            console.log(existingNodes)
+
+        });
+    return existingNodes;
+}
+
 export function showEditNodeDialog(nodeData, callback) {
     // Fill node edit dialog's inputs by selected node data
     //var nodesCopy = this.state.graphVis.nodes.slice();
@@ -42,7 +37,10 @@ export function showEditNodeDialog(nodeData, callback) {
     if (labelInput === '   ')
         labelInput = '';
 
+    let runConfig = nodeData.runConfig;
+
     document.getElementById('inpNodeLabel').value = labelInput;
+    document.getElementById('runConfig').value = runConfig;
     document.getElementById('btnSave').onclick = saveNode.bind(this, nodeData, document, callback);
     document.getElementById('btnCancel').onclick = cancelNodeEdit.bind(this, document, callback);
     document.getElementById('editNodeDialog').style.display = 'block';
@@ -53,6 +51,7 @@ export function showEditNodeDialog(nodeData, callback) {
  */
 function saveNode(nodeData, document, callback) {
     let newLabel = document.getElementById('inpNodeLabel').value;
+    let newRunConfig = document.getElementById('runConfig').value;
     if (newLabel.length === 1)
         newLabel = ' ' + newLabel + ' ';
 
@@ -60,6 +59,7 @@ function saveNode(nodeData, document, callback) {
         newLabel = '   ';
 
     nodeData.label = newLabel;
+    nodeData.runConfig = newRunConfig;
     clearEditNodeDialog(document);
     callback(nodeData);
 }

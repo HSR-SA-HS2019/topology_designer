@@ -10,10 +10,22 @@ const EditEdgeDialog = () => (
         <form className="form-horizontal">
             <div className="form-group">
                 <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
-                    Text
+                    Label
                 </label>
                 <div className="col-sm-7">
                     <input type="text" className="form-control" id="inpEdgeLabel"/>
+                </div>
+                <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
+                    Run Config From
+                </label>
+                <div className="col-sm-7">
+                    <textarea id="runConfigFrom" name="text" rows="4"/>
+                </div>
+                <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
+                    Run Config To
+                </label>
+                <div className="col-sm-7">
+                    <textarea id="runConfigTo" name="text" rows="4"/>
                 </div>
             </div>
 

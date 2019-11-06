@@ -19,7 +19,7 @@ const EditNodeDialog = () => (
                     Run Config
                 </label>
                 <div className="col-sm-7">
-                    <textarea id="inpNodeLabel" name="text" rows="4">Config</textarea>
+                    <textarea id="runConfig" name="text" rows="4"/>
                 </div>
             </div>
 

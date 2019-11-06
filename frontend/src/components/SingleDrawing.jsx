@@ -1,8 +1,8 @@
 import GraphVis from 'react-graph-vis';
 import React from 'react';
 import {graphVisLocales, palette} from '../functions/GlobalConstants';
-import {showEditNodeDialog} from '../functions/NodeFunctions';
-import {showEditEdgeDialog} from '../functions/EdgeFunctions';
+import {addNewNode, showEditNodeDialog} from '../functions/NodeFunctions';
+import {addEdge, showEditEdgeDialog} from '../functions/EdgeFunctions';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import './SingleDrawing.css';
@@ -47,11 +47,7 @@ class SingleDrawing extends React.Component {
                     initiallyActive: true,
                     addNode: false,
                     editNode: showEditNodeDialog,
-                    addEdge: function (data, callback) {
-                        console.log('add edge', data);
-
-                        callback(data);
-                    },
+                    addEdge: addEdge,
                     editEdge: showEditEdgeDialog,
                     deleteNode: true,
                     deleteEdge: true,
@@ -81,7 +77,6 @@ class SingleDrawing extends React.Component {
             },
             topology_name: 'topology designer',
         };
-        // const network = null;
         this.initNetworkInstance = this.initNetworkInstance.bind(this);
         this.network_nodes = [];
         this.network_edges = [];
@@ -89,6 +84,7 @@ class SingleDrawing extends React.Component {
         this.exportTopology = this.exportTopology.bind(this);
         this.deleteTopology = this.deleteTopology.bind(this);
         this.addNewNode = this.addNewNode.bind(this);
+        this.addNewNodeDef = this.addNewNodeDef.bind(this);
     }
 
 
@@ -175,7 +171,6 @@ class SingleDrawing extends React.Component {
     exportTopologyAsImage = () => {
         let filename = this.state.topology_name + '.png';
         var image = document.getElementById("canvasImg");
-        console.log(image);
         var link = document.createElement('a');
         link.setAttribute('href', image.src);
         link.setAttribute('download', filename);
@@ -183,6 +178,7 @@ class SingleDrawing extends React.Component {
     };
 
     addNewNode(url) {
+        console.log(this.state.graphVis.nodes.slice());
         axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
             .then(res => {
                 var nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
@@ -196,12 +192,17 @@ class SingleDrawing extends React.Component {
                         border: '#000000',
                     },
 
-                    borderWidth: 1
+                    borderWidth: 1,
+                    runConfig: ""
                 });
                 this.setState({graphVis: {nodes: nodesCopy}});
             });
+    }
 
-
+    addNewNodeDef(url) {
+        let nodesCopy = addNewNode(url, this.state.graphVis);
+        this.setState({graphVis: {nodes: nodesCopy}});
+        console.log(this.state);
     }
 
 
@@ -215,6 +216,7 @@ class SingleDrawing extends React.Component {
                 this.setState({grapgVis: {edges: edgesCopy}})*/
         console.log(edgedata);
         console.log(this.network.body.data.edges);
+
 
     };
 
@@ -253,7 +255,7 @@ class SingleDrawing extends React.Component {
                         <button onClick={this.exportTopologyAsImage}>
                             Export Topology as Image
                         </button>
-                        <img id="canvasImg"/>
+                        <img id="canvasImg" alt=""/>
                     </div>
                 </div>
             </div>
