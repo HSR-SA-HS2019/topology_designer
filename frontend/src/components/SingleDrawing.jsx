@@ -197,13 +197,13 @@ class SingleDrawing extends React.Component {
                 });
                 this.setState({graphVis: {nodes: nodesCopy}});
             });
-    }
+    };
 
     addNewNodeDef(url) {
         let nodesCopy = addNewNode(url, this.state.graphVis);
         this.setState({graphVis: {nodes: nodesCopy}});
         console.log(this.state);
-    }
+    };
 
 
     addNewEdge(edgedata) {
@@ -220,6 +220,14 @@ class SingleDrawing extends React.Component {
 
     };
 
+
+    log_State = () => {
+        console.log(this.state);
+    };
+
+    log_Network = () => {
+        console.log(this.network)
+    };
 
     render() {
         return (
@@ -254,6 +262,12 @@ class SingleDrawing extends React.Component {
                         </button>
                         <button onClick={this.exportTopologyAsImage}>
                             Export Topology as Image
+                        </button>
+                        <button onClick={this.log_State}>
+                            Log State
+                        </button>
+                        <button onClick={this.log_Network}>
+                            Log Network
                         </button>
                         <img id="canvasImg" alt=""/>
                     </div>

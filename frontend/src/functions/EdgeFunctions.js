@@ -6,7 +6,6 @@ export function addEdge(edgeData, callback) {
     edgeData.label = '';
     edgeData.runConfigFrom = "furzindhosa";
     edgeData.runConfigTo = "furzindchuchi";
-    console.log(edgeData);
     callback(edgeData);
 }
 
@@ -16,7 +15,6 @@ export function addEdge(edgeData, callback) {
 export function showEditEdgeDialog(edgeData, callback) {
     // let runConfigFrom = edgeData.runConfigFrom;
     // let runConfigTo = edgeData.runConfigTo;
-    console.log(edgeData);
     let runConfigFrom = edgeData.runConfigFrom;
     let runConfigTo = edgeData.runConfigTo;
     document.getElementById('inpEdgeLabel').value = edgeData.label;
@@ -36,6 +34,7 @@ function saveEdge(edgeData, document, callback) {
     let newRunConfigFrom = document.getElementById('runConfigFrom').value;
     let newRunConfigTo = document.getElementById('runConfigTo').value;
     // edgeData.label = document.getElementById('inpEdgeLabel').value;
+    edgeData.label = document.getElementById('inpEdgeLabel').value;
     edgeData.runConfigFrom = newRunConfigFrom;
     edgeData.runConfigTo = newRunConfigTo;
     console.log(edgeData);
