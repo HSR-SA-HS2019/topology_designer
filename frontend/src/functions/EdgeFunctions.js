@@ -3,7 +3,7 @@
  */
 export function addEdge(edgeData, callback) {
     // Set new edge properties
-    edgeData.label = 'edge';
+    edgeData.label = '';
     callback(edgeData);
 }
 

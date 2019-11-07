@@ -2,7 +2,7 @@ import GraphVis from 'react-graph-vis';
 import React from 'react';
 import {graphVisLocales, palette} from '../functions/GlobalConstants';
 import {showEditNodeDialog} from '../functions/NodeFunctions';
-import {showEditEdgeDialog} from '../functions/EdgeFunctions';
+import {addEdge, showEditEdgeDialog} from '../functions/EdgeFunctions';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import {exportTopology} from '../functions/YamlFileFunctions';
@@ -25,9 +25,7 @@ class SingleDrawing extends React.Component {
                 locales: graphVisLocales,
                 clickToUse: false,
                 layout: {},
-                nodes: {
-                    font: {size: 18},
-                },
+                nodes: { font: {size: 18}, },
                 edges: {
                     arrows: {
                         to: {enabled: false},
@@ -35,12 +33,8 @@ class SingleDrawing extends React.Component {
                     },
                     color: {color: palette.black, hover: palette.black},
                     width: 2,
-                    hoverWidth: function (width) {
-                        return width * 2;
-                    },
-                    selectionWidth: function (width) {
-                        return width * 2;
-                    },
+                    hoverWidth: function (width) { return width * 2; },
+                    selectionWidth: function (width) { return width * 2; },
                     font: {align: 'top', size: 18},
                 },
                 manipulation: {
@@ -48,9 +42,7 @@ class SingleDrawing extends React.Component {
                     initiallyActive: true,
                     addNode: false,
                     editNode: showEditNodeDialog,
-                    addEdge: function (data, callback) {
-                        callback(data);
-                    },
+                    addEdge: addEdge,
                     editEdge: showEditEdgeDialog,
                     deleteNode: true,
                     deleteEdge: true,
@@ -64,7 +56,6 @@ class SingleDrawing extends React.Component {
                     multiselect: true,
                     selectable: true,
                 },
-                // Turn automatic graph rearranging off
                 physics: {
                     barnesHut: {
                         gravitationalConstant: -2000,
@@ -76,7 +67,6 @@ class SingleDrawing extends React.Component {
                 },
                 // Turn configuration panel off
                 configure: false,
-
             },
             topology_name: 'topology designer',
         };
@@ -87,19 +77,11 @@ class SingleDrawing extends React.Component {
         this.addNewNode = this.addNewNode.bind(this);
     }
 
+    initNetworkInstance(networkInstance) { this.network = networkInstance; }
 
-    initNetworkInstance(networkInstance) {
-        this.network = networkInstance;
-    }
+    setNetworkInstance = nw => { this.network = nw; };
 
-    setNetworkInstance = nw => {
-        this.network = nw;
-    };
-
-
-    deleteTopology = () => {
-        this.setState({graphVis:{ nodes: [], edegs: [], }})
-    };
+    deleteTopology = () => { this.setState({graphVis:{ nodes: [], edegs: [], }}) };
 
     exportTopologyHelper = () => {
         exportTopology(this.network.body.data.nodes._data, this.network.body.data.edges._data, this.state.topology_name)
@@ -121,8 +103,6 @@ class SingleDrawing extends React.Component {
                 });
                 this.setState({graphVis: {nodes: nodesCopy}});
             });
-
-
     };
 
 
@@ -159,7 +139,6 @@ class SingleDrawing extends React.Component {
                     </div>
                 </div>
             </div>
-
         );
     }
 }
