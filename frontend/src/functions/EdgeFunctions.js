@@ -1,11 +1,12 @@
 /**
  * Function for adding new edge to GraphVis.
  */
+
 export function addEdge(edgeData, callback) {
     // Set new edge properties
     edgeData.label = '';
-    edgeData.runConfigFrom = "furzindhosa";
-    edgeData.runConfigTo = "furzindchuchi";
+    edgeData.runConfigFrom = "234";
+    edgeData.runConfigTo = "2143";
     callback(edgeData);
 }
 
@@ -13,8 +14,6 @@ export function addEdge(edgeData, callback) {
  * Displays dialog with form for editing selected edge.
  */
 export function showEditEdgeDialog(edgeData, callback) {
-    // let runConfigFrom = edgeData.runConfigFrom;
-    // let runConfigTo = edgeData.runConfigTo;
     let runConfigFrom = edgeData.runConfigFrom;
     let runConfigTo = edgeData.runConfigTo;
     document.getElementById('inpEdgeLabel').value = edgeData.label;

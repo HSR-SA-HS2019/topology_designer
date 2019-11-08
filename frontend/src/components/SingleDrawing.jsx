@@ -1,7 +1,7 @@
 import GraphVis from 'react-graph-vis';
 import React from 'react';
 import {graphVisLocales, palette} from '../functions/GlobalConstants';
-import {addNewNode, showEditNodeDialog} from '../functions/NodeFunctions';
+import {showEditNodeDialog} from '../functions/NodeFunctions';
 import {addEdge, showEditEdgeDialog} from '../functions/EdgeFunctions';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
@@ -84,7 +84,6 @@ class SingleDrawing extends React.Component {
         this.exportTopology = this.exportTopology.bind(this);
         this.deleteTopology = this.deleteTopology.bind(this);
         this.addNewNode = this.addNewNode.bind(this);
-        this.addNewNodeDef = this.addNewNodeDef.bind(this);
     }
 
 
@@ -199,11 +198,6 @@ class SingleDrawing extends React.Component {
             });
     };
 
-    addNewNodeDef(url) {
-        let nodesCopy = addNewNode(url, this.state.graphVis);
-        this.setState({graphVis: {nodes: nodesCopy}});
-        console.log(this.state);
-    };
 
 
     addNewEdge(edgedata) {

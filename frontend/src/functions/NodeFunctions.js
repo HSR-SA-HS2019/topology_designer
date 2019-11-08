@@ -39,6 +39,7 @@ export function showEditNodeDialog(nodeData, callback) {
 
     let runConfig = nodeData.runConfig;
 
+
     document.getElementById('inpNodeLabel').value = labelInput;
     document.getElementById('runConfig').value = runConfig;
     document.getElementById('btnSave').onclick = saveNode.bind(this, nodeData, document, callback);
