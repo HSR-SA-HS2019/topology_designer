@@ -10,8 +10,8 @@ import './SingleDrawing.css';
 import axios from "axios";
 
 class SingleDrawing extends React.Component {
-    virtual_network_devices_url = "http://127.0.0.1:8000/api/1"    //"http://10.20.1.12:8000/api/1";
-    docker_container_url = "http://127.0.0.1:8000/api/2"   //"http://10.20.1.12:8000/api/2";
+    virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
+    docker_container_url = "http://127.0.0.1:8000/api/2";   //"http://10.20.1.12:8000/api/2";
 
     constructor(props) {
         super(props);
@@ -25,7 +25,7 @@ class SingleDrawing extends React.Component {
                 locales: graphVisLocales,
                 clickToUse: false,
                 layout: {},
-                nodes: { font: {size: 18}, },
+                nodes: {font: {size: 18},},
                 edges: {
                     arrows: {
                         to: {enabled: false},
@@ -33,8 +33,12 @@ class SingleDrawing extends React.Component {
                     },
                     color: {color: palette.black, hover: palette.black},
                     width: 2,
-                    hoverWidth: function (width) { return width * 2; },
-                    selectionWidth: function (width) { return width * 2; },
+                    hoverWidth: function (width) {
+                        return width * 2;
+                    },
+                    selectionWidth: function (width) {
+                        return width * 2;
+                    },
                     font: {align: 'top', size: 18},
                 },
                 manipulation: {
@@ -76,18 +80,22 @@ class SingleDrawing extends React.Component {
         this.addNewNode = this.addNewNode.bind(this);
     }
 
-    initNetworkInstance(networkInstance) { this.network = networkInstance; }
+    initNetworkInstance(networkInstance) {
+        this.network = networkInstance;
+    }
 
     setNetworkInstance = nw => {
         this.network = nw;
-        this.network.on("afterDrawing", function (ctx) {
-            let dataURL = ctx.canvas.toDataURL();
-            document.getElementById('canvasImg').src = dataURL;
-        });
+        // // this.network.on("afterDrawing", function (ctx) {
+        // //     let dataURL = ctx.canvas.toDataURL();
+        // //     document.getElementById('canvasImg').src = dataURL;
+        // });
 
     };
 
-    deleteTopology = () => { this.setState({graphVis:{ nodes: [], edegs: [], }}) };
+    deleteTopology = () => {
+        this.setState({graphVis: {nodes: [], edegs: [],}})
+    };
 
     exportTopologyHelper = () => {
         exportTopology(this.network.body.data.nodes._data, this.network.body.data.edges._data, this.state.topology_name)
@@ -136,13 +144,16 @@ class SingleDrawing extends React.Component {
                     <form>
                         Enter Topology Name:
                         <input type="text"
-                            value={this.state.topology_name}
-                            onChange={(event) => this.setState({topology_name: event.target.value})} />
+                               value={this.state.topology_name}
+                               onChange={(event) => this.setState({topology_name: event.target.value})}/>
                     </form>
                     <EditNodeDialog/>
                     <EditEdgeDialog/>
-                    <button onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}>Add Virtual Network Device</button>
-                    <button onClick={this.addNewNode.bind(this, this.docker_container_url)}>Add Docker Container</button>
+                    <button onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}>Add Virtual Network
+                        Device
+                    </button>
+                    <button onClick={this.addNewNode.bind(this, this.docker_container_url)}>Add Docker Container
+                    </button>
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
