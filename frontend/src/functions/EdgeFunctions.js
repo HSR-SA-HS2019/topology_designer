@@ -1,7 +1,6 @@
 /**
  * Function for adding new edge to GraphVis.
  */
-
 export function addEdge(edgeData, callback) {
     // Set new edge properties
     edgeData.label = '';
@@ -22,8 +21,6 @@ export function showEditEdgeDialog(edgeData, callback) {
     document.getElementById('btnSaveEdge').onclick = saveEdge.bind(this, edgeData, document, callback);
     document.getElementById('btnCancelEdgeEdit').onclick = cancelEdgeEdit.bind(this, document, callback);
     document.getElementById('editEdgeDialog').style.display = 'block';
-    console.log(runConfigFrom);
-    console.log(runConfigTo);
 }
 
 /**
