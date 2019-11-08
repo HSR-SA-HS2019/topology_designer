@@ -97,9 +97,9 @@ class SingleDrawing extends React.Component {
                     label: res.data.defaultName,
                     group: res.data.name,
                     type: res.data.type,
-                    shape: "image",
+                    shape: "circularImage",
                     image: res.data.icon,
-                    borderWidth: 1
+                    borderWidth: 1,
                 });
                 this.setState({graphVis: {nodes: nodesCopy}});
             });
@@ -114,8 +114,7 @@ class SingleDrawing extends React.Component {
                         Enter Topology Name:
                         <input type="text"
                             value={this.state.topology_name}
-                            onChange={(event) => this.setState({topology_name: event.target.value})}
-                        />
+                            onChange={(event) => this.setState({topology_name: event.target.value})} />
                     </form>
                     <EditNodeDialog/>
                     <EditEdgeDialog/>

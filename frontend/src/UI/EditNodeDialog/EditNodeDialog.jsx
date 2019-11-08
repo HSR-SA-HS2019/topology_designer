@@ -23,25 +23,6 @@ const EditNodeDialog = () => (
                 </div>
             </div>
 
-
-            {/*      <div className="form-group">
-        <label htmlFor="inpLabelColor" className="col-sm-4 control-label">
-          Text Color
-        </label>
-        <div className="col-sm-7">
-          <input type="color" className="form-control" id="inpLabelColor" />
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="inpNodeColor" className="col-sm-4 control-label">
-          Node Color
-        </label>
-        <div className="col-sm-7">
-          <input type="color" className="form-control" id="inpNodeColor" />
-        </div>
-      </div>*/}
-
             <div className="form-group">
                 <div className="col-sm-12">
                     <button type="button" className="btn btn-success" id="btnSave">
