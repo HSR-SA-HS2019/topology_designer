@@ -3,9 +3,11 @@
  */
 export function addEdge(edgeData, callback) {
     // Set new edge properties
+
     edgeData.label = '';
     edgeData.runConfigFrom = "234";
     edgeData.runConfigTo = "2143";
+    console.log(edgeData);
     callback(edgeData);
 }
 
@@ -13,6 +15,7 @@ export function addEdge(edgeData, callback) {
  * Displays dialog with form for editing selected edge.
  */
 export function showEditEdgeDialog(edgeData, callback) {
+    console.log(edgeData);
     let runConfigFrom = edgeData.runConfigFrom;
     let runConfigTo = edgeData.runConfigTo;
     document.getElementById('inpEdgeLabel').value = edgeData.label;

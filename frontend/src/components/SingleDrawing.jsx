@@ -78,6 +78,7 @@ class SingleDrawing extends React.Component {
         this.exportTopologyHelper = this.exportTopologyHelper.bind(this);
         this.deleteTopology = this.deleteTopology.bind(this);
         this.addNewNode = this.addNewNode.bind(this);
+        this.newEdge = this.newEdge.bind(this);
     }
 
     initNetworkInstance(networkInstance) {
@@ -115,6 +116,7 @@ class SingleDrawing extends React.Component {
         axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
             .then(res => {
                 var nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
+                var edgesCopy = this.state.graphVis.edges.slice();
                 nodesCopy.push({
                     label: res.data.defaultName,
                     group: res.data.name,
@@ -124,17 +126,42 @@ class SingleDrawing extends React.Component {
                     borderWidth: 1,
                     runConfig: ""
                 });
-                this.setState({graphVis: {nodes: nodesCopy}});
+                this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
             });
     };
 
+    newEdge = () => {
+        var nodesCopy = this.state.graphVis.nodes.slice();
+        let selection = this.network.getSelection();
+        /*this.network.once('selectNode', function(params) {
+            console.log("selectNode Event:", params.nodes[0]);
+            let f = params.nodes[0];
+        });
+        this.network.once('selectNode', function(params) {
+            console.log("selectNode Event:", params.nodes[1]);
+            let t = params.nodes[1];
+        });*/
+
+        let edgesCopy = this.state.graphVis.edges.slice();
+        console.log(edgesCopy);
+        edgesCopy.push({
+            label: '',
+            from: selection.nodes[0],
+            to: selection.nodes[1],
+            runConfigFrom: "234",
+            runConfigTo: "2143",
+        });
+        console.log(edgesCopy);
+        this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+    };
 
     log_State = () => {
         console.log(this.state);
     };
 
     log_Network = () => {
-        console.log(this.network)
+        console.log(this.network.body.edges)
+        console.log(this.network);
     };
 
     render() {
@@ -154,6 +181,7 @@ class SingleDrawing extends React.Component {
                     </button>
                     <button onClick={this.addNewNode.bind(this, this.docker_container_url)}>Add Docker Container
                     </button>
+                    <button onClick={this.newEdge}>Edge</button>
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
