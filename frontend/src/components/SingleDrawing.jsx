@@ -140,7 +140,7 @@ class SingleDrawing extends React.Component {
     render() {
         return (
             <div className="single-drawing-box">
-                <div>
+                <div className="drawingContent">
                     <form>
                         Enter Topology Name:
                         <input type="text"
@@ -158,10 +158,17 @@ class SingleDrawing extends React.Component {
                         graph={this.state.graphVis}
                         options={this.state.options}
                         events={{}}
-                        style={{width: "100%", height: '600px'}}
+                        style={{width: "100%", height: '100%'}}
                         getNetwork={this.setNetworkInstance}/>
                 </div>
-                <div>
+                <div className="icon-bar">
+                    <span className="active"><i className="fa fa-home"/></span>
+                    <span><i className="fa fa-search"/></span>
+                    <span><i className="fa fa-envelope"/></span>
+                    <span><i className="fa fa-globe"/></span>
+                    <span onClick={this.deleteTopology}><i className="fa fa-trash"/></span>
+                </div>
+                <div className="Buttons">
                     <div> {/* handlebars? */}
                         <button onClick={this.deleteTopology}>
                             Delete Topology
@@ -182,6 +189,7 @@ class SingleDrawing extends React.Component {
                     </div>
                 </div>
             </div>
+
         );
     }
 }
