@@ -12,6 +12,10 @@
 
 .Buttons {
     z-index: 2;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    margin-left: -100px;
 }
 
 #canvasImg {
@@ -35,25 +39,23 @@
     font-size: 36px; /* Increased font-size */
 }
 
-.icon-bar button {
-    display: block; /* Make the links appear below each other instead of side-by-side */
-    text-align: center; /* Center-align text */
-    padding: 16px; /* Add some padding */
-    transition: all 0.3s ease; /* Add transition for hover effects */
-    color: white; /* White text color */
-    font-size: 36px; /* Increased font-size */
-    border: none;
-
+.nameForm {
+    z-index: 2;
+    position: fixed;
+    left: 50%;
+    margin-top: 3px;
+    margin-left: -100px;
 }
 
-.icon-bar button:hover {
-    background-color: #000; /* Add a hover color */
+.nameForm input {
+    margin-left: 5px;
 }
 
 .icon-bar span:hover {
-    background-color: #000; /* Add a hover color */
+    background-color: #2D6480; /* Add a hover color */
 }
 
-.active {
-    background-color: #4CAF50; /* Add an active/current color */
+.delete {
+    background-color: #d9534f; /* Add an active/current color */
 }
+

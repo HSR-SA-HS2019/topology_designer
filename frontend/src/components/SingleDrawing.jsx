@@ -141,19 +141,8 @@ class SingleDrawing extends React.Component {
         return (
             <div className="single-drawing-box">
                 <div className="drawingContent">
-                    <form>
-                        Enter Topology Name:
-                        <input type="text"
-                               value={this.state.topology_name}
-                               onChange={(event) => this.setState({topology_name: event.target.value})}/>
-                    </form>
                     <EditNodeDialog/>
                     <EditEdgeDialog/>
-                    <button onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}>Add Virtual Network
-                        Device
-                    </button>
-                    <button onClick={this.addNewNode.bind(this, this.docker_container_url)}>Add Docker Container
-                    </button>
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
@@ -162,23 +151,16 @@ class SingleDrawing extends React.Component {
                         getNetwork={this.setNetworkInstance}/>
                 </div>
                 <div className="icon-bar">
-                    <span className="active"><i className="fa fa-home"/></span>
-                    <span><i className="fa fa-search"/></span>
-                    <span><i className="fa fa-envelope"/></span>
-                    <span><i className="fa fa-globe"/></span>
-                    <span onClick={this.deleteTopology}><i className="fa fa-trash"/></span>
+                    <span><i className="fas fa-server"/></span>
+                    <span onClick={this.addNewNode.bind(this, this.docker_container_url)}><i className="fab fa-docker"/></span>
+                    <span onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}><i
+                        className="fas fa-random"/></span>
+                    <span onClick={this.exportTopologyHelper}><i className="fa fa-download"/></span>
+                    <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/></span>
+                    <span className="delete" onClick={this.deleteTopology}><i className="fa fa-trash"/></span>
                 </div>
                 <div className="Buttons">
                     <div> {/* handlebars? */}
-                        <button onClick={this.deleteTopology}>
-                            Delete Topology
-                        </button>
-                        <button onClick={this.exportTopologyHelper}>
-                            Export Topology
-                        </button>
-                        <button onClick={this.exportTopologyAsImage}>
-                            Export Topology as Image
-                        </button>
                         <button onClick={this.log_State}>
                             Log State
                         </button>
@@ -188,6 +170,12 @@ class SingleDrawing extends React.Component {
                         <img id="canvasImg" alt=""/>
                     </div>
                 </div>
+                <form className="nameForm">
+                    Enter Topology Name:
+                    <input type="text"
+                           value={this.state.topology_name}
+                           onChange={(event) => this.setState({topology_name: event.target.value})}/>
+                </form>
             </div>
 
         );
