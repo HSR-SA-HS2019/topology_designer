@@ -9,6 +9,7 @@ import {exportTopology} from '../functions/YamlFileFunctions';
 import './SingleDrawing.css';
 import axios from "axios";
 
+
 class SingleDrawing extends React.Component {
     virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
     docker_container_url = "http://127.0.0.1:8000/api/2";   //"http://10.20.1.12:8000/api/2";
@@ -86,11 +87,6 @@ class SingleDrawing extends React.Component {
 
     setNetworkInstance = nw => {
         this.network = nw;
-        // // this.network.on("afterDrawing", function (ctx) {
-        // //     let dataURL = ctx.canvas.toDataURL();
-        // //     document.getElementById('canvasImg').src = dataURL;
-        // });
-
     };
 
     deleteTopology = () => {
@@ -104,12 +100,44 @@ class SingleDrawing extends React.Component {
 
     exportTopologyAsImage = () => {
         let filename = this.state.topology_name + '.png';
-        var image = document.getElementById("canvasImg");
-        var link = document.createElement('a');
+        let image = document.getElementById("canvasImg");
+        let link = document.createElement('a');
         link.setAttribute('href', image.src);
         link.setAttribute('download', filename);
         link.click();
     };
+
+
+    readFile = () => {
+        document.querySelector('input[type=file]').click();
+    };
+
+    readYaml = () => {
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            // var preview = document.getElementById('show-text');
+
+
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+            console.log(file);
+            var regex = /\.yaml/i;
+
+            if (file.name.match(regex)) {
+                reader.onload = function (event) {
+                    console.log(event.target.result);
+
+                }
+            } else {
+                console.log("Wrong Filetype: " + file.type);
+                // preview.innerHTML = "<span class='error'>It doesn't seem to be a YAML file!</span>";
+            }
+            reader.readAsText(file);
+
+        } else {
+            alert("Your browser is too old to support HTML5 File API");
+        }
+    };
+
 
     addNewNode(url) {
         axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
@@ -152,12 +180,14 @@ class SingleDrawing extends React.Component {
                 </div>
                 <div className="icon-bar">
                     <span><i className="fas fa-server"/></span>
-                    <span onClick={this.addNewNode.bind(this, this.docker_container_url)}><i className="fab fa-docker"/></span>
+                    <span onClick={this.addNewNode.bind(this, this.docker_container_url)}><i className="fab fa-docker"/>Add Docker</span>
                     <span onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}><i
-                        className="fas fa-random"/></span>
-                    <span onClick={this.exportTopologyHelper}><i className="fa fa-download"/></span>
-                    <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/></span>
-                    <span className="delete" onClick={this.deleteTopology}><i className="fa fa-trash"/></span>
+                        className="fas fa-random"/>Add Router</span>
+                    <span className="separator" onClick={this.exportTopologyHelper}><i className="fa fa-download"/>Export YAML</span>
+                    <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/>Export Image</span>
+                    <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
+                    <span className="delete" onClick={this.deleteTopology}><i
+                        className="fa fa-trash"/>Clear All</span>
                 </div>
                 <div className="Buttons">
                     <div> {/* handlebars? */}
@@ -167,6 +197,12 @@ class SingleDrawing extends React.Component {
                         <button onClick={this.log_Network}>
                             Log Network
                         </button>
+                        <button onClick={this.readYaml}>
+                            Read YAML
+                        </button>
+                        <div>
+                            <input type="file" className="filePicker" onChange={this.readYaml}/>
+                        </div>
                         <img id="canvasImg" alt=""/>
                     </div>
                 </div>
@@ -176,8 +212,8 @@ class SingleDrawing extends React.Component {
                            value={this.state.topology_name}
                            onChange={(event) => this.setState({topology_name: event.target.value})}/>
                 </form>
+                <img className="logo" src="../../../Logo.png" alt=""/>
             </div>
-
         );
     }
 }

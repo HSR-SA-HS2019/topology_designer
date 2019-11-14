@@ -27,7 +27,7 @@ textarea {
 }
 
 #editNodeDialog .Fields {
-    alignment: left;
+
 }
 
 #editNodeDialog .col-sm-4 {
@@ -47,7 +47,6 @@ textarea {
 
 #editNodeDialog .form-group {
     vertical-align: center;
-    horiz-align: left;
 }
 
 #editNodeDialog button {
