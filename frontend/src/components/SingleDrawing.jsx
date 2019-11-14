@@ -197,9 +197,6 @@ class SingleDrawing extends React.Component {
                         <button onClick={this.log_Network}>
                             Log Network
                         </button>
-                        <button onClick={this.readYaml}>
-                            Read YAML
-                        </button>
                         <div>
                             <input type="file" className="filePicker" onChange={this.readYaml}/>
                         </div>
