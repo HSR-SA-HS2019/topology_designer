@@ -15,15 +15,23 @@ const EditEdgeDialog = () => (
                 <div className="col-sm-7">
                     <input type="text" className="form-control" id="inpEdgeLabel"/>
                 </div>
+
                 <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
                     Run Config From
                 </label>
                 <div className="col-sm-7">
+                    <input type="text" className="form-control" id="inpNodeLabelFrom"/>
+                </div>
+                <div className="col-sm-7">
                     <textarea id="runConfigFrom" name="text" rows="4"/>
                 </div>
+
                 <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
                     Run Config To
                 </label>
+                <div className="col-sm-7">
+                    <input type="text" className="form-control" id="inpNodeLabelTo"/>
+                </div>
                 <div className="col-sm-7">
                     <textarea id="runConfigTo" name="text" rows="4"/>
                 </div>

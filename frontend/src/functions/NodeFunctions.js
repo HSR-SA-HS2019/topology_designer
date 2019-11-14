@@ -4,11 +4,7 @@
 export function showEditNodeDialog(nodeData, callback) {
     // Fill node edit dialog's inputs by selected node data
     let labelInput = nodeData.label;
-    if (labelInput === '   ')
-        labelInput = '';
-
     let runConfig = nodeData.runConfig;
-
 
     document.getElementById('inpNodeLabel').value = labelInput;
     document.getElementById('runConfig').value = runConfig;
@@ -25,9 +21,6 @@ function saveNode(nodeData, document, callback) {
     let newRunConfig = document.getElementById('runConfig').value;
     if (newLabel.length === 1)
         newLabel = ' ' + newLabel + ' ';
-
-    if (newLabel === '')
-        newLabel = '   ';
 
     nodeData.label = newLabel;
     nodeData.runConfig = newRunConfig;
