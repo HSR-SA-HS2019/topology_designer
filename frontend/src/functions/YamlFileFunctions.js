@@ -127,13 +127,13 @@ export function exportTopology(nodes, edges, name){
 
     console.log(StringData);
 
-/*    var element = document.createElement('a');
+    var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(StringData));
     element.setAttribute('download', filename);
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click();
-    document.body.removeChild(element);*/
+    document.body.removeChild(element);
 
     console.log(nodes);
     console.log(edges);
