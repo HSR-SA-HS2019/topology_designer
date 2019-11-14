@@ -296,4 +296,7 @@ backend/.idea/libraries/
 backend/.idea/misc.xml
 backend/.idea/modules.xml
 backend/.idea/vcs.xml
+backend/.vscode
+frontend/.idea
+.vscode
 

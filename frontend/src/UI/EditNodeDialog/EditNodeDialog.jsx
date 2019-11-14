@@ -10,7 +10,7 @@ const EditNodeDialog = () => (
         <form className="form-horizontal">
             <div className="form-group">
                 <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
-                    Text
+                    Label
                 </label>
                 <div className="col-sm-7">
                     <input type="text" className="form-control" id="inpNodeLabel"/>
@@ -19,7 +19,7 @@ const EditNodeDialog = () => (
                     Run Config
                 </label>
                 <div className="col-sm-7">
-                    <textarea id="inpNodeLabel" name="text" rows="4"></textarea>
+                    <textarea id="runConfig" name="text" rows="4"/>
                 </div>
             </div>
 

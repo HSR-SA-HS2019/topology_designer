@@ -1,3 +1,7 @@
 .single-drawing-box {
     border: 1px solid lightgray;
 }
+
+#canvasImg {
+    display: none;
+}
