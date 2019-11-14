@@ -4,6 +4,8 @@ import {graphVisLocales, palette} from '../functions/GlobalConstants';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import {exportTopology} from '../functions/YamlFileFunctions';
+import {addEdge} from '../functions/EdgeFunctions';
+import {addNode} from "../functions/NodeFunctions";
 import './SingleDrawing.css';
 import axios from "axios";
 
@@ -45,13 +47,6 @@ class SingleDrawing extends React.Component {
                 },
                 manipulation: {
                     enabled: false,
-                    /*initiallyActive: true,
-                    addNode: false,
-                    editNode: false,
-                    addEdge: false,
-                    editEdge: false,
-                    deleteNode: true,
-                    deleteEdge: true,*/
                 },
                 interaction: {
                     dragNodes: true,
@@ -94,7 +89,6 @@ class SingleDrawing extends React.Component {
         this.addNewNode = this.addNewNode.bind(this);
         this.newEdge = this.newEdge.bind(this);
         this.editEdge = this.editEdge.bind(this);
-        this.redrawCanvas = this.redrawCanvas.bind(this);
     }
 
     initNetworkInstance(networkInstance) {
@@ -113,14 +107,6 @@ class SingleDrawing extends React.Component {
         exportTopology(this.network.body.data.nodes._data, this.network.body.data.edges._data, this.state.topology_name)
     };
 
-    redrawCanvas = () => {
-        let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
-        console.log(nodesCopy);
-        let edgesCopy = this.state.graphVis.edges.slice();
-        console.log(edgesCopy);
-        this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
-    }
-
     exportTopologyAsImage = () => {
         let filename = this.state.topology_name + '.png';
         let image = document.getElementById("canvasImg");
@@ -135,13 +121,17 @@ class SingleDrawing extends React.Component {
             .then(res => {
                 let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
                 let edgesCopy = this.state.graphVis.edges.slice();
-                let number = nodesCopy.length
+                let number = 0;
+                for (let n in nodesCopy){
+                    if (nodesCopy[n].group === res.data.name){
+                        number = number + 1;
+                    }
+                }
                 nodesCopy.push({
                     label: res.data.defaultName + number,
                     group: res.data.name,
                     type: res.data.type,
                     image: res.data.icon,
-                    runConfig: ""
                 });
                 this.setState({graphVis: {nodes: [], edges: []}});
                 this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
@@ -149,25 +139,15 @@ class SingleDrawing extends React.Component {
     };
 
     newEdge = () => {
-        if(this.network.getSelection().nodes.length === 2){
+        let selection = this.network.getSelection();
+        let edgesCopy = this.state.graphVis.edges.slice();
+        if(selection.nodes.length === 2) {
+            let edges = addEdge(selection, edgesCopy);
             let nodesCopy = this.state.graphVis.nodes.slice();
-            let selection = this.network.getSelection();
-            let edgesCopy = this.state.graphVis.edges.slice();
-            edgesCopy.push({
-                label: '',
-                from: selection.nodes[0],
-                to: selection.nodes[1],
-                runConfigFrom: "",
-                runConfigTo: "",
-            });
             this.setState({graphVis: {nodes: [], edges: []}});
-            this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+            this.setState({graphVis: {nodes: nodesCopy, edges: edges}});
         }
     };
-
-    log_State = () => { console.log(this.state); };
-
-    log_Network = () => { console.log(this.network.body.data.edges._data); };
 
     editEdge = () => {
         let currentId = this.network.getSelection().edges[0]
@@ -182,20 +162,27 @@ class SingleDrawing extends React.Component {
         document.getElementById('inpEdgeLabel').value = edgesCopy[edgeIndex].label;
         document.getElementById('inpNodeLabelFrom').value = nodesCopy[fromIndex].label;
         document.getElementById('inpNodeLabelTo').value = nodesCopy[toIndex].label;
+        document.getElementById('inpNodeTypeFrom').value = nodesCopy[fromIndex].type;
+        document.getElementById('inpNodeTypeTo').value = nodesCopy[toIndex].type;
         document.getElementById('runConfigFrom').value = edgesCopy[edgeIndex].runConfigFrom;
         document.getElementById('runConfigTo').value = edgesCopy[edgeIndex].runConfigTo;
         document.getElementById('btnSaveEdge').onclick = () => {
             edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
             nodesCopy[fromIndex].label = document.getElementById('inpNodeLabelFrom').value;
             nodesCopy[toIndex].label = document.getElementById('inpNodeLabelTo').value;
+            nodesCopy[fromIndex].type = document.getElementById('inpNodeTypeFrom').value;
+            nodesCopy[toIndex].type = document.getElementById('inpNodeTypeTo').value;
             edgesCopy[edgeIndex].runConfigFrom = document.getElementById('runConfigFrom').value;
             edgesCopy[edgeIndex].runConfigTo = document.getElementById('runConfigTo').value;
             document.getElementById('btnSaveEdge').onclick = null;
             document.getElementById('btnCancelEdgeEdit').onclick = null;
             document.getElementById('editEdgeDialog').style.display = 'none';
+            console.log(edgesCopy[edgeIndex].runConfigFrom.indexOf('\n'));
+            console.log(edgesCopy[edgeIndex].runConfigTo.indexOf('\n'));
             this.setState({graphVis: {nodes: [], edges: []}});
             this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
             //this.network.setData({nodes: nodesCopy, edges: edgesCopy});
+
         };
         document.getElementById('btnCancelEdgeEdit').onclick = () => {
             document.getElementById('btnSaveEdge').onclick = null;
@@ -218,14 +205,14 @@ class SingleDrawing extends React.Component {
                     </form>
                     <EditNodeDialog/>
                     <EditEdgeDialog/>
-                    <button onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}>Add Virtual Network
-                        Device
+                    <button onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}>
+                        Add Virtual Network Device
                     </button>
-                    <button onClick={this.addNewNode.bind(this, this.docker_container_url)}>Add Docker Container
+                    <button onClick={this.addNewNode.bind(this, this.docker_container_url)}>
+                        Add Docker Container
                     </button>
                     <button onClick={this.newEdge}>Add Connection</button>
                     <button id="editButton" onClick={this.editEdge}>Edit</button>
-                    <button onClick={this.redrawCanvas}>redraw</button>
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
@@ -235,21 +222,9 @@ class SingleDrawing extends React.Component {
                 </div>
                 <div>
                     <div> {/* handlebars? */}
-                        <button onClick={this.deleteTopology}>
-                            Delete Topology
-                        </button>
-                        <button onClick={this.exportTopologyHelper}>
-                            Export Topology
-                        </button>
-                        <button onClick={this.exportTopologyAsImage}>
-                            Export Topology as Image
-                        </button>
-                        <button onClick={this.log_State}>
-                            Log State
-                        </button>
-                        <button onClick={this.log_Network}>
-                            Log Network
-                        </button>
+                        <button onClick={this.deleteTopology}>Delete Topology</button>
+                        <button onClick={this.exportTopologyHelper}>Export Topology</button>
+                        <button onClick={this.exportTopologyAsImage}>Export Topology as Image</button>
                         <img id="canvasImg" alt=""/>
                     </div>
                 </div>

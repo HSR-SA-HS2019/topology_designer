@@ -3,35 +3,53 @@ import './EditEdgeDialog.css';
 
 const EditEdgeDialog = () => (
     <div id="editEdgeDialog">
-        <div className="operationName">
+        {/*<div className="operationName">
             Edit Edge
-        </div>
+        </div>*/}
 
         <form className="form-horizontal">
             <div className="form-group">
                 <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
-                    Label
+                    Label Connection
                 </label>
                 <div className="col-sm-7">
                     <input type="text" className="form-control" id="inpEdgeLabel"/>
                 </div>
 
-                <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
-                    Run Config From
+                <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
+                    Label Device
                 </label>
                 <div className="col-sm-7">
                     <input type="text" className="form-control" id="inpNodeLabelFrom"/>
                 </div>
+                <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
+                    Type Device
+                </label>
+                <div className="col-sm-7">
+                    <input type="text" className="form-control" id="inpNodeTypeFrom"/>
+                </div>
+                <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
+                    Run Config Device
+                </label>
                 <div className="col-sm-7">
                     <textarea id="runConfigFrom" name="text" rows="4"/>
                 </div>
 
-                <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
-                    Run Config To
+                <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
+                    Label Device
                 </label>
                 <div className="col-sm-7">
                     <input type="text" className="form-control" id="inpNodeLabelTo"/>
                 </div>
+                <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
+                    Type Device
+                </label>
+                <div className="col-sm-7">
+                    <input type="text" className="form-control" id="inpNodeTypeTo"/>
+                </div>
+                <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
+                    Run Config Device
+                </label>
                 <div className="col-sm-7">
                     <textarea id="runConfigTo" name="text" rows="4"/>
                 </div>
