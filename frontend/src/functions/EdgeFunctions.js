@@ -1,18 +1,23 @@
 /**
  * Function for adding new edge to GraphVis.
  */
-export function addEdge(edgeData, callback) {
-    // Set new edge properties
-    edgeData.label = '';
-    edgeData.runConfigFrom = "234";
-    edgeData.runConfigTo = "2143";
-    callback(edgeData);
+export function addEdge(selection, edgesCopy) {
+    edgesCopy.push({
+        label: '',
+        from: selection.nodes[0],
+        to: selection.nodes[1],
+        runConfigFrom: "",
+        runConfigTo: "",
+    });
+    return edgesCopy
 }
+/*
 
-/**
+/!**
  * Displays dialog with form for editing selected edge.
- */
+ *!/
 export function showEditEdgeDialog(edgeData, callback) {
+    console.log(edgeData);
     let runConfigFrom = edgeData.runConfigFrom;
     let runConfigTo = edgeData.runConfigTo;
     document.getElementById('inpEdgeLabel').value = edgeData.label;
@@ -23,9 +28,9 @@ export function showEditEdgeDialog(edgeData, callback) {
     document.getElementById('editEdgeDialog').style.display = 'block';
 }
 
-/**
+/!**
  * Sets inputed data to the selected edge, saves the edge and hides the Edge Edit dialog.
- */
+ *!/
 function saveEdge(edgeData, document, callback) {
     let newRunConfigFrom = document.getElementById('runConfigFrom').value;
     let newRunConfigTo = document.getElementById('runConfigTo').value;
@@ -38,20 +43,20 @@ function saveEdge(edgeData, document, callback) {
     callback(edgeData);
 }
 
-/**
+/!**
  * Cancels editing of edge and hides Edit Edge dialog.
- */
+ *!/
 function cancelEdgeEdit(document, callback) {
     clearEditEdgeDialog(document);
     callback(null);
-
 }
 
-/**
+/!**
  * Clears and hides Edit Edge dialog.
- */
+ *!/
 function clearEditEdgeDialog(document) {
     document.getElementById('btnSaveEdge').onclick = null;
     document.getElementById('btnCancelEdgeEdit').onclick = null;
     document.getElementById('editEdgeDialog').style.display = 'none';
 }
+*/
