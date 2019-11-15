@@ -39,6 +39,11 @@
     font-size: 8pt;
 }
 
+#editButton {
+    display: none;
+    background-color: #008000;
+}
+
 .icon-bar i {
     margin: 7px;
     font-size: 36px; /* Increased font-size */

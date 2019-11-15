@@ -73,11 +73,13 @@ class SingleDrawing extends React.Component {
                 selectEdge: () => {
                     if (this.network.getSelection().edges.length === 1 && this.network.getSelection().nodes.length === 0) {
                         document.getElementById("editButton").disabled = false;
+                        document.getElementById("editButton").style.display = "block";
                     }
 
                 },
                 deselectEdge: () => {
                     document.getElementById("editButton").disabled = true;
+                    document.getElementById("editButton").style.display = "none";
                 },
             },
             topology_name: 'topology designer',
