@@ -5,7 +5,6 @@ import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import {exportTopology} from '../functions/YamlFileFunctions';
 import {addEdge} from '../functions/EdgeFunctions';
-import {addNode} from "../functions/NodeFunctions";
 import './SingleDrawing.css';
 import axios from "axios";
 
@@ -25,7 +24,8 @@ class SingleDrawing extends React.Component {
                 locales: graphVisLocales,
                 clickToUse: false,
                 layout: {},
-                nodes: {font: {size: 18},
+                nodes: {
+                    font: {size: 18},
                     borderWidth: 0,
                     shape: 'image',
                     size: 30
@@ -59,12 +59,11 @@ class SingleDrawing extends React.Component {
                 },
                 physics: {
                     barnesHut: {
-                        gravitationalConstant: -10000,
+                        gravitationalConstant: -2000,
                         centralGravity: 0.01,
-                        springLength: 140,
+                        springLength: 100,
                         springConstant: 0.1,
-                        damping: 0.3,
-                        avoidOverlap: 0.4
+                        damping: 0.3
                     }
                 },
                 // Turn configuration panel off
@@ -72,7 +71,7 @@ class SingleDrawing extends React.Component {
             },
             events: {
                 selectEdge: () => {
-                    if(this.network.getSelection().edges.length === 1 && this.network.getSelection().nodes.length === 0){
+                    if (this.network.getSelection().edges.length === 1 && this.network.getSelection().nodes.length === 0) {
                         document.getElementById("editButton").disabled = false;
                     }
 
@@ -154,8 +153,8 @@ class SingleDrawing extends React.Component {
                 let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
                 let edgesCopy = this.state.graphVis.edges.slice();
                 let number = 0;
-                for (let n in nodesCopy){
-                    if (nodesCopy[n].group === res.data.name){
+                for (let n in nodesCopy) {
+                    if (nodesCopy[n].group === res.data.name) {
                         number = number + 1;
                     }
                 }
@@ -173,7 +172,7 @@ class SingleDrawing extends React.Component {
     newEdge = () => {
         let selection = this.network.getSelection();
         let edgesCopy = this.state.graphVis.edges.slice();
-        if(selection.nodes.length === 2) {
+        if (selection.nodes.length === 2) {
             let edges = addEdge(selection, edgesCopy);
             let nodesCopy = this.state.graphVis.nodes.slice();
             this.setState({graphVis: {nodes: [], edges: []}});
@@ -182,7 +181,7 @@ class SingleDrawing extends React.Component {
     };
 
     editEdge = () => {
-        let currentId = this.network.getSelection().edges[0]
+        let currentId = this.network.getSelection().edges[0];
         let edgesCopy = this.state.graphVis.edges.slice();
         let nodesCopy = this.state.graphVis.nodes.slice();
         let edgeIndex = edgesCopy.findIndex(x => x.id === currentId);
@@ -229,28 +228,19 @@ class SingleDrawing extends React.Component {
         return (
             <div className="single-drawing-box">
                 <div className="drawingContent">
-                    <EditNodeDialog/>
-                    <EditEdgeDialog/>
-                    <button onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}>
-                        Add Virtual Network Device
-                    </button>
-                    <button onClick={this.addNewNode.bind(this, this.docker_container_url)}>
-                        Add Docker Container
-                    </button>
-                    <button onClick={this.newEdge}>Add Connection</button>
-                    <button id="editButton" onClick={this.editEdge}>Edit</button>
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
                         events={this.state.events}
-                        style={{width: "100%", height: '600px'}}
+                        style={{height: "inherit"}}
                         getNetwork={this.setNetworkInstance}/>
                 </div>
                 <div className="icon-bar">
-                    <span><i className="fas fa-server"/></span>
                     <span onClick={this.addNewNode.bind(this, this.docker_container_url)}><i className="fab fa-docker"/>Add Docker</span>
                     <span onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}><i
                         className="fas fa-random"/>Add Router</span>
+                    <span onClick={this.newEdge}><i className="fas fa-arrows-alt-h"/>Add Edge</span>
+                    <span onClick={this.editEdge} id="editButton"> <i className="fas fa-edit"/>Edit</span>
                     <span className="separator" onClick={this.exportTopologyHelper}><i className="fa fa-download"/>Export YAML</span>
                     <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/>Export Image</span>
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
@@ -259,12 +249,6 @@ class SingleDrawing extends React.Component {
                 </div>
                 <div className="Buttons">
                     <div> {/* handlebars? */}
-                        <button onClick={this.log_State}>
-                            Log State
-                        </button>
-                        <button onClick={this.log_Network}>
-                            Log Network
-                        </button>
                         <div>
                             <input type="file" className="filePicker" onChange={this.readYaml}/>
                         </div>
@@ -278,6 +262,8 @@ class SingleDrawing extends React.Component {
                            onChange={(event) => this.setState({topology_name: event.target.value})}/>
                 </form>
                 <img className="logo" src="../../../Logo.png" alt=""/>
+                <EditNodeDialog/>
+                <EditEdgeDialog/>
             </div>
         );
     }

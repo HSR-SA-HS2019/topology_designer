@@ -7,7 +7,7 @@
 .drawingContent {
     position: absolute;
     width: 100%;
-    height: inherit;
+    height: 100%;
 }
 
 .Buttons {
