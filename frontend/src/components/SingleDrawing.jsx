@@ -59,9 +59,9 @@ class SingleDrawing extends React.Component {
                 },
                 physics: {
                     barnesHut: {
-                        gravitationalConstant: -2000,
+                        gravitationalConstant: -10000,
                         centralGravity: 0.01,
-                        springLength: 100,
+                        springLength: 140,
                         springConstant: 0.1,
                         damping: 0.3
                     }
