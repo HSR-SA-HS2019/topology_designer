@@ -10,6 +10,7 @@
     border-width: 2px;
     border-color: #E0E0E0;
     padding: 10px;
+    padding-top: 0px;
     text-align: left;
 }
 
@@ -24,11 +25,22 @@
 
 textarea {
     width: 100%;
-    margin-top: 10px;
+    display: block;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
-#editEdgeDialog .Fields {
-}
 
 #editEdgeDialog .col-sm-4 {
     width: 100%;
@@ -47,9 +59,39 @@ textarea {
 
 #editEdgeDialog .form-group {
     vertical-align: center;
-    horiz-align: left;
 }
 
 #editEdgeDialog button {
     margin: 5px;
 }
+
+.deviceOne {
+    width: 50%;
+    float: left;
+    border-right: solid 2px #E0E0E0;
+    padding-bottom: 10px;
+    border-top: solid 2px #E0E0E0;
+}
+
+.deviceTwo {
+    overflow: hidden; /* if you don't want #second to wrap below #first */
+    border-top: solid 2px #E0E0E0;
+}
+
+.configWrapper {
+    width: 100%;
+    overflow: hidden; /* add this to contain floated children */
+    border-bottom: solid 2px #E0E0E0;
+}
+
+.connectionNameWrapper {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.button-form {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+

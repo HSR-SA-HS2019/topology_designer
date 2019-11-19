@@ -5,7 +5,6 @@ import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import {exportTopology} from '../functions/YamlFileFunctions';
 import {addEdge} from '../functions/EdgeFunctions';
-import {addNode} from "../functions/NodeFunctions";
 import './SingleDrawing.css';
 import axios from "axios";
 
@@ -25,7 +24,8 @@ class SingleDrawing extends React.Component {
                 locales: graphVisLocales,
                 clickToUse: false,
                 layout: {},
-                nodes: {font: {size: 18},
+                nodes: {
+                    font: {size: 18},
                     borderWidth: 0,
                     shape: 'image',
                     size: 30
@@ -63,8 +63,7 @@ class SingleDrawing extends React.Component {
                         centralGravity: 0.01,
                         springLength: 140,
                         springConstant: 0.1,
-                        damping: 0.3,
-                        avoidOverlap: 0.4
+                        damping: 0.3
                     }
                 },
                 // Turn configuration panel off
@@ -72,13 +71,15 @@ class SingleDrawing extends React.Component {
             },
             events: {
                 selectEdge: () => {
-                    if(this.network.getSelection().edges.length === 1 && this.network.getSelection().nodes.length === 0){
+                    if (this.network.getSelection().edges.length === 1 && this.network.getSelection().nodes.length === 0) {
                         document.getElementById("editButton").disabled = false;
+                        document.getElementById("editButton").style.display = "block";
                     }
 
                 },
                 deselectEdge: () => {
                     document.getElementById("editButton").disabled = true;
+                    document.getElementById("editButton").style.display = "none";
                 },
             },
             topology_name: 'topology designer',
@@ -116,14 +117,46 @@ class SingleDrawing extends React.Component {
         link.click();
     };
 
+
+    readFile = () => {
+        document.querySelector('input[type=file]').click();
+    };
+
+    readYaml = () => {
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            // var preview = document.getElementById('show-text');
+
+
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
+            console.log(file);
+            var regex = /\.yaml/i;
+
+            if (file.name.match(regex)) {
+                reader.onload = function (event) {
+                    console.log(event.target.result);
+
+                }
+            } else {
+                console.log("Wrong Filetype: " + file.type);
+                // preview.innerHTML = "<span class='error'>It doesn't seem to be a YAML file!</span>";
+            }
+            reader.readAsText(file);
+
+        } else {
+            alert("Your browser is too old to support HTML5 File API");
+        }
+    };
+
+
     addNewNode(url) {
         axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
             .then(res => {
                 let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
                 let edgesCopy = this.state.graphVis.edges.slice();
                 let number = 0;
-                for (let n in nodesCopy){
-                    if (nodesCopy[n].group === res.data.name){
+                for (let n in nodesCopy) {
+                    if (nodesCopy[n].group === res.data.name) {
                         number = number + 1;
                     }
                 }
@@ -141,7 +174,7 @@ class SingleDrawing extends React.Component {
     newEdge = () => {
         let selection = this.network.getSelection();
         let edgesCopy = this.state.graphVis.edges.slice();
-        if(selection.nodes.length === 2) {
+        if (selection.nodes.length === 2) {
             let edges = addEdge(selection, edgesCopy);
             let nodesCopy = this.state.graphVis.nodes.slice();
             this.setState({graphVis: {nodes: [], edges: []}});
@@ -150,7 +183,7 @@ class SingleDrawing extends React.Component {
     };
 
     editEdge = () => {
-        let currentId = this.network.getSelection().edges[0]
+        let currentId = this.network.getSelection().edges[0];
         let edgesCopy = this.state.graphVis.edges.slice();
         let nodesCopy = this.state.graphVis.nodes.slice();
         let edgeIndex = edgesCopy.findIndex(x => x.id === currentId);
@@ -196,38 +229,43 @@ class SingleDrawing extends React.Component {
     render() {
         return (
             <div className="single-drawing-box">
-                <div>
-                    <form>
-                        Enter Topology Name:
-                        <input type="text"
-                               value={this.state.topology_name}
-                               onChange={(event) => this.setState({topology_name: event.target.value})}/>
-                    </form>
-                    <EditNodeDialog/>
-                    <EditEdgeDialog/>
-                    <button onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}>
-                        Add Virtual Network Device
-                    </button>
-                    <button onClick={this.addNewNode.bind(this, this.docker_container_url)}>
-                        Add Docker Container
-                    </button>
-                    <button onClick={this.newEdge}>Add Connection</button>
-                    <button id="editButton" onClick={this.editEdge}>Edit</button>
+                <div className="drawingContent">
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
                         events={this.state.events}
-                        style={{width: "100%", height: '600px'}}
+                        style={{height: "inherit"}}
                         getNetwork={this.setNetworkInstance}/>
                 </div>
-                <div>
+                <div className="icon-bar">
+                    <span onClick={this.addNewNode.bind(this, this.docker_container_url)}><i className="fab fa-docker"/>Add Docker</span>
+                    <span onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}><i
+                        className="fas fa-random"/>Add Router</span>
+                    <span onClick={this.newEdge}><i className="fas fa-arrows-alt-h"/>Add Edge</span>
+                    <span onClick={this.editEdge} id="editButton"> <i className="fas fa-edit"/>Edit</span>
+                    <span className="separator" onClick={this.exportTopologyHelper}><i className="fa fa-download"/>Export YAML</span>
+                    <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/>Export Image</span>
+                    <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
+                    <span className="delete" onClick={this.deleteTopology}><i
+                        className="fa fa-trash"/>Clear All</span>
+                </div>
+                <div className="Buttons">
                     <div> {/* handlebars? */}
-                        <button onClick={this.deleteTopology}>Delete Topology</button>
-                        <button onClick={this.exportTopologyHelper}>Export Topology</button>
-                        <button onClick={this.exportTopologyAsImage}>Export Topology as Image</button>
+                        <div>
+                            <input type="file" className="filePicker" onChange={this.readYaml}/>
+                        </div>
                         <img id="canvasImg" alt=""/>
                     </div>
                 </div>
+                <form className="nameForm">
+                    Enter Topology Name:
+                    <input type="text"
+                           value={this.state.topology_name}
+                           onChange={(event) => this.setState({topology_name: event.target.value})}/>
+                </form>
+                <img className="logo" src="../../../Logo.png" alt=""/>
+                <EditNodeDialog/>
+                <EditEdgeDialog/>
             </div>
         );
     }

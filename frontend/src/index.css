@@ -11,6 +11,10 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+    height: 100%;
+}
+
 @media (min-width: 992px) {
     /* Sticky Footer */
     html,

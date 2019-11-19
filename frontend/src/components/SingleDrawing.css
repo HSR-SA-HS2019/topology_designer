@@ -1,7 +1,85 @@
 .single-drawing-box {
     border: 1px solid lightgray;
+    position: relative;
+    height: 100%;
+}
+
+.drawingContent {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.Buttons {
+    z-index: 2;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    margin-left: -100px;
 }
 
 #canvasImg {
     display: none;
 }
+
+.icon-bar {
+    width: 85px; /* Set a specific width */
+    background-color: #d4d4d4; /* Dark-grey background */
+    z-index: 3;
+    position: fixed;
+    top: 18%;
+}
+
+.icon-bar span {
+    display: block;
+    text-align: center;
+    padding: 9px;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 8pt;
+}
+
+#editButton {
+    display: none;
+    background-color: #008000;
+}
+
+.icon-bar i {
+    margin: 7px;
+    font-size: 36px; /* Increased font-size */
+}
+.nameForm {
+    z-index: 2;
+    position: fixed;
+    left: 50%;
+    margin-top: 3px;
+    margin-left: -100px;
+}
+
+input[type=file] {
+    display: none;
+}
+
+.logo {
+    position: fixed;
+    right: 5px;
+    top: 35px;
+    width: 250px;
+}
+
+.separator {
+    border-top: solid darkgray 2px;
+}
+
+.nameForm input {
+    margin-left: 5px;
+}
+
+.icon-bar span:hover {
+    background-color: #2D6480; /* Add a hover color */
+}
+
+.delete {
+    background-color: #d9534f; /* Add an active/current color */
+}
+

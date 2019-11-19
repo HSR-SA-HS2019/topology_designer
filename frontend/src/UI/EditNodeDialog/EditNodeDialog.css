@@ -13,10 +13,6 @@
     text-align: left;
 }
 
-textarea {
-    width: 100%;
-    margin-top: 10px;
-}
 
 #editNodeDialog .operationName {
     font-size: 18px;
@@ -27,7 +23,7 @@ textarea {
 }
 
 #editNodeDialog .Fields {
-    alignment: left;
+
 }
 
 #editNodeDialog .col-sm-4 {
@@ -35,19 +31,8 @@ textarea {
 
 }
 
-.form-horizontal .control-label {
-    padding-top: 7px;
-    margin-bottom: 0;
-    text-align: left;
-}
-
-.col-sm-7 {
-    width: 100%;
-}
-
 #editNodeDialog .form-group {
     vertical-align: center;
-    horiz-align: left;
 }
 
 #editNodeDialog button {
