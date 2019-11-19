@@ -7,6 +7,7 @@ import {exportTopology} from '../functions/YamlFileFunctions';
 import {addEdge} from '../functions/EdgeFunctions';
 import './SingleDrawing.css';
 import axios from "axios";
+import logo from '../Logo.png';
 
 class SingleDrawing extends React.Component {
     virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
@@ -258,12 +259,12 @@ class SingleDrawing extends React.Component {
                     </div>
                 </div>
                 <form className="nameForm">
-                    Enter Topology Name:
+                    Topology Name:
                     <input type="text"
                            value={this.state.topology_name}
                            onChange={(event) => this.setState({topology_name: event.target.value})}/>
                 </form>
-                <img className="logo" src="../../../Logo.png" alt=""/>
+                <img className="logo" src={logo} alt=""/>
                 <EditNodeDialog/>
                 <EditEdgeDialog/>
             </div>
