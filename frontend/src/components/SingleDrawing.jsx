@@ -77,6 +77,8 @@ class SingleDrawing extends React.Component {
                     if (this.network.getSelection().edges.length === 1 && this.network.getSelection().nodes.length === 0) {
                         document.getElementById("editEdgeButton").disabled = false;
                         document.getElementById("editEdgeButton").style.display = "block";
+                        document.getElementById("deleteButton").disabled = false;
+                        document.getElementById("deleteButton").style.display = "block";
                         document.getElementById("editNodeButton").disabled = true;
                         document.getElementById("editNodeButton").style.display = "none";
                     }
@@ -85,6 +87,8 @@ class SingleDrawing extends React.Component {
                 deselectEdge: () => {
                     document.getElementById("editEdgeButton").disabled = true;
                     document.getElementById("editEdgeButton").style.display = "none";
+                    document.getElementById("deleteButton").disabled = true;
+                    document.getElementById("deleteButton").style.display = "none";
                 },
 
                 selectNode: () => {
@@ -96,11 +100,14 @@ class SingleDrawing extends React.Component {
                         document.getElementById("editEdgeButton").disabled = true;
                         document.getElementById("editEdgeButton").style.display = "none";
                     }
-
+                    document.getElementById("deleteButton").disabled = false;
+                    document.getElementById("deleteButton").style.display = "block";
                 },
                 deselectNode: () => {
                     document.getElementById("editNodeButton").disabled = true;
                     document.getElementById("editNodeButton").style.display = "none";
+                    document.getElementById("deleteButton").disabled = true;
+                    document.getElementById("deleteButton").style.display = "none";
                 }
             },
             topology_name: 'topology designer',
@@ -122,23 +129,24 @@ class SingleDrawing extends React.Component {
     };
 
     deleteTopology = () => {
-        if(this.network.getSelection().nodes.length === 0 && this.network.getSelection().edges.length === 0){
-            this.setState({graphVis: {nodes: [], edges: [],}})
-        }
-        else{
-            let deleteNodes = this.network.getSelection().nodes;
-            let deleteEdges = this.network.getSelection().edges;
-            let allNodes = this.state.graphVis.nodes.slice();
-            let allEdges = this.state.graphVis.edges.slice();
+        this.setState({graphVis: {nodes: [], edges: [],}})
+    };
 
-            allEdges = updatePorts(deleteEdges, this.network.body.nodes, allEdges);
-            let newNodes = deleteItem(allNodes, deleteNodes);
-            let newEdges = deleteItem(allEdges, deleteEdges);
+    deleteElement = () => {
+        let deleteNodes = this.network.getSelection().nodes;
+        let deleteEdges = this.network.getSelection().edges;
+        let allNodes = this.state.graphVis.nodes.slice();
+        let allEdges = this.state.graphVis.edges.slice();
 
-            //this.setState({graphVis: {nodes: [], edges: []}});
-            this.setState({graphVis: {nodes: newNodes, edges: newEdges}});
-        }
+        allEdges = updatePorts(deleteEdges, this.network.body.nodes, allEdges);
+        let newNodes = deleteItem(allNodes, deleteNodes);
+        let newEdges = deleteItem(allEdges, deleteEdges);
 
+        document.getElementById("deleteButton").style.display = "none";
+        document.getElementById("editNodeButton").style.display = "none";
+        document.getElementById("editEdgeButton").style.display = "none";
+
+        this.setState({graphVis: {nodes: newNodes, edges: newEdges}});
     };
 
     exportTopologyHelper = () => {
@@ -161,7 +169,6 @@ class SingleDrawing extends React.Component {
 
     readYaml = () => {
         if (window.File && window.FileReader && window.FileList && window.Blob) {
-            // var preview = document.getElementById('show-text');
 
 
             var file = document.querySelector('input[type=file]').files[0];
@@ -176,7 +183,6 @@ class SingleDrawing extends React.Component {
                 }
             } else {
                 console.log("Wrong Filetype: " + file.type);
-                // preview.innerHTML = "<span class='error'>It doesn't seem to be a YAML file!</span>";
             }
             reader.readAsText(file);
 
@@ -313,6 +319,8 @@ class SingleDrawing extends React.Component {
                         className="fas fa-edit"/>Edit</span>
                     <span onClick={this.editNode} className="editButton" id="editNodeButton"> <i
                         className="fas fa-edit"/>Edit</span>
+                    <span onClick={this.deleteElement} className="delete" id="deleteButton"> <i
+                        className="fas fa-times"/>Delete</span>
                     <span className="separator" onClick={this.exportTopologyHelper}><i className="fa fa-download"/>Export YAML</span>
                     <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/>Export Image</span>
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
