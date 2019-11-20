@@ -6,17 +6,13 @@ export function addEdge(selection, edgesCopy, bodyNodes) {
     let elementTo = 0;
     for (let key1 in bodyNodes) {
         if (bodyNodes.hasOwnProperty(key1)) {
-            if(bodyNodes[key1].id === selection.nodes[0]){
+            if (bodyNodes[key1].id === selection.nodes[0]) {
                 elementFrom = bodyNodes[key1].edges.length;
-            }
-            else if (bodyNodes[key1].id === selection.nodes[1]){
+            } else if (bodyNodes[key1].id === selection.nodes[1]) {
                 elementTo = bodyNodes[key1].edges.length;
             }
         }
     }
-    console.log(elementFrom);
-    console.log(elementTo);
-
     edgesCopy.push({
         label: '',
         from: selection.nodes[0],
@@ -29,6 +25,13 @@ export function addEdge(selection, edgesCopy, bodyNodes) {
         portTo: elementTo + 1,
     });
     return edgesCopy
+}
+
+export function hideEdgeButtons() {
+    document.getElementById("editEdgeButton").disabled = true;
+    document.getElementById("editEdgeButton").style.display = "none";
+    document.getElementById("deleteButton").disabled = true;
+    document.getElementById("deleteButton").style.display = "none";
 }
 
 /*

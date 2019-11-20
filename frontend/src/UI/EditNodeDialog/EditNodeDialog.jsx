@@ -10,10 +10,16 @@ const EditNodeDialog = () => (
         <form className="form-horizontal">
             <div className="form-group">
                 <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
-                    Label
+                    Devicename
                 </label>
                 <div className="col-sm-7">
                     <input type="text" className="form-control" id="inpNodeLabel"/>
+                </div>
+                <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
+                    Devicetype
+                </label>
+                <div className="col-sm-7">
+                    <input type="text" className="form-control" id="nodeDeviceType"/>
                 </div>
                 <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
                     Run Config
@@ -23,7 +29,7 @@ const EditNodeDialog = () => (
                 </div>
             </div>
 
-            <div className="form-group">
+            <div className="button-form">
                 <div className="col-sm-12">
                     <button type="button" className="btn btn-success" id="btnSaveNode">
                         OK

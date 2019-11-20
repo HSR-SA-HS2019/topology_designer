@@ -23,25 +23,25 @@ const EditEdgeDialog = () => (
                             Devicename
                         </label>
                         <div className="col-sm-7">
-                            <input type="text" className="form-control" id="inpNodeLabel"/>
+                            <input type="text" className="form-control" id="deviceName"/>
                         </div>
                         <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
                             Devicetype
                         </label>
                         <div className="col-sm-7">
-                            <input type="text" className="form-control" id="inpNodeType"/>
+                            <input type="text" className="form-control" id="deviceType"/>
                         </div>
                         <label htmlFor="inpEdgeIp" className="col-sm-4 control-label">
-                            Ip Address
+                            IP Address
                         </label>
                         <div className="col-sm-7">
-                            <input type="text" className="form-control" id="inpNodeIp"/>
+                            <input type="text" className="form-control" id="ipAddress"/>
                         </div>
                         <label htmlFor="inpEdgeGateway" className="col-sm-4 control-label">
                             Gateway
                         </label>
                         <div className="col-sm-7">
-                            <input type="text" className="form-control" id="inpNodeGateway"/>
+                            <input type="text" className="form-control" id="gateway"/>
                         </div>
 
                     </div>
