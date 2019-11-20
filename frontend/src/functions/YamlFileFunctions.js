@@ -72,18 +72,12 @@ export function exportTopology(nodes, edges, name){
                     StringData = StringData + "\t\tinterface Gi" + counter + "\n";
                     for(let y in network_edges){
                         if(network_edges[y].from === network_nodes[l].id && network_edges[y].portCountFrom === counter){
-                            let indexSliceFrom = network_edges[y].runConfigFrom.indexOf('\n');
-                            let upperString = network_edges[y].runConfigFrom.slice(0, indexSliceFrom);
-                            let lowerString = network_edges[y].runConfigFrom.slice(indexSliceFrom + 1);
-                            StringData = StringData + "\t\t\t" + upperString + "\n";
-                            StringData = StringData + "\t\t\t" + lowerString + "\n";
+                            let newRunConfigFrom = network_edges[y].runConfigFrom.replace(/\n/g, "\n\t\t\t");
+                            StringData = StringData + "\t\t\t" + newRunConfigFrom + "\n";
                         }
                         else if(network_edges[y].to === network_nodes[l].id && network_edges[y].portCountTo === counter){
-                            let indexSliceTo = network_edges[y].runConfigTo.indexOf('\n');
-                            let upperString = network_edges[y].runConfigTo.slice(0, indexSliceTo);
-                            let lowerString = network_edges[y].runConfigTo.slice(indexSliceTo + 1);
-                            StringData = StringData + "\t\t\t" + upperString + "\n";
-                            StringData = StringData + "\t\t\t" + lowerString + "\n";
+                            let newRunConfigTo = network_edges[y].runConfigTo.replace(/\n/g, "\n\t\t\t");
+                            StringData = StringData + "\t\t\t" + newRunConfigTo + "\n";
                         }
                     }
                     counter++;
@@ -99,18 +93,12 @@ export function exportTopology(nodes, edges, name){
                     StringData = StringData + "\t\t- interface_number: " + counter + "\n";
                     for(let z in network_edges){
                         if(network_edges[z].from === network_nodes[l].id && network_edges[z].portCountFrom === counter){
-                            let indexSliceFrom = network_edges[z].runConfigFrom.indexOf('\n');
-                            let upperString = network_edges[z].runConfigFrom.slice(0, indexSliceFrom);
-                            let lowerString = network_edges[z].runConfigFrom.slice(indexSliceFrom + 1);
-                            StringData = StringData + "\t\t\t" + upperString + "\n";
-                            StringData = StringData + "\t\t\t" + lowerString + "\n";
+                            let newRunConfigFrom = network_edges[z].runConfigFrom.replace(/\n/g, "\n\t\t\t");
+                            StringData = StringData + "\t\t\t" + newRunConfigFrom + "\n";
                         }
                         else if(network_edges[z].to === network_nodes[l].id && network_edges[z].portCountTo === counter){
-                            let indexSliceTo = network_edges[z].runConfigTo.indexOf('\n');
-                            let upperString = network_edges[z].runConfigTo.slice(0, indexSliceTo);
-                            let lowerString = network_edges[z].runConfigTo.slice(indexSliceTo + 1);
-                            StringData = StringData + "\t\t\t" + upperString + "\n";
-                            StringData = StringData + "\t\t\t" + lowerString + "\n";
+                            let newRunConfigTo = network_edges[z].runConfigTo.replace(/\n/g, "\n\t\t\t");
+                            StringData = StringData + "\t\t\t" + newRunConfigTo + "\n";
                         }
                     }
                     counter++;
@@ -127,7 +115,7 @@ export function exportTopology(nodes, edges, name){
 
     console.log(StringData);
 
-    var element = document.createElement('a');
+    let element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(StringData));
     element.setAttribute('download', filename);
     element.style.display = 'none';

@@ -5,6 +5,7 @@ import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import {exportTopology} from '../functions/YamlFileFunctions';
 import {addEdge} from '../functions/EdgeFunctions';
+import {deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
 import './SingleDrawing.css';
 import axios from "axios";
 
@@ -81,6 +82,11 @@ class SingleDrawing extends React.Component {
                     document.getElementById("editButton").disabled = true;
                     document.getElementById("editButton").style.display = "none";
                 },
+                selectNode: () => {
+                    if(this.network.getSelection().nodes.length === 1 && this.network.getSelection().nodes[0].group === "virtual_network_device"){
+
+                    }
+                }
             },
             topology_name: 'topology designer',
         };
@@ -101,8 +107,27 @@ class SingleDrawing extends React.Component {
     };
 
     deleteTopology = () => {
-        this.setState({graphVis: {nodes: [], edges: [],}})
+        if(this.network.getSelection().nodes.length === 0 && this.network.getSelection().edges.length === 0){
+            this.setState({graphVis: {nodes: [], edges: [],}})
+        }
+        else{
+            let deleteNodes = this.network.getSelection().nodes;
+            let deleteEdges = this.network.getSelection().edges;
+            let allNodes = this.state.graphVis.nodes.slice();
+            let allEdges = this.state.graphVis.edges.slice();
+
+            allEdges = updatePorts(deleteEdges, this.network.body.nodes, allEdges);
+            let newNodes = deleteItem(allNodes, deleteNodes);
+            let newEdges = deleteItem(allEdges, deleteEdges);
+
+            console.log("newEdges");
+            console.log(newEdges);
+            this.setState({graphVis: {nodes: [], edges: []}});
+            this.setState({graphVis: {nodes: newNodes, edges: newEdges}});
+        }
+
     };
+
 
     exportTopologyHelper = () => {
         exportTopology(this.network.body.data.nodes._data, this.network.body.data.edges._data, this.state.topology_name)
@@ -165,6 +190,7 @@ class SingleDrawing extends React.Component {
                     group: res.data.name,
                     type: res.data.type,
                     image: res.data.icon,
+                    runconfig: "",
                 });
                 this.setState({graphVis: {nodes: [], edges: []}});
                 this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
@@ -174,11 +200,14 @@ class SingleDrawing extends React.Component {
     newEdge = () => {
         let selection = this.network.getSelection();
         let edgesCopy = this.state.graphVis.edges.slice();
+        let nodes = this.network.body.nodes;
+        console.log(nodes);
         if (selection.nodes.length === 2) {
-            let edges = addEdge(selection, edgesCopy);
+            let edges = addEdge(selection, edgesCopy, nodes);
             let nodesCopy = this.state.graphVis.nodes.slice();
             this.setState({graphVis: {nodes: [], edges: []}});
             this.setState({graphVis: {nodes: nodesCopy, edges: edges}});
+            console.log(this.network.body);
         }
     };
 
