@@ -1,16 +1,34 @@
 /**
  * Function for adding new edge to GraphVis.
  */
-export function addEdge(selection, edgesCopy) {
+export function addEdge(selection, edgesCopy, bodyNodes) {
+    let elementFrom = 0;
+    let elementTo = 0;
+    for (let key1 in bodyNodes) {
+        if (bodyNodes.hasOwnProperty(key1)) {
+            if(bodyNodes[key1].id === selection.nodes[0]){
+                elementFrom = bodyNodes[key1].edges.length;
+            }
+            else if (bodyNodes[key1].id === selection.nodes[1]){
+                elementTo = bodyNodes[key1].edges.length;
+            }
+        }
+    }
+    console.log(elementFrom);
+    console.log(elementTo);
+
     edgesCopy.push({
         label: '',
         from: selection.nodes[0],
         to: selection.nodes[1],
         runConfigFrom: "",
         runConfigTo: "",
+        portFrom: elementFrom + 1,
+        portTo: elementTo + 1,
     });
     return edgesCopy
 }
+
 /*
 
 /!**
