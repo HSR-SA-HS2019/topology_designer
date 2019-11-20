@@ -120,9 +120,7 @@ class SingleDrawing extends React.Component {
             let newNodes = deleteItem(allNodes, deleteNodes);
             let newEdges = deleteItem(allEdges, deleteEdges);
 
-            console.log("newEdges");
-            console.log(newEdges);
-            this.setState({graphVis: {nodes: [], edges: []}});
+            //this.setState({graphVis: {nodes: [], edges: []}});
             this.setState({graphVis: {nodes: newNodes, edges: newEdges}});
         }
 
