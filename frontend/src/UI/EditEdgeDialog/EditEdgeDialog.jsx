@@ -19,44 +19,31 @@ const EditEdgeDialog = () => (
                 </div>
                 <div className="configWrapper">
                     <div className="deviceOne">
-                        <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
+                        <label htmlFor="Devicename" className="col-sm-4 control-label">
                             Devicename
                         </label>
                         <div className="col-sm-7">
-                            <input type="text" className="form-control" id="inpNodeLabelFrom"/>
+                            <input type="text" className="form-control" id="inpNodeLabel"/>
                         </div>
                         <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
                             Devicetype
                         </label>
                         <div className="col-sm-7">
-                            <input type="text" className="form-control" id="inpNodeTypeFrom"/>
+                            <input type="text" className="form-control" id="inpNodeType"/>
                         </div>
-                        <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
-                            Run Config
+                        <label htmlFor="inpEdgeIp" className="col-sm-4 control-label">
+                            Ip Address
                         </label>
                         <div className="col-sm-7">
-                            <textarea id="runConfigFrom" name="text" rows="4"/>
+                            <input type="text" className="form-control" id="inpNodeIp"/>
                         </div>
-                    </div>
-                    <div className="deviceTwo">
-                        <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
-                            Devicename
+                        <label htmlFor="inpEdgeGateway" className="col-sm-4 control-label">
+                            Gateway
                         </label>
                         <div className="col-sm-7">
-                            <input type="text" className="form-control" id="inpNodeLabelTo"/>
+                            <input type="text" className="form-control" id="inpNodeGateway"/>
                         </div>
-                        <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
-                            Devicetype
-                        </label>
-                        <div className="col-sm-7">
-                            <input type="text" className="form-control" id="inpNodeTypeTo"/>
-                        </div>
-                        <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
-                            Run Config
-                        </label>
-                        <div className="col-sm-7">
-                            <textarea id="runConfigTo" name="text" rows="4"/>
-                        </div>
+
                     </div>
                 </div>
             </div>

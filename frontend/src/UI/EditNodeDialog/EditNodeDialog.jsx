@@ -25,11 +25,11 @@ const EditNodeDialog = () => (
 
             <div className="form-group">
                 <div className="col-sm-12">
-                    <button type="button" className="btn btn-success" id="btnSave">
+                    <button type="button" className="btn btn-success" id="btnSaveNode">
                         OK
                     </button>
 
-                    <button type="button" className="btn btn-default" id="btnCancel">
+                    <button type="button" className="btn btn-default" id="btnCancelNodeEdit">
                         Cancel
                     </button>
                 </div>

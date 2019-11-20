@@ -10,7 +10,7 @@
     border-width: 2px;
     border-color: #E0E0E0;
     padding: 10px;
-    padding-top: 0px;
+    padding-top: 0;
     text-align: left;
 }
 
@@ -66,15 +66,10 @@ textarea {
 }
 
 .deviceOne {
-    width: 50%;
+    width: 25%;
     float: left;
     border-right: solid 2px #E0E0E0;
     padding-bottom: 10px;
-    border-top: solid 2px #E0E0E0;
-}
-
-.deviceTwo {
-    overflow: hidden; /* if you don't want #second to wrap below #first */
     border-top: solid 2px #E0E0E0;
 }
 

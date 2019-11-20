@@ -39,15 +39,23 @@
     font-size: 8pt;
 }
 
-#editButton {
-    display: none;
+.editButton {
     background-color: #008000;
+}
+
+#editEdgeButton {
+    display: none;
+}
+
+#editNodeButton {
+    display: none;
 }
 
 .icon-bar i {
     margin: 7px;
     font-size: 36px; /* Increased font-size */
 }
+
 .nameForm {
     z-index: 2;
     position: fixed;
@@ -76,6 +84,7 @@ input[type=file] {
 
 .icon-bar span:hover {
     background-color: #2D6480; /* Add a hover color */
+    cursor: pointer;
 }
 
 .delete {

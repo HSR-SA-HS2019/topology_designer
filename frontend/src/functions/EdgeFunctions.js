@@ -23,6 +23,8 @@ export function addEdge(selection, edgesCopy, bodyNodes) {
         to: selection.nodes[1],
         runConfigFrom: "",
         runConfigTo: "",
+        ipAddress: "",
+        gateway: "",
         portFrom: elementFrom + 1,
         portTo: elementTo + 1,
     });
