@@ -4,12 +4,13 @@ import {graphVisLocales, palette} from '../functions/GlobalConstants';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import {exportTopology} from '../functions/YamlFileFunctions';
-import {addEdge, hideEdgeButtons} from '../functions/EdgeFunctions';
+import {activateEdgeButtons, addEdge, getSelectedEdge, hideEdgeButtons} from '../functions/EdgeFunctions';
 import {deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
 import './SingleDrawing.css';
 import axios from "axios";
 import logo from '../Logo.png';
-import {hideNodeButtons, requiredId, requiredNode} from "../functions/NodeFunctions";
+import {activateNodeButtons, hideNodeButtons, requiredId, requiredNode} from "../functions/NodeFunctions";
+import {activateDeleteButton, hideDeleteButton} from "../functions/GlobalFunctions";
 
 class SingleDrawing extends React.Component {
     virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
@@ -74,33 +75,29 @@ class SingleDrawing extends React.Component {
             },
             events: {
                 selectEdge: () => {
-                    if (this.network.getSelection().edges.length === 1 && this.network.getSelection().nodes.length === 0) {
-                        document.getElementById("editEdgeButton").disabled = false;
-                        document.getElementById("editEdgeButton").style.display = "block";
-                        document.getElementById("deleteButton").disabled = false;
-                        document.getElementById("deleteButton").style.display = "block";
-                        document.getElementById("editNodeButton").disabled = true;
-                        document.getElementById("editNodeButton").style.display = "none";
+                    let {fromIndex, toIndex} = getSelectedEdge(this.network.getSelection().edges[0], this.state.graphVis.edges.slice(), this.state.graphVis.nodes.slice());
+                    if (this.network.getSelection().edges.length === 1 && this.network.getSelection().nodes.length === 0 && (this.state.graphVis.nodes[fromIndex].group !== "virtual_network_devices" || this.state.graphVis.nodes[toIndex].group !== "virtual_network_devices")) {
+                        activateEdgeButtons();
                     }
+                    activateDeleteButton();
                 },
+
                 deselectEdge: () => {
                     hideEdgeButtons();
+                    hideDeleteButton();
                 },
 
                 selectNode: () => {
                     let nodeId = this.network.getSelection().nodes[0];
                     let nodeIndex = this.state.graphVis.nodes.findIndex(x => x.id === nodeId);
                     if (this.network.getSelection().nodes.length === 1 && this.state.graphVis.nodes[nodeIndex].group === "virtual_network_devices") {
-                        document.getElementById("editNodeButton").disabled = false;
-                        document.getElementById("editNodeButton").style.display = "block";
-                        document.getElementById("editEdgeButton").disabled = true;
-                        document.getElementById("editEdgeButton").style.display = "none";
+                        activateNodeButtons();
                     }
-                    document.getElementById("deleteButton").disabled = false;
-                    document.getElementById("deleteButton").style.display = "block";
+                    activateDeleteButton();
                 },
                 deselectNode: () => {
                     hideNodeButtons();
+                    hideDeleteButton();
                 }
             },
             topology_name: 'topology designer',
@@ -222,14 +219,7 @@ class SingleDrawing extends React.Component {
     };
 
     editEdge = () => {
-        let currentId = this.network.getSelection().edges[0];
-        let edgesCopy = this.state.graphVis.edges.slice();
-        let nodesCopy = this.state.graphVis.nodes.slice();
-        let edgeIndex = edgesCopy.findIndex(x => x.id === currentId);
-        let fromId = edgesCopy[edgeIndex].from;
-        let toId = edgesCopy[edgeIndex].to;
-        let fromIndex = nodesCopy.findIndex(x => x.id === fromId);
-        let toIndex = nodesCopy.findIndex(x => x.id === toId);
+        let {edgesCopy, nodesCopy, edgeIndex, fromId, fromIndex, toIndex} = getSelectedEdge(this.network.getSelection().edges[0], this.state.graphVis.edges.slice(), this.state.graphVis.nodes.slice());
         let nodeToConfig = requiredNode(nodesCopy, fromIndex, toIndex);
         let nodeIndex = requiredId(nodeToConfig, fromId, fromIndex, toIndex);
         document.getElementById('inpEdgeLabel').value = edgesCopy[edgeIndex].label;
@@ -246,8 +236,6 @@ class SingleDrawing extends React.Component {
             document.getElementById('btnSaveEdge').onclick = null;
             document.getElementById('btnCancelEdgeEdit').onclick = null;
             document.getElementById('editEdgeDialog').style.display = 'none';
-            console.log(edgesCopy[edgeIndex].runConfigFrom.indexOf('\n'));
-            console.log(edgesCopy[edgeIndex].runConfigTo.indexOf('\n'));
             this.setState({graphVis: {nodes: [], edges: []}});
             this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
         };

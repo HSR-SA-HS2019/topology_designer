@@ -30,8 +30,22 @@ export function addEdge(selection, edgesCopy, bodyNodes) {
 export function hideEdgeButtons() {
     document.getElementById("editEdgeButton").disabled = true;
     document.getElementById("editEdgeButton").style.display = "none";
-    document.getElementById("deleteButton").disabled = true;
-    document.getElementById("deleteButton").style.display = "none";
+}
+
+export function activateEdgeButtons() {
+    document.getElementById("editEdgeButton").disabled = false;
+    document.getElementById("editEdgeButton").style.display = "block";
+    document.getElementById("editNodeButton").disabled = true;
+    document.getElementById("editNodeButton").style.display = "none";
+}
+
+export function getSelectedEdge(currentId, edgesCopy, nodesCopy) {
+    let edgeIndex = edgesCopy.findIndex(x => x.id === currentId);
+    let fromId = edgesCopy[edgeIndex].from;
+    let toId = edgesCopy[edgeIndex].to;
+    let fromIndex = nodesCopy.findIndex(x => x.id === fromId);
+    let toIndex = nodesCopy.findIndex(x => x.id === toId);
+    return {edgesCopy, nodesCopy, edgeIndex, fromId, fromIndex, toIndex};
 }
 
 /*
