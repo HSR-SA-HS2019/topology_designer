@@ -11,3 +11,12 @@ export function hideDeleteButton() {
     document.getElementById("deleteButton").disabled = true;
     document.getElementById("deleteButton").style.display = "none";
 }
+
+export function hideEditButtons() {
+    document.getElementById("deleteButton").style.display = "none";
+    document.getElementById("editNodeButton").style.display = "none";
+    document.getElementById("editEdgeButton").style.display = "none";
+
+}
+
+

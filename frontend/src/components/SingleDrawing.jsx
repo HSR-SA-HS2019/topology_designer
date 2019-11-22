@@ -4,13 +4,26 @@ import {graphVisLocales, palette} from '../functions/GlobalConstants';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import {exportTopology} from '../functions/YamlFileFunctions';
-import {activateEdgeButtons, addEdge, getSelectedEdge, hideEdgeButtons} from '../functions/EdgeFunctions';
+import {
+    activateEdgeButtons,
+    addEdge,
+    closeEdgeDialog,
+    getSelectedEdge,
+    hideEdgeButtons
+} from '../functions/EdgeFunctions';
 import {deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
 import './SingleDrawing.css';
 import axios from "axios";
 import logo from '../Logo.png';
-import {activateNodeButtons, hideNodeButtons, requiredId, requiredNode} from "../functions/NodeFunctions";
-import {activateDeleteButton, hideDeleteButton} from "../functions/GlobalFunctions";
+import {
+    activateNodeButtons,
+    closeNodeDialog,
+    getConnections,
+    hideNodeButtons,
+    requiredId,
+    requiredNode
+} from "../functions/NodeFunctions";
+import {activateDeleteButton, hideDeleteButton, hideEditButtons} from "../functions/GlobalFunctions";
 
 class SingleDrawing extends React.Component {
     virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
@@ -120,7 +133,8 @@ class SingleDrawing extends React.Component {
     };
 
     deleteTopology = () => {
-        this.setState({graphVis: {nodes: [], edges: [],}})
+        this.setState({graphVis: {nodes: [], edges: [],}});
+        hideEditButtons();
     };
 
     deleteElement = () => {
@@ -133,9 +147,7 @@ class SingleDrawing extends React.Component {
         let newNodes = deleteItem(allNodes, deleteNodes);
         let newEdges = deleteItem(allEdges, deleteEdges);
 
-        document.getElementById("deleteButton").style.display = "none";
-        document.getElementById("editNodeButton").style.display = "none";
-        document.getElementById("editEdgeButton").style.display = "none";
+        hideEditButtons();
 
         this.setState({graphVis: {nodes: newNodes, edges: newEdges}});
     };
@@ -160,8 +172,6 @@ class SingleDrawing extends React.Component {
 
     readYaml = () => {
         if (window.File && window.FileReader && window.FileList && window.Blob) {
-
-
             var file = document.querySelector('input[type=file]').files[0];
             var reader = new FileReader();
             console.log(file);
@@ -170,7 +180,6 @@ class SingleDrawing extends React.Component {
             if (file.name.match(regex)) {
                 reader.onload = function (event) {
                     console.log(event.target.result);
-
                 }
             } else {
                 console.log("Wrong Filetype: " + file.type);
@@ -222,56 +231,66 @@ class SingleDrawing extends React.Component {
         let {edgesCopy, nodesCopy, edgeIndex, fromId, fromIndex, toIndex} = getSelectedEdge(this.network.getSelection().edges[0], this.state.graphVis.edges.slice(), this.state.graphVis.nodes.slice());
         let nodeToConfig = requiredNode(nodesCopy, fromIndex, toIndex);
         let nodeIndex = requiredId(nodeToConfig, fromId, fromIndex, toIndex);
+        this.intializeEdgeConfig(edgesCopy, edgeIndex, nodeToConfig);
+        document.getElementById('btnSaveEdge').onclick = () => {
+            this.saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex);
+            closeEdgeDialog();
+            this.setState({graphVis: {nodes: [], edges: []}});
+            this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+        };
+        document.getElementById('btnCancelEdgeEdit').onclick = () => {
+            closeEdgeDialog();
+        };
+        document.getElementById('editEdgeDialog').style.display = 'block';
+    };
+
+    saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
+        edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
+        nodesCopy[nodeIndex].label = document.getElementById('deviceName').value;
+        nodesCopy[nodeIndex].type = document.getElementById('deviceType').value;
+        edgesCopy[edgeIndex].ipAddress = document.getElementById('ipAddress').value;
+        edgesCopy[edgeIndex].gateway = document.getElementById('gateway').value;
+    }
+
+    intializeEdgeConfig(edgesCopy, edgeIndex, nodeToConfig) {
         document.getElementById('inpEdgeLabel').value = edgesCopy[edgeIndex].label;
         document.getElementById('deviceName').value = nodeToConfig.label;
         document.getElementById('deviceType').value = nodeToConfig.type;
         document.getElementById('ipAddress').value = edgesCopy[edgeIndex].ipAddress;
         document.getElementById('gateway').value = edgesCopy[edgeIndex].gateway;
-        document.getElementById('btnSaveEdge').onclick = () => {
-            edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
-            nodesCopy[nodeIndex].label = document.getElementById('deviceName').value;
-            nodesCopy[nodeIndex].type = document.getElementById('deviceType').value;
-            edgesCopy[edgeIndex].ipAddress = document.getElementById('ipAddress').value;
-            edgesCopy[edgeIndex].gateway = document.getElementById('gateway').value;
-            document.getElementById('btnSaveEdge').onclick = null;
-            document.getElementById('btnCancelEdgeEdit').onclick = null;
-            document.getElementById('editEdgeDialog').style.display = 'none';
-            this.setState({graphVis: {nodes: [], edges: []}});
-            this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
-        };
-        document.getElementById('btnCancelEdgeEdit').onclick = () => {
-            document.getElementById('btnSaveEdge').onclick = null;
-            document.getElementById('btnCancelEdgeEdit').onclick = null;
-            document.getElementById('editEdgeDialog').style.display = 'none';
-        };
-        document.getElementById('editEdgeDialog').style.display = 'block';
-    };
+    }
 
     editNode = () => {
+        let edges = this.network.getSelection().edges;
         let currentId = this.network.getSelection().nodes[0];
         let nodesCopy = this.state.graphVis.nodes.slice();
         let edgesCopy = this.state.graphVis.edges.slice();
         let nodeIndex = nodesCopy.findIndex(x => x.id === currentId);
-        document.getElementById('inpNodeLabel').value = nodesCopy[nodeIndex].label;
-        document.getElementById('runConfig').value = nodesCopy[nodeIndex].runConfig;
+        this.initializeNodeConfig(nodesCopy, nodeIndex, currentId, edges, edgesCopy);
         document.getElementById('btnSaveNode').onclick = () => {
-            nodesCopy[nodeIndex].label = document.getElementById('inpNodeLabel').value;
-            nodesCopy[nodeIndex].runConfig = document.getElementById('runConfig').value;
-            document.getElementById('btnSaveNode').onclick = null;
-            document.getElementById('btnCancelNodeEdit').onclick = null;
-            document.getElementById('editNodeDialog').style.display = 'none';
+            this.saveNodeConfig(nodesCopy, nodeIndex);
+            closeNodeDialog();
             this.setState({graphVis: {nodes: [], edges: []}});
             this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
-            //this.network.setData({nodes: nodesCopy, edges: edgesCopy});
-
         };
         document.getElementById('btnCancelNodeEdit').onclick = () => {
-            document.getElementById('btnSaveNode').onclick = null;
-            document.getElementById('btnCancelEdgeEdit').onclick = null;
-            document.getElementById('editNodeDialog').style.display = 'none';
+            closeNodeDialog();
         };
         document.getElementById('editNodeDialog').style.display = 'block';
     };
+
+    saveNodeConfig(nodesCopy, nodeIndex) {
+        nodesCopy[nodeIndex].label = document.getElementById('inpNodeLabel').value;
+        nodesCopy[nodeIndex].runConfig = document.getElementById('runConfig').value;
+        nodesCopy[nodeIndex].type = document.getElementById('nodeDeviceType').value;
+    }
+
+    initializeNodeConfig(nodesCopy, nodeIndex, currentId, edges, edgesCopy) {
+        document.getElementById('inpNodeLabel').value = nodesCopy[nodeIndex].label;
+        document.getElementById('runConfig').value = nodesCopy[nodeIndex].runConfig;
+        document.getElementById('nodeDeviceType').value = nodesCopy[nodeIndex].type;
+        document.getElementById('connections').innerText = getConnections(currentId, edges, nodesCopy, edgesCopy);
+    }
 
     render() {
         return (

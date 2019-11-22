@@ -19,6 +19,33 @@ export function requiredId(nodeToConfig, fromId, fromIndex, toIndex) {
     }
 }
 
+export function getConnections(node, edges, allNodes, allEdges) {
+    let portString = '';
+    if (edges.length === 0) {
+        return "No Connections"
+    }
+    for (let i in edges) {
+        for (let j in allEdges) {
+            if (edges[i] === allEdges[j].id) {
+                if (node === allEdges[j].from) {
+                    for (let k in allNodes) {
+                        if (allNodes[k].id === allEdges[j].to) {
+                            portString = portString + "Gi" + allEdges[j].portFrom + ": " + allNodes[k].label + "\n ";
+                        }
+                    }
+                } else if (node === allEdges[j].to) {
+                    for (let k in allNodes) {
+                        if (allNodes[k].id === allEdges[j].from) {
+                            portString = portString + "Gi" + allEdges[j].portFrom + ": " + allNodes[k].label + "\n ";
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return portString;
+}
+
 export function activateNodeButtons() {
     document.getElementById("editNodeButton").disabled = false;
     document.getElementById("editNodeButton").style.display = "block";
@@ -29,4 +56,10 @@ export function activateNodeButtons() {
 export function hideNodeButtons() {
     document.getElementById("editNodeButton").disabled = true;
     document.getElementById("editNodeButton").style.display = "none";
+}
+
+export function closeNodeDialog() {
+    document.getElementById('btnSaveNode').onclick = null;
+    document.getElementById('btnCancelNodeEdit').onclick = null;
+    document.getElementById('editNodeDialog').style.display = 'none';
 }

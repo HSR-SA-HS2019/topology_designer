@@ -48,6 +48,11 @@ export function getSelectedEdge(currentId, edgesCopy, nodesCopy) {
     return {edgesCopy, nodesCopy, edgeIndex, fromId, fromIndex, toIndex};
 }
 
+export function closeEdgeDialog() {
+    document.getElementById('btnSaveEdge').onclick = null;
+    document.getElementById('btnCancelEdgeEdit').onclick = null;
+    document.getElementById('editEdgeDialog').style.display = 'none';
+}
 /*
 
 /!**

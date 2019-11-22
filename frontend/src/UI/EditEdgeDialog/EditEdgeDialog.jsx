@@ -18,7 +18,7 @@ const EditEdgeDialog = () => (
                     </div>
                 </div>
                 <div className="configWrapper">
-                    <div className="deviceOne">
+                    <div className="deviceInfos">
                         <label htmlFor="Devicename" className="col-sm-4 control-label">
                             Devicename
                         </label>
@@ -31,6 +31,8 @@ const EditEdgeDialog = () => (
                         <div className="col-sm-7">
                             <input type="text" className="form-control" id="deviceType"/>
                         </div>
+                    </div>
+                    <div className="deviceConfigs">
                         <label htmlFor="inpEdgeIp" className="col-sm-4 control-label">
                             IP Address
                         </label>
@@ -43,7 +45,6 @@ const EditEdgeDialog = () => (
                         <div className="col-sm-7">
                             <input type="text" className="form-control" id="gateway"/>
                         </div>
-
                     </div>
                 </div>
             </div>
