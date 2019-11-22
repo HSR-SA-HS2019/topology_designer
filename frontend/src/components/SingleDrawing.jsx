@@ -329,7 +329,6 @@ class SingleDrawing extends React.Component {
                     </div>
                 </div>
                 <form className="nameForm">
-                    Topology Name:
                     <input type="text"
                            value={this.state.topology_name}
                            onChange={(event) => this.setState({topology_name: event.target.value})}/>

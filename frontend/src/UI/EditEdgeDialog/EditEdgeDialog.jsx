@@ -49,7 +49,7 @@ const EditEdgeDialog = () => (
                 </div>
             </div>
 
-            <div className="button-group">
+            <div className="button-form">
 
                 <button type="button" className="btn btn-success" id="btnSaveEdge">
                     OK

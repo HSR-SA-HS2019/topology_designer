@@ -63,9 +63,12 @@
 .nameForm {
     z-index: 2;
     position: fixed;
-    left: 50%;
     margin-top: 3px;
-    margin-left: -100px;
+    font-size: 43px;
+}
+
+.nameForm input {
+    border: none;
 }
 
 input[type=file] {
