@@ -67,7 +67,7 @@ export function exportTopology(nodes, edges, name){
             if(network_nodes[l].portCount > 0){
                 StringData = StringData + "\t" + network_nodes[l].label + ": |\n";
                 StringData = StringData + "\t\thostname " + network_nodes[l].label+ "\n";
-                let counter = 1
+                let counter = 1;
                 while(counter <= network_nodes[l].portCount){
                     StringData = StringData + "\t\tinterface Gi" + counter + "\n";
                     for(let y in network_edges){
@@ -88,7 +88,7 @@ export function exportTopology(nodes, edges, name){
         else if(network_nodes[l].group === "docker_containers:"){
             if(network_nodes[l].portCount > 0){
                 StringData = StringData + "\t" + network_nodes[l].label + ":\n";
-                let counter = 1
+                let counter = 1;
                 while(counter <= network_nodes[l].portCount){
                     StringData = StringData + "\t\t- interface_number: " + counter + "\n";
                     for(let z in network_edges){
@@ -104,9 +104,6 @@ export function exportTopology(nodes, edges, name){
                     counter++;
                 }
             }
-
-        }
-        else{
 
         }
     }
