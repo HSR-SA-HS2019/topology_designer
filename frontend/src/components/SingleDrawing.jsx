@@ -45,7 +45,13 @@ class SingleDrawing extends React.Component {
                     font: {size: 18},
                     borderWidth: 0,
                     shape: 'image',
-                    size: 30
+                    size: 30,
+                    chosen: {
+                        label: function (values) {
+                            values.size = 20;
+                        }
+                    }
+
                 },
                 edges: {
                     arrows: {
