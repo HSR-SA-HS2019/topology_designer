@@ -19,6 +19,7 @@ export function exportTopology(nodes, edges, name){
             }
         }
     }
+
     for (let key2 in edges) {
         if (edges.hasOwnProperty(key2)) {
             network_edges.push({id: edges[key2].id,
@@ -42,6 +43,7 @@ export function exportTopology(nodes, edges, name){
             }
         }
     }
+
     StringData = StringData + "\nconnections:";
     for (let k in network_edges){
         for (let m in network_nodes){
@@ -60,23 +62,6 @@ export function exportTopology(nodes, edges, name){
             StringData = StringData + "\t" + network_nodes[l].label + ": |\n";
             let newRunConfigString = network_nodes[l].runConfig.replace(/\n/g, "\n\t\t\t");
             StringData = StringData + "\t\t\t" + newRunConfigString + "\n";
-            /*StringData = StringData + "\t\thostname " + network_nodes[l].label+ "\n";
-            let counter = 1;
-            while(counter <= network_nodes[l].portCount){
-                StringData = StringData + "\t\tinterface Gi" + counter + "\n";
-                for(let y in network_edges){
-                    if(network_edges[y].from === network_nodes[l].id && network_edges[y].portCountFrom === counter){
-                        let newRunConfigFrom = network_edges[y].runConfigFrom.replace(/\n/g, "\n\t\t\t");
-                        StringData = StringData + "\t\t\t" + newRunConfigFrom + "\n";
-                    }
-                    else if(network_edges[y].to === network_nodes[l].id && network_edges[y].portCountTo === counter){
-                        let newRunConfigTo = network_edges[y].runConfigTo.replace(/\n/g, "\n\t\t\t");
-                        StringData = StringData + "\t\t\t" + newRunConfigTo + "\n";
-                    }
-                }
-                counter++;
-            }*/
-
         }
         else {
             StringData = StringData + "\t" + network_nodes[l].label + ":\n";
@@ -92,32 +77,8 @@ export function exportTopology(nodes, edges, name){
                     StringData = StringData + "\t\t\tgatewayv4: " + network_edges[n].gateway + "\n"
                 }
             }
-
         }
-            /*if(network_nodes[l].portCount > 0){
-                StringData = StringData + "\t" + network_nodes[l].label + ":\n";
-                let counter = 1;
-                while(counter <= network_nodes[l].portCount){
-                    StringData = StringData + "\t\t- interface_number: " + counter + "\n";
-                    for(let z in network_edges){
-                        if(network_edges[z].from === network_nodes[l].id && network_edges[z].portCountFrom === counter){
-                            let newRunConfigFrom = network_edges[z].runConfigFrom.replace(/\n/g, "\n\t\t\t");
-                            StringData = StringData + "\t\t\t" + newRunConfigFrom + "\n";
-                        }
-                        else if(network_edges[z].to === network_nodes[l].id && network_edges[z].portCountTo === counter){
-                            let newRunConfigTo = network_edges[z].runConfigTo.replace(/\n/g, "\n\t\t\t");
-                            StringData = StringData + "\t\t\t" + newRunConfigTo + "\n";
-                        }
-                    }
-                    counter++;
-                }
-            }*/
-
-        }
-
-
-
-    console.log(StringData);
+    }
 
     let element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(StringData));
