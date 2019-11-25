@@ -12,7 +12,8 @@ export function exportTopology(nodes, edges, name){
                 label: nodes[key1].label,
                 type: nodes[key1].type,
                 group: nodes[key1].group,
-                portCount: 0});
+                runConfig : nodes[key1].runConfig,
+            });
             if(!network_devices.includes(nodes[key1].group)){
                 network_devices.push(nodes[key1].group);
             }
@@ -23,10 +24,11 @@ export function exportTopology(nodes, edges, name){
             network_edges.push({id: edges[key2].id,
                 to: edges[key2].to,
                 from: edges[key2].from,
-                runConfigTo: edges[key2].runConfigTo,
-                runConfigFrom: edges[key2].runConfigFrom,
-                p0rtCountTo: 0,
-                portCountFrom: 0});
+                ipAddress: edges[key2].ipAddress,
+                gateway: edges[key2].gateway,
+                portFrom: edges[key2].portFrom,
+                portTo: edges[key2].portTo
+            });
         }
     }
 
@@ -44,19 +46,10 @@ export function exportTopology(nodes, edges, name){
     for (let k in network_edges){
         for (let m in network_nodes){
             if (network_edges[k].from === network_nodes[m].id){
-                network_nodes[m].portCount++;
-                StringData = StringData + "\n\t-\t" + network_nodes[m].label + ": " + network_nodes[m].portCount;
-                network_edges[k].portCountFrom = network_nodes[m].portCount;
-
-
+                StringData = StringData + "\n\t-\t" + network_nodes[m].label + ": " + network_edges[k].portFrom;
             }
-        }
-        for (let n in network_nodes){
-            if (network_edges[k].to === network_nodes[n].id){
-                network_nodes[n].portCount++;
-                StringData = StringData + "\n\t\t" + network_nodes[n].label + ": " + network_nodes[n].portCount;
-                network_edges[k].portCountTo = network_nodes[n].portCount;
-
+            else if (network_edges[k].to === network_nodes[m].id){
+                StringData = StringData + "\n\t\t" + network_nodes[m].label + ": " + network_edges[k].portTo;
             }
         }
     }
@@ -64,29 +57,44 @@ export function exportTopology(nodes, edges, name){
     StringData = StringData + "\n\nrunning_configs:\n";
     for (let l in network_nodes){
         if(network_nodes[l].group === "virtual_network_devices"){
-            if(network_nodes[l].portCount > 0){
-                StringData = StringData + "\t" + network_nodes[l].label + ": |\n";
-                StringData = StringData + "\t\thostname " + network_nodes[l].label+ "\n";
-                let counter = 1;
-                while(counter <= network_nodes[l].portCount){
-                    StringData = StringData + "\t\tinterface Gi" + counter + "\n";
-                    for(let y in network_edges){
-                        if(network_edges[y].from === network_nodes[l].id && network_edges[y].portCountFrom === counter){
-                            let newRunConfigFrom = network_edges[y].runConfigFrom.replace(/\n/g, "\n\t\t\t");
-                            StringData = StringData + "\t\t\t" + newRunConfigFrom + "\n";
-                        }
-                        else if(network_edges[y].to === network_nodes[l].id && network_edges[y].portCountTo === counter){
-                            let newRunConfigTo = network_edges[y].runConfigTo.replace(/\n/g, "\n\t\t\t");
-                            StringData = StringData + "\t\t\t" + newRunConfigTo + "\n";
-                        }
+            StringData = StringData + "\t" + network_nodes[l].label + ": |\n";
+            let newRunConfigString = network_nodes[l].runConfig.replace(/\n/g, "\n\t\t\t");
+            StringData = StringData + "\t\t\t" + newRunConfigString + "\n";
+            /*StringData = StringData + "\t\thostname " + network_nodes[l].label+ "\n";
+            let counter = 1;
+            while(counter <= network_nodes[l].portCount){
+                StringData = StringData + "\t\tinterface Gi" + counter + "\n";
+                for(let y in network_edges){
+                    if(network_edges[y].from === network_nodes[l].id && network_edges[y].portCountFrom === counter){
+                        let newRunConfigFrom = network_edges[y].runConfigFrom.replace(/\n/g, "\n\t\t\t");
+                        StringData = StringData + "\t\t\t" + newRunConfigFrom + "\n";
                     }
-                    counter++;
+                    else if(network_edges[y].to === network_nodes[l].id && network_edges[y].portCountTo === counter){
+                        let newRunConfigTo = network_edges[y].runConfigTo.replace(/\n/g, "\n\t\t\t");
+                        StringData = StringData + "\t\t\t" + newRunConfigTo + "\n";
+                    }
+                }
+                counter++;
+            }*/
+
+        }
+        else {
+            StringData = StringData + "\t" + network_nodes[l].label + ":\n";
+            for (let n in network_edges){
+                if (network_nodes[l].id === network_edges[n].from){
+                    StringData = StringData + "\t\t- interface_number: " + network_edges[n].portFrom + "\n";
+                    StringData = StringData + "\t\t\tipv4address: " + network_edges[n].ipAddress + "\n";
+                    StringData = StringData + "\t\t\tgatewayv4: " + network_edges[n].gateway + "\n"
+                }
+                else if (network_nodes[l].id === network_edges[n].to){
+                    StringData = StringData + "\t\t- interface_number: " + network_edges[n].portTo + "\n";
+                    StringData = StringData + "\t\t\tipv4address: " + network_edges[n].ipAddress + "\n";
+                    StringData = StringData + "\t\t\tgatewayv4: " + network_edges[n].gateway + "\n"
                 }
             }
 
         }
-        else if(network_nodes[l].group === "docker_containers:"){
-            if(network_nodes[l].portCount > 0){
+            /*if(network_nodes[l].portCount > 0){
                 StringData = StringData + "\t" + network_nodes[l].label + ":\n";
                 let counter = 1;
                 while(counter <= network_nodes[l].portCount){
@@ -103,10 +111,9 @@ export function exportTopology(nodes, edges, name){
                     }
                     counter++;
                 }
-            }
+            }*/
 
         }
-    }
 
 
 
@@ -119,7 +126,4 @@ export function exportTopology(nodes, edges, name){
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
-
-    console.log(nodes);
-    console.log(edges);
 }
