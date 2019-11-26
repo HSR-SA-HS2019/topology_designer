@@ -47,12 +47,19 @@ class SingleDrawing extends React.Component {
                     borderWidth: 0,
                     shape: 'image',
                     size: 30,
+                    shadow: {
+                        enabled: false,
+                        color: '#2D6480',
+                        size: 10,
+                        x: 0,
+                        y: 0
+                    },
                     chosen: {
-                        label: function (values) {
-                            values.size = 20;
-                            values.color = "#2D6480"
+                        node: function (values) {
+                            values.shadow = {
+                                enabled: true,
+                            };
                         },
-
                     }
 
                 },

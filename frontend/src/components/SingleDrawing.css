@@ -24,7 +24,7 @@
 }
 
 .icon-bar {
-    width: 85px; /* Set a specific width */
+    width: 70px; /* Set a specific width */
     background-color: #d4d4d4; /* Dark-grey background */
     z-index: 3;
     position: fixed;
@@ -34,7 +34,7 @@
 .icon-bar span {
     display: block;
     text-align: center;
-    padding: 9px;
+    padding: 2px;
     transition: all 0.3s ease;
     color: white;
     font-size: 8pt;
@@ -57,8 +57,8 @@
 }
 
 .icon-bar i {
-    margin: 7px;
-    font-size: 36px; /* Increased font-size */
+    margin: 9px;
+    font-size: 30px; /* Increased font-size */
 }
 
 .nameForm {
