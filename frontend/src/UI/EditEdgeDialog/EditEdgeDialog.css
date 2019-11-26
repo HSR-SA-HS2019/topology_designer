@@ -60,10 +60,6 @@ textarea {
     vertical-align: center;
 }
 
-#editEdgeDialog button {
-    margin: 5px;
-}
-
 .deviceInfos {
     flex-grow: 1;
 }
@@ -78,7 +74,6 @@ textarea {
     overflow: hidden; /* add this to contain floated children */
     display: flex;
 }
-
 
 
 .connectionNameWrapper {

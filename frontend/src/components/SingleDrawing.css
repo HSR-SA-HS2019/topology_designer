@@ -2,6 +2,7 @@
     border: 1px solid lightgray;
     position: relative;
     height: 100%;
+    display: flex;
 }
 
 .drawingContent {
@@ -27,7 +28,7 @@
     background-color: #d4d4d4; /* Dark-grey background */
     z-index: 3;
     position: fixed;
-    top: 18%;
+    align-self: center;
 }
 
 .icon-bar span {
@@ -40,7 +41,7 @@
 }
 
 .editButton {
-    background-color: #008000;
+    background-color: #378C32;
 }
 
 #editEdgeButton {

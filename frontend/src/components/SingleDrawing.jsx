@@ -41,6 +41,7 @@ class SingleDrawing extends React.Component {
                 locales: graphVisLocales,
                 clickToUse: false,
                 layout: {},
+
                 nodes: {
                     font: {size: 18},
                     borderWidth: 0,
@@ -49,7 +50,9 @@ class SingleDrawing extends React.Component {
                     chosen: {
                         label: function (values) {
                             values.size = 20;
-                        }
+                            values.color = "#2D6480"
+                        },
+
                     }
 
                 },
@@ -64,7 +67,7 @@ class SingleDrawing extends React.Component {
                         return width * 2;
                     },
                     selectionWidth: function (width) {
-                        return width * 2;
+                        return width * 3;
                     },
                     font: {align: 'top', size: 18},
                 },
@@ -127,6 +130,7 @@ class SingleDrawing extends React.Component {
         this.addNewNode = this.addNewNode.bind(this);
         this.newEdge = this.newEdge.bind(this);
         this.editEdge = this.editEdge.bind(this);
+
     }
 
 
@@ -170,7 +174,6 @@ class SingleDrawing extends React.Component {
         link.setAttribute('download', filename);
         link.click();
     };
-
 
     readFile = () => {
         document.querySelector('input[type=file]').click();
@@ -219,7 +222,7 @@ class SingleDrawing extends React.Component {
                 this.setState({graphVis: {nodes: [], edges: []}});
                 this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
             });
-    };
+    }
 
     newEdge = () => {
         let selection = this.network.getSelection();
@@ -312,8 +315,8 @@ class SingleDrawing extends React.Component {
                 <div className="icon-bar">
                     <span onClick={this.addNewNode.bind(this, this.docker_container_url)}><i className="fab fa-docker"/>Add Docker</span>
                     <span onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}><i
-                        className="fas fa-random"/>Add Router</span>
-                    <span onClick={this.newEdge}><i className="fas fa-arrows-alt-h"/>Add Edge</span>
+                        className="fas fa-random"/>Network Device</span>
+                    <span onClick={this.newEdge}><i className="fas fa-arrows-alt-h" id="addEgdgeButton"/>Add Edge</span>
                     <span onClick={this.editEdge} className="editButton" id="editEdgeButton"> <i
                         className="fas fa-edit"/>Edit</span>
                     <span onClick={this.editNode} className="editButton" id="editNodeButton"> <i

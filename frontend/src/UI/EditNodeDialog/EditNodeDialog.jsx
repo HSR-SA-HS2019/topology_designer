@@ -10,17 +10,21 @@ const EditNodeDialog = () => (
         <form className="form-horizontal">
             <div className="form-group">
                 <div className="deviceInfosWrapper">
-                    <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
-                        Devicename
-                    </label>
-                    <div className="col-sm-7">
-                        <input type="text" className="form-control" id="inpNodeLabel"/>
+                    <div className="infoRow">
+                        <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
+                            Devicename
+                        </label>
+                        <div className="col-sm-7">
+                            <input type="text" className="form-control" id="inpNodeLabel"/>
+                        </div>
                     </div>
-                    <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
-                        Devicetype
-                    </label>
-                    <div className="col-sm-7">
-                        <input type="text" className="form-control" id="nodeDeviceType"/>
+                    <div className="infoRow">
+                        <label htmlFor="inpNodeLabel" className="col-sm-4 control-label">
+                            Devicetype
+                        </label>
+                        <div className="col-sm-7">
+                            <input type="text" className="form-control" id="nodeDeviceType"/>
+                        </div>
                     </div>
                 </div>
                 <div className="nodeConfigWrapper">
