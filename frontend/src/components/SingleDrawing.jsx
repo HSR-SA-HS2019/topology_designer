@@ -30,7 +30,6 @@ class SingleDrawing extends React.Component {
     docker_container_url = "http://127.0.0.1:8000/api/2";   //"http://10.20.1.12:8000/api/2";
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
 
-
     constructor(props) {
         super(props);
         this.state = {
@@ -132,11 +131,11 @@ class SingleDrawing extends React.Component {
                 }
             },
             topology_name: 'topology designer',
+            devices: []
         };
         this.initNetworkInstance = this.initNetworkInstance.bind(this);
         this.exportTopologyHelper = this.exportTopologyHelper.bind(this);
         this.deleteTopology = this.deleteTopology.bind(this);
-        // this.addNewNode = this.addNewNode.bind(this);
         this.newEdge = this.newEdge.bind(this);
         this.editEdge = this.editEdge.bind(this);
         this.createButtons = this.createButtons.bind(this);
@@ -149,7 +148,7 @@ class SingleDrawing extends React.Component {
 
     setNetworkInstance = nw => {
         this.network = nw;
-        this.createButtons();
+        this.getDeviceInfos(this.deviceInfosUrl);
     };
 
     deleteTopology = () => {
@@ -210,37 +209,32 @@ class SingleDrawing extends React.Component {
         }
     };
 
-    getDeviceInfos(url) {
-        axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
-            .then(res => {
-                this.devices = res.data;
-            });
-    }
+    getDeviceInfos = async (url) => {
+        let res = await axios.get(url);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
+        let data = res.data;
+        this.setState({devices: data});
+        this.createButtons();
+    };
 
 
     createButtons() {
-        axios.get(this.deviceInfosUrl)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
-            .then(res => {
-                res.data.forEach(function (item) {
-                    console.log(item);
-                    let span = document.createElement("span");
-                    span.setAttribute("id", item.defaultName);
-                    let iconElement = document.createElement("i");
-                    let icon = document.createElement("IMG");
-                    icon.setAttribute("src", item.icon);
-                    iconElement.appendChild(icon);
-                    span.appendChild(iconElement);
-                    let node = document.createTextNode(item.defaultName);
-                    span.appendChild(node);
-                    let element = document.getElementById("iconBar");
-                    let child = document.getElementById("addEdgeButton");
-                    element.insertBefore(span, child);
-                })
+        this.state.devices.forEach(function (item) {
+            console.log(item);
+            let span = document.createElement("span");
+            span.setAttribute("id", item.defaultName);
+            let iconElement = document.createElement("i");
+            let icon = document.createElement("IMG");
+            icon.setAttribute("src", item.icon);
+            iconElement.appendChild(icon);
+            span.appendChild(iconElement);
+            let node = document.createTextNode(item.defaultName);
+            span.appendChild(node);
+            let element = document.getElementById("iconBar");
+            let child = document.getElementById("addEdgeButton");
+            element.insertBefore(span, child);
+        })
+    };
 
-            });
-
-
-    }
 
     addNewNode(url) {
         axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
@@ -263,6 +257,7 @@ class SingleDrawing extends React.Component {
                 this.setState({graphVis: {nodes: [], edges: []}});
                 this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
             });
+        console.log(this.state.devices)
     }
 
     newEdge = () => {
