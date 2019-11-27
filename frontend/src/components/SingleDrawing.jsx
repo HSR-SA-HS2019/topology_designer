@@ -28,6 +28,8 @@ import {activateDeleteButton, hideDeleteButton, hideEditButtons} from "../functi
 class SingleDrawing extends React.Component {
     virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
     docker_container_url = "http://127.0.0.1:8000/api/2";   //"http://10.20.1.12:8000/api/2";
+    deviceInfosUrl = "http://127.0.0.1:8000/api/";
+
 
     constructor(props) {
         super(props);
@@ -134,10 +136,10 @@ class SingleDrawing extends React.Component {
         this.initNetworkInstance = this.initNetworkInstance.bind(this);
         this.exportTopologyHelper = this.exportTopologyHelper.bind(this);
         this.deleteTopology = this.deleteTopology.bind(this);
-        this.addNewNode = this.addNewNode.bind(this);
+        // this.addNewNode = this.addNewNode.bind(this);
         this.newEdge = this.newEdge.bind(this);
         this.editEdge = this.editEdge.bind(this);
-
+        this.createButtons = this.createButtons.bind(this);
     }
 
 
@@ -147,6 +149,7 @@ class SingleDrawing extends React.Component {
 
     setNetworkInstance = nw => {
         this.network = nw;
+        this.createButtons();
     };
 
     deleteTopology = () => {
@@ -207,6 +210,37 @@ class SingleDrawing extends React.Component {
         }
     };
 
+    getDeviceInfos(url) {
+        axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
+            .then(res => {
+                this.devices = res.data;
+            });
+    }
+
+
+    createButtons() {
+        axios.get(this.deviceInfosUrl)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
+            .then(res => {
+                res.data.forEach(function (item) {
+                    console.log(item);
+                    let span = document.createElement("span");
+                    span.setAttribute("id", item.defaultName);
+                    let iconElement = document.createElement("i");
+                    let icon = document.createElement("IMG");
+                    icon.setAttribute("src", item.icon);
+                    iconElement.appendChild(icon);
+                    span.appendChild(iconElement);
+                    let node = document.createTextNode(item.defaultName);
+                    span.appendChild(node);
+                    let element = document.getElementById("iconBar");
+                    let child = document.getElementById("addEdgeButton");
+                    element.insertBefore(span, child);
+                })
+
+            });
+
+
+    }
 
     addNewNode(url) {
         axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
@@ -319,11 +353,11 @@ class SingleDrawing extends React.Component {
                         style={{height: "inherit"}}
                         getNetwork={this.setNetworkInstance}/>
                 </div>
-                <div className="icon-bar">
-                    <span onClick={this.addNewNode.bind(this, this.docker_container_url)}><i className="fab fa-docker"/>Add Docker</span>
+                <div className="iconBar" id="iconBar">
+                    <span onClick={this.addNewNode.bind(this, this.docker_container_url)}><i className="fab fa-docker"/>Docker</span>
                     <span onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}><i
                         className="fas fa-random"/>Network Device</span>
-                    <span onClick={this.newEdge}><i className="fas fa-arrows-alt-h" id="addEgdgeButton"/>Add Edge</span>
+                    <span onClick={this.newEdge} id="addEdgeButton"><i className="fas fa-arrows-alt-h"/>Add Edge</span>
                     <span onClick={this.editEdge} className="editButton" id="editEdgeButton"> <i
                         className="fas fa-edit"/>Edit</span>
                     <span onClick={this.editNode} className="editButton" id="editNodeButton"> <i
@@ -335,6 +369,7 @@ class SingleDrawing extends React.Component {
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
                     <span className="delete" onClick={this.deleteTopology}><i
                         className="fa fa-trash"/>Clear All</span>
+                    {/*<span onClick={this.createButtons()}>Click the shit out of me!</span>*/}
                 </div>
                 <div className="Buttons">
                     <div> {/* handlebars? */}
@@ -352,6 +387,7 @@ class SingleDrawing extends React.Component {
                 <img className="logo" src={logo} alt=""/>
                 <EditNodeDialog/>
                 <EditEdgeDialog/>
+
             </div>
         );
     }

@@ -23,7 +23,7 @@
     display: none;
 }
 
-.icon-bar {
+.iconBar {
     width: 70px; /* Set a specific width */
     background-color: #d4d4d4; /* Dark-grey background */
     z-index: 3;
@@ -31,13 +31,17 @@
     align-self: center;
 }
 
-.icon-bar span {
+.iconBar span {
     display: block;
     text-align: center;
     padding: 2px;
     transition: all 0.3s ease;
     color: white;
     font-size: 8pt;
+}
+
+.iconBar IMG {
+    width: 50px;
 }
 
 .editButton {
@@ -56,7 +60,7 @@
     display: none;
 }
 
-.icon-bar i {
+.iconBar i {
     margin: 9px;
     font-size: 30px; /* Increased font-size */
 }
@@ -90,7 +94,7 @@ input[type=file] {
     margin-left: 5px;
 }
 
-.icon-bar span:hover {
+.iconBar span:hover {
     background-color: #2D6480; /* Add a hover color */
     cursor: pointer;
 }
