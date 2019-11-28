@@ -234,31 +234,26 @@ class SingleDrawing extends React.Component {
         this.state.devices.forEach(function (item) {
             let button = document.getElementById(item.defaultName);
             button.onclick = () => {
-                self.addNewNodeViaDevices(item.defaultName);
+                self.addNewNodeViaDevices(item);
             };
         })
     }
 
-    addNewNodeViaDevices(deviceType) {
+    addNewNodeViaDevices(item) {
         let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
         let edgesCopy = this.state.graphVis.edges.slice();
         let number = 0;
-        let deviceToAdd = {};
-        this.state.devices.forEach(function (item) {
-            if (item.defaultName === deviceType) {
-                deviceToAdd = item;
-            }
-        });
+
         for (let n in nodesCopy) {
-            if (nodesCopy[n].group === deviceToAdd.name) {
+            if (nodesCopy[n].group === item.name) {
                 number = number + 1;
             }
         }
         nodesCopy.push({
-            label: deviceToAdd.defaultName + number,
-            group: deviceToAdd.name,
-            type: deviceToAdd.type,
-            image: deviceToAdd.icon,
+            label: item.defaultName + number,
+            group: item.name,
+            type: item.type,
+            image: item.icon,
             runConfig: ""
         });
         this.setState({graphVis: {nodes: [], edges: []}});
