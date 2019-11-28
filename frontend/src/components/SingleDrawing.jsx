@@ -23,12 +23,16 @@ import {
     requiredId,
     requiredNode
 } from "../functions/NodeFunctions";
-import {activateDeleteButton, hideDeleteButton, hideEditButtons} from "../functions/GlobalFunctions";
+import {activateDeleteButton, hideDeleteButton, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
 
 class SingleDrawing extends React.Component {
     virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
     docker_container_url = "http://127.0.0.1:8000/api/2";   //"http://10.20.1.12:8000/api/2";
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
+    console;
+    this;
+    state;
+    devices;
 
     constructor(props) {
         super(props);
@@ -141,7 +145,6 @@ class SingleDrawing extends React.Component {
         this.createButtons = this.createButtons.bind(this);
     }
 
-
     initNetworkInstance(networkInstance) {
         this.network = networkInstance;
     }
@@ -209,56 +212,59 @@ class SingleDrawing extends React.Component {
         }
     };
 
+
     getDeviceInfos = async (url) => {
         let res = await axios.get(url);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
         let data = res.data;
         this.setState({devices: data});
         this.createButtons();
+        this.initializeClickEvent();
     };
 
 
     createButtons() {
         this.state.devices.forEach(function (item) {
-            console.log(item);
-            let span = document.createElement("span");
-            span.setAttribute("id", item.defaultName);
-            let iconElement = document.createElement("i");
-            let icon = document.createElement("IMG");
-            icon.setAttribute("src", item.icon);
-            iconElement.appendChild(icon);
-            span.appendChild(iconElement);
-            let node = document.createTextNode(item.defaultName);
-            span.appendChild(node);
-            let element = document.getElementById("iconBar");
-            let child = document.getElementById("addEdgeButton");
-            element.insertBefore(span, child);
+            initializeButtons(item);
         })
-    };
-
-
-    addNewNode(url) {
-        axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
-            .then(res => {
-                let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
-                let edgesCopy = this.state.graphVis.edges.slice();
-                let number = 0;
-                for (let n in nodesCopy) {
-                    if (nodesCopy[n].group === res.data.name) {
-                        number = number + 1;
-                    }
-                }
-                nodesCopy.push({
-                    label: res.data.defaultName + number,
-                    group: res.data.name,
-                    type: res.data.type,
-                    image: res.data.icon,
-                    runConfig: ""
-                });
-                this.setState({graphVis: {nodes: [], edges: []}});
-                this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
-            });
-        console.log(this.state.devices)
     }
+    ;
+
+    initializeClickEvent() {
+        let self = this;
+        this.state.devices.forEach(function (item) {
+            let button = document.getElementById(item.defaultName);
+            button.onclick = () => {
+                self.addNewNodeViaDevices(item.defaultName);
+            };
+        })
+    }
+
+    addNewNodeViaDevices(deviceType) {
+        let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
+        let edgesCopy = this.state.graphVis.edges.slice();
+        let number = 0;
+        let deviceToAdd = {};
+        this.state.devices.forEach(function (item) {
+            if (item.defaultName === deviceType) {
+                deviceToAdd = item;
+            }
+        });
+        for (let n in nodesCopy) {
+            if (nodesCopy[n].group === deviceToAdd.name) {
+                number = number + 1;
+            }
+        }
+        nodesCopy.push({
+            label: deviceToAdd.defaultName + number,
+            group: deviceToAdd.name,
+            type: deviceToAdd.type,
+            image: deviceToAdd.icon,
+            runConfig: ""
+        });
+        this.setState({graphVis: {nodes: [], edges: []}});
+        this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+    }
+
 
     newEdge = () => {
         let selection = this.network.getSelection();
@@ -349,9 +355,6 @@ class SingleDrawing extends React.Component {
                         getNetwork={this.setNetworkInstance}/>
                 </div>
                 <div className="iconBar" id="iconBar">
-                    <span onClick={this.addNewNode.bind(this, this.docker_container_url)}><i className="fab fa-docker"/>Docker</span>
-                    <span onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}><i
-                        className="fas fa-random"/>Network Device</span>
                     <span onClick={this.newEdge} id="addEdgeButton"><i className="fas fa-arrows-alt-h"/>Add Edge</span>
                     <span onClick={this.editEdge} className="editButton" id="editEdgeButton"> <i
                         className="fas fa-edit"/>Edit</span>
