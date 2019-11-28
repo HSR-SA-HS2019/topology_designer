@@ -23,11 +23,16 @@ import {
     requiredId,
     requiredNode
 } from "../functions/NodeFunctions";
-import {activateDeleteButton, hideDeleteButton, hideEditButtons} from "../functions/GlobalFunctions";
+import {activateDeleteButton, hideDeleteButton, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
 
 class SingleDrawing extends React.Component {
     virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
     docker_container_url = "http://127.0.0.1:8000/api/2";   //"http://10.20.1.12:8000/api/2";
+    deviceInfosUrl = "http://127.0.0.1:8000/api/";
+    console;
+    this;
+    state;
+    devices;
 
     constructor(props) {
         super(props);
@@ -41,11 +46,27 @@ class SingleDrawing extends React.Component {
                 locales: graphVisLocales,
                 clickToUse: false,
                 layout: {},
+
                 nodes: {
                     font: {size: 18},
                     borderWidth: 0,
                     shape: 'image',
-                    size: 30
+                    size: 30,
+                    shadow: {
+                        enabled: false,
+                        color: '#2D6480',
+                        size: 10,
+                        x: 0,
+                        y: 0
+                    },
+                    chosen: {
+                        node: function (values) {
+                            values.shadow = {
+                                enabled: true,
+                            };
+                        },
+                    }
+
                 },
                 edges: {
                     arrows: {
@@ -58,7 +79,7 @@ class SingleDrawing extends React.Component {
                         return width * 2;
                     },
                     selectionWidth: function (width) {
-                        return width * 2;
+                        return width * 3;
                     },
                     font: {align: 'top', size: 18},
                 },
@@ -114,15 +135,15 @@ class SingleDrawing extends React.Component {
                 }
             },
             topology_name: 'topology designer',
+            devices: []
         };
         this.initNetworkInstance = this.initNetworkInstance.bind(this);
         this.exportTopologyHelper = this.exportTopologyHelper.bind(this);
         this.deleteTopology = this.deleteTopology.bind(this);
-        this.addNewNode = this.addNewNode.bind(this);
         this.newEdge = this.newEdge.bind(this);
         this.editEdge = this.editEdge.bind(this);
+        this.createButtons = this.createButtons.bind(this);
     }
-
 
     initNetworkInstance(networkInstance) {
         this.network = networkInstance;
@@ -130,6 +151,7 @@ class SingleDrawing extends React.Component {
 
     setNetworkInstance = nw => {
         this.network = nw;
+        this.getDeviceInfos(this.deviceInfosUrl);
     };
 
     deleteTopology = () => {
@@ -165,7 +187,6 @@ class SingleDrawing extends React.Component {
         link.click();
     };
 
-
     readFile = () => {
         document.querySelector('input[type=file]').click();
     };
@@ -192,28 +213,53 @@ class SingleDrawing extends React.Component {
     };
 
 
-    addNewNode(url) {
-        axios.get(url)   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
-            .then(res => {
-                let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
-                let edgesCopy = this.state.graphVis.edges.slice();
-                let number = 0;
-                for (let n in nodesCopy) {
-                    if (nodesCopy[n].group === res.data.name) {
-                        number = number + 1;
-                    }
-                }
-                nodesCopy.push({
-                    label: res.data.defaultName + number,
-                    group: res.data.name,
-                    type: res.data.type,
-                    image: res.data.icon,
-                    runConfig: ""
-                });
-                this.setState({graphVis: {nodes: [], edges: []}});
-                this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
-            });
+    getDeviceInfos = async (url) => {
+        let res = await axios.get(url);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
+        let data = res.data;
+        this.setState({devices: data});
+        this.createButtons();
+        this.initializeClickEvent();
     };
+
+
+    createButtons() {
+        this.state.devices.forEach(function (item) {
+            initializeButtons(item);
+        })
+    }
+    ;
+
+    initializeClickEvent() {
+        let self = this;
+        this.state.devices.forEach(function (item) {
+            let button = document.getElementById(item.defaultName);
+            button.onclick = () => {
+                self.addNewNodeViaDevices(item);
+            };
+        })
+    }
+
+    addNewNodeViaDevices(item) {
+        let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
+        let edgesCopy = this.state.graphVis.edges.slice();
+        let number = 0;
+
+        for (let n in nodesCopy) {
+            if (nodesCopy[n].group === item.name) {
+                number = number + 1;
+            }
+        }
+        nodesCopy.push({
+            label: item.defaultName + number,
+            group: item.name,
+            type: item.type,
+            image: item.icon,
+            runConfig: ""
+        });
+        this.setState({graphVis: {nodes: [], edges: []}});
+        this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+    }
+
 
     newEdge = () => {
         let selection = this.network.getSelection();
@@ -303,11 +349,8 @@ class SingleDrawing extends React.Component {
                         style={{height: "inherit"}}
                         getNetwork={this.setNetworkInstance}/>
                 </div>
-                <div className="icon-bar">
-                    <span onClick={this.addNewNode.bind(this, this.docker_container_url)}><i className="fab fa-docker"/>Add Docker</span>
-                    <span onClick={this.addNewNode.bind(this, this.virtual_network_devices_url)}><i
-                        className="fas fa-random"/>Add Router</span>
-                    <span onClick={this.newEdge}><i className="fas fa-arrows-alt-h"/>Add Edge</span>
+                <div className="iconBar" id="iconBar">
+                    <span onClick={this.newEdge} id="addEdgeButton"><i className="fas fa-arrows-alt-h"/>Add Edge</span>
                     <span onClick={this.editEdge} className="editButton" id="editEdgeButton"> <i
                         className="fas fa-edit"/>Edit</span>
                     <span onClick={this.editNode} className="editButton" id="editNodeButton"> <i
@@ -319,6 +362,7 @@ class SingleDrawing extends React.Component {
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
                     <span className="delete" onClick={this.deleteTopology}><i
                         className="fa fa-trash"/>Clear All</span>
+                    {/*<span onClick={this.createButtons()}>Click the shit out of me!</span>*/}
                 </div>
                 <div className="Buttons">
                     <div> {/* handlebars? */}
@@ -329,7 +373,6 @@ class SingleDrawing extends React.Component {
                     </div>
                 </div>
                 <form className="nameForm">
-                    Topology Name:
                     <input type="text"
                            value={this.state.topology_name}
                            onChange={(event) => this.setState({topology_name: event.target.value})}/>
@@ -337,6 +380,7 @@ class SingleDrawing extends React.Component {
                 <img className="logo" src={logo} alt=""/>
                 <EditNodeDialog/>
                 <EditEdgeDialog/>
+
             </div>
         );
     }
