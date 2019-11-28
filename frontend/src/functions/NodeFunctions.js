@@ -31,7 +31,7 @@ export function getConnections(node, edges, allNodes, allEdges) {
                 } else if (node === allEdges[j].to) {
                     for (let k in allNodes) {
                         if (allNodes[k].id === allEdges[j].from) {
-                            portString = portString + "Gi" + allEdges[j].portFrom + ": " + allNodes[k].label + "\n ";
+                            portString = portString + "Gi" + allEdges[j].portTo + ": " + allNodes[k].label + "\n ";
                         }
                     }
                 }
