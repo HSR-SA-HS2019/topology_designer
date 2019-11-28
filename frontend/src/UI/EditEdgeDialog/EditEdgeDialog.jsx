@@ -18,32 +18,64 @@ const EditEdgeDialog = () => (
                     </div>
                 </div>
                 <div className="configWrapper">
-                    <div className="deviceInfos">
-                        <label htmlFor="Devicename" className="col-sm-4 control-label">
-                            Devicename
-                        </label>
-                        <div className="col-sm-7">
-                            <input type="text" className="form-control" id="deviceName"/>
+                    <div className="deviceWrapper" id="firstDevice">
+                        <div className="deviceInfos">
+                            <label htmlFor="Devicename" className="col-sm-4 control-label">
+                                Devicename
+                            </label>
+                            <div className="col-sm-7">
+                                <input type="text" className="form-control" id="deviceName"/>
+                            </div>
+                            <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
+                                Devicetype
+                            </label>
+                            <div className="col-sm-7">
+                                <input type="text" className="form-control" id="deviceType"/>
+                            </div>
                         </div>
-                        <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
-                            Devicetype
-                        </label>
-                        <div className="col-sm-7">
-                            <input type="text" className="form-control" id="deviceType"/>
+                        <div className="deviceConfigs">
+                            <label htmlFor="inpEdgeIp" className="col-sm-4 control-label">
+                                IP Address
+                            </label>
+                            <div className="col-sm-7">
+                                <input type="text" className="form-control" id="ipAddress"/>
+                            </div>
+                            <label htmlFor="inpEdgeGateway" className="col-sm-4 control-label">
+                                Gateway
+                            </label>
+                            <div className="col-sm-7">
+                                <input type="text" className="form-control" id="gateway"/>
+                            </div>
                         </div>
                     </div>
-                    <div className="deviceConfigs">
-                        <label htmlFor="inpEdgeIp" className="col-sm-4 control-label">
-                            IP Address
-                        </label>
-                        <div className="col-sm-7">
-                            <input type="text" className="form-control" id="ipAddress"/>
+                    <div className="deviceWrapper" id="secondDevice">
+                        <div className="deviceInfos">
+                            <label htmlFor="Devicename" className="col-sm-4 control-label">
+                                Devicename
+                            </label>
+                            <div className="col-sm-7">
+                                <input type="text" className="form-control" id="deviceName"/>
+                            </div>
+                            <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
+                                Devicetype
+                            </label>
+                            <div className="col-sm-7">
+                                <input type="text" className="form-control" id="deviceType"/>
+                            </div>
                         </div>
-                        <label htmlFor="inpEdgeGateway" className="col-sm-4 control-label">
-                            Gateway
-                        </label>
-                        <div className="col-sm-7">
-                            <input type="text" className="form-control" id="gateway"/>
+                        <div className="deviceConfigs">
+                            <label htmlFor="inpEdgeIp" className="col-sm-4 control-label">
+                                IP Address
+                            </label>
+                            <div className="col-sm-7">
+                                <input type="text" className="form-control" id="ipAddress"/>
+                            </div>
+                            <label htmlFor="inpEdgeGateway" className="col-sm-4 control-label">
+                                Gateway
+                            </label>
+                            <div className="col-sm-7">
+                                <input type="text" className="form-control" id="gateway"/>
+                            </div>
                         </div>
                     </div>
                 </div>

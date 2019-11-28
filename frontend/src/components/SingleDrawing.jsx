@@ -279,14 +279,20 @@ class SingleDrawing extends React.Component {
         document.getElementById('btnSaveEdge').onclick = () => {
             this.saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex);
             closeEdgeDialog();
-            this.setState({graphVis: {nodes: [], edges: []}});
-            this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+            hideEditButtons();
+            this.setNetworkState(nodesCopy, edgesCopy);
         };
         document.getElementById('btnCancelEdgeEdit').onclick = () => {
             closeEdgeDialog();
+            hideEditButtons();
         };
         document.getElementById('editEdgeDialog').style.display = 'block';
     };
+
+    setNetworkState(nodesCopy, edgesCopy) {
+        this.setState({graphVis: {nodes: [], edges: []}});
+        this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+    }
 
     saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
         edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
@@ -314,11 +320,12 @@ class SingleDrawing extends React.Component {
         document.getElementById('btnSaveNode').onclick = () => {
             this.saveNodeConfig(nodesCopy, nodeIndex);
             closeNodeDialog();
-            this.setState({graphVis: {nodes: [], edges: []}});
-            this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+            hideEditButtons();
+            this.setNetworkState(nodesCopy, edgesCopy);
         };
         document.getElementById('btnCancelNodeEdit').onclick = () => {
             closeNodeDialog();
+            hideEditButtons();
         };
         document.getElementById('editNodeDialog').style.display = 'block';
     };
