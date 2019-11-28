@@ -26,8 +26,6 @@ import {
 import {activateDeleteButton, hideDeleteButton, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
 
 class SingleDrawing extends React.Component {
-    virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
-    docker_container_url = "http://127.0.0.1:8000/api/2";   //"http://10.20.1.12:8000/api/2";
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
     console;
     this;
