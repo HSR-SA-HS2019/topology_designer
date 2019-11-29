@@ -1,7 +1,16 @@
 export function requiredNode(nodesCopy, fromIndex, toIndex) {
-    if (nodesCopy[fromIndex].group !== "virtual_network_devices") {
+    function hideSecondDevice() {
+        document.getElementById("secondDevice").style.display = "none";
+    }
+
+    if (nodesCopy[fromIndex].group !== "virtual_network_devices" && nodesCopy[toIndex].group !== "virtual_network_devices") {
+        document.getElementById("secondDevice").style.display = "flex";
+        return nodesCopy[toIndex];
+    } else if (nodesCopy[fromIndex].group !== "virtual_network_devices") {
+        hideSecondDevice();
         return nodesCopy[fromIndex];
     } else {
+        hideSecondDevice();
         return nodesCopy[toIndex];
     }
 }

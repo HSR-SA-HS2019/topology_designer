@@ -75,9 +75,20 @@ textarea {
     display: flex;
 }
 
+.deviceWrapper {
+    display: flex;
+}
 
 .connectionNameWrapper {
     overflow: hidden;
+}
+
+#firstDevice {
+    flex-grow: 1;
+}
+
+#secondDevice {
+    flex-grow: 1;
 }
 
 
