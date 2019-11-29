@@ -221,7 +221,7 @@ class SingleDrawing extends React.Component {
             initializeButtons(item);
         })
     }
-    ;
+
 
     initializeClickEvent() {
         let self = this;
@@ -363,7 +363,6 @@ class SingleDrawing extends React.Component {
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
                     <span className="delete" onClick={this.deleteTopology}><i
                         className="fa fa-trash"/>Clear All</span>
-                    {/*<span onClick={this.createButtons()}>Click the shit out of me!</span>*/}
                 </div>
                 <div className="Buttons">
                     <div> {/* handlebars? */}
