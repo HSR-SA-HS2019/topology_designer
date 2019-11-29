@@ -24,13 +24,13 @@ const EditEdgeDialog = () => (
                                 Devicename
                             </label>
                             <div className="col-sm-7">
-                                <input type="text" className="form-control" id="deviceName"/>
+                                <input type="text" className="form-control" id="deviceNameFrom"/>
                             </div>
                             <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
                                 Devicetype
                             </label>
                             <div className="col-sm-7">
-                                <input type="text" className="form-control" id="deviceType"/>
+                                <input type="text" className="form-control" id="deviceTypeFrom"/>
                             </div>
                         </div>
                         <div className="deviceConfigs">
@@ -38,13 +38,13 @@ const EditEdgeDialog = () => (
                                 IP Address
                             </label>
                             <div className="col-sm-7">
-                                <input type="text" className="form-control" id="ipAddress"/>
+                                <input type="text" className="form-control" id="ipAddressFrom"/>
                             </div>
                             <label htmlFor="inpEdgeGateway" className="col-sm-4 control-label">
                                 Gateway
                             </label>
                             <div className="col-sm-7">
-                                <input type="text" className="form-control" id="gateway"/>
+                                <input type="text" className="form-control" id="gatewayFrom"/>
                             </div>
                         </div>
                     </div>
@@ -54,13 +54,13 @@ const EditEdgeDialog = () => (
                                 Devicename
                             </label>
                             <div className="col-sm-7">
-                                <input type="text" className="form-control" id="deviceName"/>
+                                <input type="text" className="form-control" id="deviceNameTo"/>
                             </div>
                             <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
                                 Devicetype
                             </label>
                             <div className="col-sm-7">
-                                <input type="text" className="form-control" id="deviceType"/>
+                                <input type="text" className="form-control" id="deviceTypeTo"/>
                             </div>
                         </div>
                         <div className="deviceConfigs">
@@ -68,13 +68,13 @@ const EditEdgeDialog = () => (
                                 IP Address
                             </label>
                             <div className="col-sm-7">
-                                <input type="text" className="form-control" id="ipAddress"/>
+                                <input type="text" className="form-control" id="ipAddressTo"/>
                             </div>
                             <label htmlFor="inpEdgeGateway" className="col-sm-4 control-label">
                                 Gateway
                             </label>
                             <div className="col-sm-7">
-                                <input type="text" className="form-control" id="gateway"/>
+                                <input type="text" className="form-control" id="gatewayTo"/>
                             </div>
                         </div>
                     </div>

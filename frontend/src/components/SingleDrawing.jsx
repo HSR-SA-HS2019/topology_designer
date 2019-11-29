@@ -292,18 +292,18 @@ class SingleDrawing extends React.Component {
 
     saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
         edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
-        nodesCopy[nodeIndex].label = document.getElementById('deviceName').value;
-        nodesCopy[nodeIndex].type = document.getElementById('deviceType').value;
-        edgesCopy[edgeIndex].ipAddress = document.getElementById('ipAddress').value;
-        edgesCopy[edgeIndex].gateway = document.getElementById('gateway').value;
+        nodesCopy[nodeIndex].label = document.getElementById('deviceNameFrom').value;
+        nodesCopy[nodeIndex].type = document.getElementById('deviceTypeFrom').value;
+        edgesCopy[edgeIndex].ipAddress = document.getElementById('ipAddressFrom').value;
+        edgesCopy[edgeIndex].gateway = document.getElementById('gatewayFrom').value;
     }
 
     intializeEdgeConfig(edgesCopy, edgeIndex, nodeToConfig) {
         document.getElementById('inpEdgeLabel').value = edgesCopy[edgeIndex].label;
-        document.getElementById('deviceName').value = nodeToConfig.label;
-        document.getElementById('deviceType').value = nodeToConfig.type;
-        document.getElementById('ipAddress').value = edgesCopy[edgeIndex].ipAddress;
-        document.getElementById('gateway').value = edgesCopy[edgeIndex].gateway;
+        document.getElementById('deviceNameFrom').value = nodeToConfig.label;
+        document.getElementById('deviceTypeFrom').value = nodeToConfig.type;
+        document.getElementById('ipAddressFrom').value = edgesCopy[edgeIndex].ipAddress;
+        document.getElementById('gatewayFrom').value = edgesCopy[edgeIndex].gateway;
     }
 
     editNode = () => {
