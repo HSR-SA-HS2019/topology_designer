@@ -9,7 +9,8 @@ import {
     importTopologyName,
     importTopologyNodes,
     importTopologyEdges,
-    importTopologyRunConfigs
+    importTopologyRunConfigs,
+    importTopology
 } from '../functions/YamlFileFunctions';
 import {
     activateEdgeButtons,
@@ -212,10 +213,11 @@ class SingleDrawing extends React.Component {
                 if (file.name.match(regex)) {
                     let contentBuffer = await readFileAsync(file);
                     let yamlString = yamljs.parse(contentBuffer);
-                    console.log('yamlString');
-                    console.log(yamlString);
                     this.setState({graphVis: {nodes: [], edges: []}});
-                    let topology_name = importTopologyName(yamlString);
+                    let data = importTopology(yamlString);
+                    this.setState({topology_name: data.topology_name});
+                    this.setState({graphVis: {nodes: data.nodes, edges: data.edges}});
+                    /*let topology_name = importTopologyName(yamlString);
                     this.setState({topology_name: topology_name});
                     let nodes = importTopologyNodes(yamlString);
                     console.log(nodes)
@@ -251,7 +253,7 @@ class SingleDrawing extends React.Component {
                     }
                     edgesCopy = this.state.graphVis.edges.slice();
                     //let configs = importTopologyRunConfigs(yamlString, nodesCopy, edgesCopy);
-                    console.log(this.network);
+                    console.log(this.network);*/
                     //this.network.setData({nodes: nodes, edges: edges});
 
                     //this.initNetworkInstance(this.setNetworkInstance);

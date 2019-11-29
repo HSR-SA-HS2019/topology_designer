@@ -188,8 +188,10 @@ export function importTopologyEdges(data, nodes) {
                     label: '',
                     from: idFrom,
                     to: idTo,
-                    ipAddress: '',
-                    gateway: '',
+                    ipAddressFrom: '',
+                    gatewayFrom: '',
+                    ipAddressTo: '',
+                    gatewayTo: '',
                     portFrom: portFrom,
                     portTo: portTo,
                 });
@@ -244,4 +246,135 @@ export function readFileAsync(file) {
         reader.onerror = reject;
         reader.readAsText(file);
     })
+}
+
+
+export function importTopology(data){
+    let nodes = [];
+    let edges = [];
+    let topology_name = data.description;
+    let virtual_network_devices = data.virtual_network_devices;    //Object
+    let docker_containers = data.docker_containers;    //Object
+    let virtual_machines = data.virual_machines;    //Object
+    let connections = data.connections; // Array
+    let runConfigs = data.running_configs;  //Object
+    let idCounter = 0;
+    
+
+    if (!(virtual_network_devices === undefined)){
+        for (let key1 in virtual_network_devices) {
+            if (virtual_network_devices.hasOwnProperty(key1)) {
+                nodes.push({
+                    id: idCounter,
+                    label: key1,
+                    type: virtual_network_devices[key1].type,
+                    group: 'virtual_network_devices',
+                    runConfig: "",
+                    shape: 'circle'
+                });
+                idCounter++;
+            }
+        }
+    }
+
+    if (!(docker_containers === undefined)){
+        for (let key2 in docker_containers) {
+            if (docker_containers.hasOwnProperty(key2)) {
+                nodes.push({
+                    id: idCounter,
+                    label: key2,
+                    type: docker_containers[key2].type,
+                    group: 'docker_containers',
+                    runConfig: "",
+                    shape: 'rectangle'
+                });
+                idCounter++;
+            }
+        }
+    }
+
+    if (!(virtual_machines === undefined)){
+        for (let key3 in virtual_machines) {
+            if (virtual_machines.hasOwnProperty(key3)) {
+                nodes.push({
+                    id: idCounter,
+                    label: key3,
+                    type: virtual_machines[key3].type,
+                    group: 'virtual_machines',
+                    runConfig: "",
+                    shape: 'triangle'
+                });
+                idCounter++;
+            }
+        }
+    }
+
+    if(connections.length !== 0){
+        let portFrom = 0;
+        let portTo = 0;
+        let idFrom = 0;
+        let idTo = 0;
+        for (let i in connections){
+            if (connections.hasOwnProperty(i)) {
+                for (let j in nodes){
+                    if (nodes.hasOwnProperty(j)){
+                        if (Object.keys(connections[i])[0] === nodes[j].label){
+                            portFrom = Object.values(connections[i])[0];
+                            idFrom = nodes[j].id;
+                        }
+                        else if (Object.keys(connections[i])[1] === nodes[j].label){
+                            portTo = Object.values(connections[i])[1];
+                            idTo = nodes[j].id;
+                        }
+                    }
+
+                }
+                edges.push({
+                    id: idCounter,
+                    label: '',
+                    from: idFrom,
+                    to: idTo,
+                    ipAddressFrom: '',
+                    gatewayFrom: '',
+                    ipAddressTo: '',
+                    gatewayTo: '',
+                    portFrom: portFrom,
+                    portTo: portTo,
+                });
+                idCounter++;
+            }
+
+        }
+    }
+
+    if (!(runConfigs === undefined)){
+        for (let key4 in runConfigs) {
+            if (runConfigs.hasOwnProperty(key4)) {
+                for (let k in nodes){
+                    if (nodes.hasOwnProperty(k)){
+                        if (key4 === nodes[k].label){
+                            if (nodes[k].group === "virtual_network_devices"){
+                                nodes[k].runConfig = runConfigs[key4];
+                            }
+                            else {
+                                for (let l in edges){
+                                    if (edges.hasOwnProperty(l)){
+                                        if (edges[l].from === nodes[k].id && edges[l].portFrom === runConfigs[key4][0].interface_number){ // prüfen ob node und interface number
+                                            edges[l].ipAddressFrom = runConfigs[key4][0].ipv4address;
+                                            edges[l].gatewayFrom = runConfigs[key4][0].gatewayv4;
+                                        }
+                                        else if (edges[l].to === nodes[k].id && edges[l].portTo === runConfigs[key4][0].interface_number){
+                                            edges[l].ipAddressTo = runConfigs[key4][0].ipv4address;
+                                            edges[l].gatewayTo = runConfigs[key4][0].gatewayv4;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return {topology_name, nodes, edges};
 }
