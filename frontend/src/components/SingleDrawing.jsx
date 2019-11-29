@@ -26,14 +26,7 @@ import {
 import {activateDeleteButton, hideDeleteButton, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
 
 class SingleDrawing extends React.Component {
-    virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
-    docker_container_url = "http://127.0.0.1:8000/api/2";   //"http://10.20.1.12:8000/api/2";
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
-    console;
-    this;
-    state;
-    devices;
-
     constructor(props) {
         super(props);
         this.state = {
@@ -66,7 +59,6 @@ class SingleDrawing extends React.Component {
                             };
                         },
                     }
-
                 },
                 edges: {
                     arrows: {
@@ -180,6 +172,9 @@ class SingleDrawing extends React.Component {
 
     exportTopologyAsImage = () => {
         let filename = this.state.topology_name + '.png';
+        let canvas = document.querySelector('.vis-network canvas');
+        var dataURL = canvas.toDataURL();
+        console.log(dataURL);
         let image = document.getElementById("canvasImg");
         let link = document.createElement('a');
         link.setAttribute('href', image.src);
@@ -215,8 +210,7 @@ class SingleDrawing extends React.Component {
 
     getDeviceInfos = async (url) => {
         let res = await axios.get(url);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
-        let data = res.data;
-        this.setState({devices: data});
+        this.setState({devices: res.data});
         this.createButtons();
         this.initializeClickEvent();
     };
@@ -281,29 +275,35 @@ class SingleDrawing extends React.Component {
         document.getElementById('btnSaveEdge').onclick = () => {
             this.saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex);
             closeEdgeDialog();
-            this.setState({graphVis: {nodes: [], edges: []}});
-            this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+            hideEditButtons();
+            this.setNetworkState(nodesCopy, edgesCopy);
         };
         document.getElementById('btnCancelEdgeEdit').onclick = () => {
             closeEdgeDialog();
+            hideEditButtons();
         };
         document.getElementById('editEdgeDialog').style.display = 'block';
     };
 
+    setNetworkState(nodesCopy, edgesCopy) {
+        this.setState({graphVis: {nodes: [], edges: []}});
+        this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+    }
+
     saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
         edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
-        nodesCopy[nodeIndex].label = document.getElementById('deviceName').value;
-        nodesCopy[nodeIndex].type = document.getElementById('deviceType').value;
-        edgesCopy[edgeIndex].ipAddress = document.getElementById('ipAddress').value;
-        edgesCopy[edgeIndex].gateway = document.getElementById('gateway').value;
+        nodesCopy[nodeIndex].label = document.getElementById('deviceNameFrom').value;
+        nodesCopy[nodeIndex].type = document.getElementById('deviceTypeFrom').value;
+        edgesCopy[edgeIndex].ipAddress = document.getElementById('ipAddressFrom').value;
+        edgesCopy[edgeIndex].gateway = document.getElementById('gatewayFrom').value;
     }
 
     intializeEdgeConfig(edgesCopy, edgeIndex, nodeToConfig) {
         document.getElementById('inpEdgeLabel').value = edgesCopy[edgeIndex].label;
-        document.getElementById('deviceName').value = nodeToConfig.label;
-        document.getElementById('deviceType').value = nodeToConfig.type;
-        document.getElementById('ipAddress').value = edgesCopy[edgeIndex].ipAddress;
-        document.getElementById('gateway').value = edgesCopy[edgeIndex].gateway;
+        document.getElementById('deviceNameFrom').value = nodeToConfig.label;
+        document.getElementById('deviceTypeFrom').value = nodeToConfig.type;
+        document.getElementById('ipAddressFrom').value = edgesCopy[edgeIndex].ipAddress;
+        document.getElementById('gatewayFrom').value = edgesCopy[edgeIndex].gateway;
     }
 
     editNode = () => {
@@ -316,11 +316,12 @@ class SingleDrawing extends React.Component {
         document.getElementById('btnSaveNode').onclick = () => {
             this.saveNodeConfig(nodesCopy, nodeIndex);
             closeNodeDialog();
-            this.setState({graphVis: {nodes: [], edges: []}});
-            this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+            hideEditButtons();
+            this.setNetworkState(nodesCopy, edgesCopy);
         };
         document.getElementById('btnCancelNodeEdit').onclick = () => {
             closeNodeDialog();
+            hideEditButtons();
         };
         document.getElementById('editNodeDialog').style.display = 'block';
     };
