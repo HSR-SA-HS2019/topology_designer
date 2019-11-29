@@ -1,4 +1,3 @@
-
 export function deleteItem(originalArray, deleteArray){
     for (let n1 in deleteArray) {
         for (let n2 in originalArray){
@@ -36,16 +35,22 @@ export function updatePorts(deletedEdges, nodes, allEdges) {
 
 function updatePortNumbersEdges(portLimit, edges, nodeId) {
     for (let e in edges){
-        if (edges[e].from === nodeId){
-            if(edges[e].portFrom > portLimit){
+        if (edges[e].from === nodeId) {
+            if (edges[e].portFrom > portLimit) {
                 edges[e].portFrom--;
             }
         }
-        if (edges[e].to === nodeId){
-            if(edges[e].portTo > portLimit){
+        if (edges[e].to === nodeId) {
+            if (edges[e].portTo > portLimit) {
                 edges[e].portTo--;
             }
         }
     }
     return edges;
+}
+
+export function closeDeleteTopologyDialog() {
+    document.getElementById('btnCancelDeleteTopology').onclick = null;
+    document.getElementById('btnDeleteTopology').onclick = null;
+    document.getElementById('deleteTopologyDialog').style.display = 'none';
 }

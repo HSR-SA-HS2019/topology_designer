@@ -11,7 +11,7 @@ import {
     getSelectedEdge,
     hideEdgeButtons
 } from '../functions/EdgeFunctions';
-import {deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
+import {closeDeleteTopologyDialog, deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
 import './SingleDrawing.css';
 import axios from "axios";
 import logo from '../Logo.png';
@@ -24,9 +24,11 @@ import {
     requiredNode
 } from "../functions/NodeFunctions";
 import {activateDeleteButton, hideDeleteButton, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
+import DeleteTopologyDialog from "../UI/DeleteTopologyDialog/DeleteTopologyDialog";
 
 class SingleDrawing extends React.Component {
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
+
     constructor(props) {
         super(props);
         this.state = {
@@ -147,8 +149,17 @@ class SingleDrawing extends React.Component {
     };
 
     deleteTopology = () => {
-        this.setState({graphVis: {nodes: [], edges: [],}});
-        hideEditButtons();
+        document.getElementById("deleteTopologyDialog").style.display = "flex";
+        document.getElementById('btnDeleteTopology').onclick = () => {
+            this.clearNetworkState();
+            closeDeleteTopologyDialog();
+            hideEditButtons();
+        };
+        document.getElementById('btnCancelDeleteTopology').onclick = () => {
+            closeDeleteTopologyDialog();
+            hideEditButtons();
+        };
+
     };
 
     deleteElement = () => {
@@ -171,15 +182,14 @@ class SingleDrawing extends React.Component {
     };
 
     exportTopologyAsImage = () => {
-        let filename = this.state.topology_name + '.png';
-        let canvas = document.querySelector('.vis-network canvas');
-        var dataURL = canvas.toDataURL();
-        console.log(dataURL);
-        let image = document.getElementById("canvasImg");
-        let link = document.createElement('a');
-        link.setAttribute('href', image.src);
-        link.setAttribute('download', filename);
-        link.click();
+        // let filename = this.state.topology_name + '.png';
+        // var image = document.getElementById("canvasImg");
+        // image.data.setAttribute('crossOrigin', 'anonymous');
+        // console.log(image);
+        // var link = document.createElement('a');
+        // link.setAttribute('href', image.src);
+        // link.setAttribute('download', filename);
+        // link.click();
     };
 
     readFile = () => {
@@ -286,8 +296,12 @@ class SingleDrawing extends React.Component {
     };
 
     setNetworkState(nodesCopy, edgesCopy) {
-        this.setState({graphVis: {nodes: [], edges: []}});
+        this.clearNetworkState();
         this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+    }
+
+    clearNetworkState() {
+        this.setState({graphVis: {nodes: [], edges: []}});
     }
 
     saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
@@ -359,7 +373,7 @@ class SingleDrawing extends React.Component {
                     <span onClick={this.deleteElement} className="delete" id="deleteButton"> <i
                         className="fas fa-times"/>Delete</span>
                     <span className="separator" onClick={this.exportTopologyHelper}><i className="fa fa-download"/>Export YAML</span>
-                    <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/>Export Image</span>
+                    <span onClick={this.exportTopologyAsImage()}><i className="fa fa-picture-o"/>Export Image</span>
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
                     <span className="delete" onClick={this.deleteTopology}><i
                         className="fa fa-trash"/>Clear All</span>
@@ -369,7 +383,7 @@ class SingleDrawing extends React.Component {
                         <div>
                             <input type="file" className="filePicker" onChange={this.readYaml}/>
                         </div>
-                        <img id="canvasImg" alt=""/>
+                        <img id="canvasImg" src="" alt=""/>
                     </div>
                 </div>
                 <form className="nameForm">
@@ -380,6 +394,7 @@ class SingleDrawing extends React.Component {
                 <img className="logo" src={logo} alt=""/>
                 <EditNodeDialog/>
                 <EditEdgeDialog/>
+                <DeleteTopologyDialog/>
 
             </div>
         );
