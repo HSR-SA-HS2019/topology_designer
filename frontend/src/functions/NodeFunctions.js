@@ -63,3 +63,15 @@ export function closeNodeDialog() {
     document.getElementById('btnCancelNodeEdit').onclick = null;
     document.getElementById('editNodeDialog').style.display = 'none';
 }
+
+
+export function addImportNode(data) {
+    return {
+        id: data.id,
+        shape: data.shape,
+        label: data.label,
+        group: data.group,
+        type: data.type,
+        runConfig: data.runConfig
+    }
+}

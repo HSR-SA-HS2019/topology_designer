@@ -3,13 +3,21 @@ import React from 'react';
 import {graphVisLocales, palette} from '../functions/GlobalConstants';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
-import {exportTopology} from '../functions/YamlFileFunctions';
+import {
+    exportTopology,
+    readFileAsync,
+    importTopologyName,
+    importTopologyNodes,
+    importTopologyEdges,
+    importTopologyRunConfigs
+} from '../functions/YamlFileFunctions';
 import {
     activateEdgeButtons,
     addEdge,
     closeEdgeDialog,
     getSelectedEdge,
-    hideEdgeButtons
+    hideEdgeButtons,
+    addImportEdge
 } from '../functions/EdgeFunctions';
 import {deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
 import './SingleDrawing.css';
@@ -21,9 +29,11 @@ import {
     getConnections,
     hideNodeButtons,
     requiredId,
-    requiredNode
+    requiredNode,
+    addImportNode
 } from "../functions/NodeFunctions";
 import {activateDeleteButton, hideDeleteButton, hideEditButtons} from "../functions/GlobalFunctions";
+import yamljs from "yamljs";
 
 class SingleDrawing extends React.Component {
     virtual_network_devices_url = "http://127.0.0.1:8000/api/1";    //"http://10.20.1.12:8000/api/1";
@@ -170,24 +180,70 @@ class SingleDrawing extends React.Component {
         document.querySelector('input[type=file]').click();
     };
 
-    readYaml = () => {
+
+    readYaml = async() => {
         if (window.File && window.FileReader && window.FileList && window.Blob) {
-            var file = document.querySelector('input[type=file]').files[0];
-            var reader = new FileReader();
-            console.log(file);
-            var regex = /\.yaml/i;
+            try {
+                let file = document.querySelector('input[type=file]').files[0];
+                let regex = /\.yaml/i;
 
-            if (file.name.match(regex)) {
-                reader.onload = function (event) {
-                    console.log(event.target.result);
+                if (file.name.match(regex)) {
+                    let contentBuffer = await readFileAsync(file);
+                    let yamlString = yamljs.parse(contentBuffer);
+                    console.log('yamlString');
+                    console.log(yamlString);
+                    this.setState({graphVis: {nodes: [], edges: []}});
+                    let topology_name = importTopologyName(yamlString);
+                    this.setState({topology_name: topology_name});
+                    let nodes = importTopologyNodes(yamlString);
+                    console.log(nodes)
+                    let nodesCopy;
+                    console.log('before loop');
+                    console.log(nodesCopy);
+                    for (let key1 in nodes) {
+                        if (nodes.hasOwnProperty(key1)) {
+                            console.log(key1);
+                            nodesCopy = this.state.graphVis.nodes.slice();
+                            console.log(nodesCopy);
+                            let node = addImportNode(nodes[key1]);
+                            nodesCopy.push(node);
+                            console.log(nodesCopy);
+                            console.log(this.state);
+                            this.setState({graphVis: {nodes: nodesCopy, edges: []}});
+
+                        }
+                    }
+
+                    nodesCopy = this.state.graphVis.nodes.slice();
+                    let edgesCopy;
+                    let edges = importTopologyEdges(yamlString, nodes);
+                    console.log(edges);
+                    for (let key2 in edges) {
+                        if (edges.hasOwnProperty(key2)) {
+                            edgesCopy = this.state.graphVis.edges.slice();
+                            console.log(edgesCopy);
+                            let edge = addImportEdge(edges[key2]);
+                            edgesCopy.push(edge);
+                            this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+                        }
+                    }
+                    edgesCopy = this.state.graphVis.edges.slice();
+                    //let configs = importTopologyRunConfigs(yamlString, nodesCopy, edgesCopy);
+                    console.log(this.network);
+                    //this.network.setData({nodes: nodes, edges: edges});
+
+                    //this.initNetworkInstance(this.setNetworkInstance);
+                    //this.setState({graphVis: {nodes: [], edges: []}});
+                    //this.setState({graphVis: {nodes: this.network.body.nodes, edges: this.network.body.edges}});
+
+                } else {
+                    alert("Wrong Filetype: " + file.name);
                 }
-            } else {
-                console.log("Wrong Filetype: " + file.type);
+            } catch (e) {
+                console.warn(e.message)
             }
-            reader.readAsText(file);
-
         } else {
-            console.log("Your browser is too old to support HTML5 File API");
+            alert("Your browser is too old to support HTML5 File API");
         }
     };
 
@@ -210,7 +266,6 @@ class SingleDrawing extends React.Component {
                     image: res.data.icon,
                     runConfig: ""
                 });
-                this.setState({graphVis: {nodes: [], edges: []}});
                 this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
             });
     };
@@ -222,9 +277,9 @@ class SingleDrawing extends React.Component {
         if (selection.nodes.length === 2) {
             let edges = addEdge(selection, edgesCopy, nodes);
             let nodesCopy = this.state.graphVis.nodes.slice();
-            this.setState({graphVis: {nodes: [], edges: []}});
             this.setState({graphVis: {nodes: nodesCopy, edges: edges}});
         }
+        console.log(this.state);
     };
 
     editEdge = () => {
