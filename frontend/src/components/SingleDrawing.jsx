@@ -27,11 +27,6 @@ import {activateDeleteButton, hideDeleteButton, hideEditButtons, initializeButto
 
 class SingleDrawing extends React.Component {
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
-    console;
-    this;
-    state;
-    devices;
-
     constructor(props) {
         super(props);
         this.state = {
@@ -64,7 +59,6 @@ class SingleDrawing extends React.Component {
                             };
                         },
                     }
-
                 },
                 edges: {
                     arrows: {
@@ -178,6 +172,9 @@ class SingleDrawing extends React.Component {
 
     exportTopologyAsImage = () => {
         let filename = this.state.topology_name + '.png';
+        let canvas = document.querySelector('.vis-network canvas');
+        var dataURL = canvas.toDataURL();
+        console.log(dataURL);
         let image = document.getElementById("canvasImg");
         let link = document.createElement('a');
         link.setAttribute('href', image.src);
@@ -213,8 +210,7 @@ class SingleDrawing extends React.Component {
 
     getDeviceInfos = async (url) => {
         let res = await axios.get(url);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
-        let data = res.data;
-        this.setState({devices: data});
+        this.setState({devices: res.data});
         this.createButtons();
         this.initializeClickEvent();
     };
