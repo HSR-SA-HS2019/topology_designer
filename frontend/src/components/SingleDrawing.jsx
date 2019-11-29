@@ -6,10 +6,6 @@ import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import {
     exportTopology,
     readFileAsync,
-    importTopologyName,
-    importTopologyNodes,
-    importTopologyEdges,
-    importTopologyRunConfigs,
     importTopology
 } from '../functions/YamlFileFunctions';
 import {
@@ -18,7 +14,6 @@ import {
     closeEdgeDialog,
     getSelectedEdge,
     hideEdgeButtons,
-    addImportEdge
 } from '../functions/EdgeFunctions';
 import {deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
 import './SingleDrawing.css';
@@ -31,7 +26,6 @@ import {
     hideNodeButtons,
     requiredId,
     requiredNode,
-    addImportNode
 } from "../functions/NodeFunctions";
 import yamljs from "yamljs";
 import {activateDeleteButton, hideDeleteButton, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
@@ -209,52 +203,9 @@ class SingleDrawing extends React.Component {
                     let contentBuffer = await readFileAsync(file);
                     let yamlString = yamljs.parse(contentBuffer);
                     this.setState({graphVis: {nodes: [], edges: []}});
-                    let data = importTopology(yamlString);
+                    let data = importTopology(yamlString, this.state.devices);
                     this.setState({topology_name: data.topology_name});
                     this.setState({graphVis: {nodes: data.nodes, edges: data.edges}});
-                    /*let topology_name = importTopologyName(yamlString);
-                    this.setState({topology_name: topology_name});
-                    let nodes = importTopologyNodes(yamlString);
-                    console.log(nodes)
-                    let nodesCopy;
-                    console.log('before loop');
-                    console.log(nodesCopy);
-                    for (let key1 in nodes) {
-                        if (nodes.hasOwnProperty(key1)) {
-                            console.log(key1);
-                            nodesCopy = this.state.graphVis.nodes.slice();
-                            console.log(nodesCopy);
-                            let node = addImportNode(nodes[key1]);
-                            nodesCopy.push(node);
-                            console.log(nodesCopy);
-                            console.log(this.state);
-                            this.setState({graphVis: {nodes: nodesCopy, edges: []}});
-
-                        }
-                    }
-
-                    nodesCopy = this.state.graphVis.nodes.slice();
-                    let edgesCopy;
-                    let edges = importTopologyEdges(yamlString, nodes);
-                    console.log(edges);
-                    for (let key2 in edges) {
-                        if (edges.hasOwnProperty(key2)) {
-                            edgesCopy = this.state.graphVis.edges.slice();
-                            console.log(edgesCopy);
-                            let edge = addImportEdge(edges[key2]);
-                            edgesCopy.push(edge);
-                            this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
-                        }
-                    }
-                    edgesCopy = this.state.graphVis.edges.slice();
-                    //let configs = importTopologyRunConfigs(yamlString, nodesCopy, edgesCopy);
-                    console.log(this.network);*/
-                    //this.network.setData({nodes: nodes, edges: edges});
-
-                    //this.initNetworkInstance(this.setNetworkInstance);
-                    //this.setState({graphVis: {nodes: [], edges: []}});
-                    //this.setState({graphVis: {nodes: this.network.body.nodes, edges: this.network.body.edges}});
-
                 } else {
                     alert("Wrong Filetype: " + file.name);
                 }
@@ -309,7 +260,6 @@ class SingleDrawing extends React.Component {
             image: item.icon,
             runConfig: ""
         });
-        this.setState({graphVis: {nodes: [], edges: []}});
         this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
     }
 
@@ -321,7 +271,6 @@ class SingleDrawing extends React.Component {
         if (selection.nodes.length === 2) {
             let edges = addEdge(selection, edgesCopy, nodes);
             let nodesCopy = this.state.graphVis.nodes.slice();
-            this.setState({graphVis: {nodes: [], edges: []}});
             this.setState({graphVis: {nodes: nodesCopy, edges: edges}});
         }
     };

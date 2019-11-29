@@ -53,19 +53,3 @@ export function closeEdgeDialog() {
     document.getElementById('btnCancelEdgeEdit').onclick = null;
     document.getElementById('editEdgeDialog').style.display = 'none';
 }
-
-
-export function addImportEdge(data) {
-    return {
-        id: data.id,
-        label: '',
-        from: data.from,
-        to: data.to,
-        ipAddressFrom: data.ipAddressFrom,
-        gatewayFrom: data.gatewayFrom,
-        ipAddressTo: data.ipAddressTo,
-        gatewayTo: data.gatewayTo,
-        portFrom: data.portFrom,
-        portTo: data.portTo,
-    }
-}
