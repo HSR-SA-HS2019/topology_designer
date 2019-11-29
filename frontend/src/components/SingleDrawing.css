@@ -2,6 +2,7 @@
     border: 1px solid lightgray;
     position: relative;
     height: 100%;
+    display: flex;
 }
 
 .drawingContent {
@@ -22,25 +23,29 @@
     display: none;
 }
 
-.icon-bar {
-    width: 85px; /* Set a specific width */
+.iconBar {
+    width: 70px; /* Set a specific width */
     background-color: #d4d4d4; /* Dark-grey background */
     z-index: 3;
     position: fixed;
-    top: 18%;
+    align-self: center;
 }
 
-.icon-bar span {
+.iconBar span {
     display: block;
     text-align: center;
-    padding: 9px;
+    padding: 2px;
     transition: all 0.3s ease;
     color: white;
     font-size: 8pt;
 }
 
+.iconBar IMG {
+    width: 50px;
+}
+
 .editButton {
-    background-color: #008000;
+    background-color: #378C32;
 }
 
 #editEdgeButton {
@@ -55,17 +60,20 @@
     display: none;
 }
 
-.icon-bar i {
-    margin: 7px;
-    font-size: 36px; /* Increased font-size */
+.iconBar i {
+    margin: 9px;
+    font-size: 30px; /* Increased font-size */
 }
 
 .nameForm {
     z-index: 2;
     position: fixed;
-    left: 50%;
     margin-top: 3px;
-    margin-left: -100px;
+    font-size: 43px;
+}
+
+.nameForm input {
+    border: none;
 }
 
 input[type=file] {
@@ -86,7 +94,7 @@ input[type=file] {
     margin-left: 5px;
 }
 
-.icon-bar span:hover {
+.iconBar span:hover {
     background-color: #2D6480; /* Add a hover color */
     cursor: pointer;
 }
