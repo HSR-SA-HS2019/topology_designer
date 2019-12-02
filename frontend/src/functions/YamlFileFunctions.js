@@ -24,8 +24,10 @@ export function exportTopology(nodes, edges, name){
             network_edges.push({id: edges[key2].id,
                 to: edges[key2].to,
                 from: edges[key2].from,
-                ipAddress: edges[key2].ipAddress,
-                gateway: edges[key2].gateway,
+                ipAddressFrom: edges[key2].ipAddressFrom,
+                gatewayFrom: edges[key2].gatewayFrom,
+                ipAddressTo: edges[key2].ipAddressTo,
+                gatewayTo: edges[key2].gatewayTo,
                 portFrom: edges[key2].portFrom,
                 portTo: edges[key2].portTo
             });
@@ -37,43 +39,45 @@ export function exportTopology(nodes, edges, name){
         StringData = StringData + "\n" + network_devices[i] + ":";
         for (let j in network_nodes){
             if(network_nodes[j].group === network_devices[i]){
-                StringData = StringData + "\n\t" + network_nodes[j].label + ":";
-                StringData = StringData + "\n\t\ttype: " + network_nodes[j].type;
+                StringData = StringData + "\n  " + network_nodes[j].label + ":";
+                StringData = StringData + "\n    type: " + network_nodes[j].type;
             }
         }
     }
 
     StringData = StringData + "\nconnections:";
     for (let k in network_edges){
+        StringData = StringData + "\n  - ";
         for (let m in network_nodes){
             if (network_edges[k].from === network_nodes[m].id){
-                StringData = StringData + "\n\t-\t" + network_nodes[m].label + ": " + network_edges[k].portFrom;
+                StringData = StringData + network_nodes[m].label + ": " + network_edges[k].portFrom + "\n    ";
             }
             else if (network_edges[k].to === network_nodes[m].id){
-                StringData = StringData + "\n\t\t" + network_nodes[m].label + ": " + network_edges[k].portTo;
+                StringData = StringData + network_nodes[m].label + ": " + network_edges[k].portTo + "\n    ";
             }
         }
+        StringData = StringData.slice(0, -5);
     }
 
     StringData = StringData + "\n\nrunning_configs:\n";
     for (let l in network_nodes){
         if(network_nodes[l].group === "virtual_network_devices"){
-            StringData = StringData + "\t" + network_nodes[l].label + ": |\n";
-            let newRunConfigString = network_nodes[l].runConfig.replace(/\n/g, "\n\t\t\t");
-            StringData = StringData + "\t\t\t" + newRunConfigString + "\n";
+            StringData = StringData + "  " + network_nodes[l].label + ": |\n";
+            let newRunConfigString = network_nodes[l].runConfig.replace(/\n/g, "\n    ");
+            StringData = StringData + "    " + newRunConfigString + "\n";
         }
         else {
-            StringData = StringData + "\t" + network_nodes[l].label + ":\n";
+            StringData = StringData + "  " + network_nodes[l].label + ":\n";
             for (let n in network_edges){
                 if (network_nodes[l].id === network_edges[n].from){
-                    StringData = StringData + "\t\t- interface_number: " + network_edges[n].portFrom + "\n";
-                    StringData = StringData + "\t\t\tipv4address: " + network_edges[n].ipAddress + "\n";
-                    StringData = StringData + "\t\t\tgatewayv4: " + network_edges[n].gateway + "\n"
+                    StringData = StringData + "    - interface_number: " + network_edges[n].portFrom + "\n";
+                    StringData = StringData + "      ipv4address: " + network_edges[n].ipAddressFrom + "\n";
+                    StringData = StringData + "      gatewayv4: " + network_edges[n].gatewayFrom + "\n"
                 }
                 else if (network_nodes[l].id === network_edges[n].to){
-                    StringData = StringData + "\t\t- interface_number: " + network_edges[n].portTo + "\n";
-                    StringData = StringData + "\t\t\tipv4address: " + network_edges[n].ipAddress + "\n";
-                    StringData = StringData + "\t\t\tgatewayv4: " + network_edges[n].gateway + "\n"
+                    StringData = StringData + "    - interface_number: " + network_edges[n].portTo + "\n";
+                    StringData = StringData + "      ipv4address: " + network_edges[n].ipAddressTo + "\n";
+                    StringData = StringData + "      gatewayv4: " + network_edges[n].gatewayTo + "\n"
                 }
             }
         }
