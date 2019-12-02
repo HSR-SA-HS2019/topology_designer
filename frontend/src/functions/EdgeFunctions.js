@@ -1,6 +1,5 @@
-/**
- * Function for adding new edge to GraphVis.
- */
+import {hideEditButtons} from "./GlobalFunctions";
+
 export function addEdge(selection, edgesCopy, bodyNodes) {
     let elementFrom = 0;
     let elementTo = 0;
@@ -17,10 +16,10 @@ export function addEdge(selection, edgesCopy, bodyNodes) {
         label: '',
         from: selection.nodes[0],
         to: selection.nodes[1],
-        runConfigFrom: "",
-        runConfigTo: "",
-        ipAddress: "",
-        gateway: "",
+        ipAddressFrom: "",
+        gatewayFrom: "",
+        ipAddressTo: "",
+        gatewayTo: "",
         portFrom: elementFrom + 1,
         portTo: elementTo + 1,
     });
@@ -45,7 +44,7 @@ export function getSelectedEdge(currentId, edgesCopy, nodesCopy) {
     let toId = edgesCopy[edgeIndex].to;
     let fromIndex = nodesCopy.findIndex(x => x.id === fromId);
     let toIndex = nodesCopy.findIndex(x => x.id === toId);
-    return {edgesCopy, nodesCopy, edgeIndex, fromId, fromIndex, toIndex};
+    return {edgesCopy, nodesCopy, edgeIndex, fromIndex, toIndex};
 }
 
 export function closeEdgeDialog() {
@@ -53,52 +52,90 @@ export function closeEdgeDialog() {
     document.getElementById('btnCancelEdgeEdit').onclick = null;
     document.getElementById('editEdgeDialog').style.display = 'none';
 }
-/*
 
-/!**
- * Displays dialog with form for editing selected edge.
- *!/
-export function showEditEdgeDialog(edgeData, callback) {
-    console.log(edgeData);
-    let runConfigFrom = edgeData.runConfigFrom;
-    let runConfigTo = edgeData.runConfigTo;
-    document.getElementById('inpEdgeLabel').value = edgeData.label;
-    document.getElementById('runConfigFrom').value = runConfigFrom;
-    document.getElementById('runConfigTo').value = runConfigTo;
-    document.getElementById('btnSaveEdge').onclick = saveEdge.bind(this, edgeData, document, callback);
-    document.getElementById('btnCancelEdgeEdit').onclick = cancelEdgeEdit.bind(this, document, callback);
-    document.getElementById('editEdgeDialog').style.display = 'block';
+export function saveEdgeFromConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
+    edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
+    nodesCopy[nodeIndex].label = document.getElementById('deviceNameFrom').value;
+    nodesCopy[nodeIndex].type = document.getElementById('deviceTypeFrom').value;
+    edgesCopy[edgeIndex].ipAddressFrom = document.getElementById('ipAddressFrom').value;
+    edgesCopy[edgeIndex].gatewayFrom = document.getElementById('gatewayFrom').value;
 }
 
-/!**
- * Sets inputed data to the selected edge, saves the edge and hides the Edge Edit dialog.
- *!/
-function saveEdge(edgeData, document, callback) {
-    let newRunConfigFrom = document.getElementById('runConfigFrom').value;
-    let newRunConfigTo = document.getElementById('runConfigTo').value;
-    // edgeData.label = document.getElementById('inpEdgeLabel').value;
-    edgeData.label = document.getElementById('inpEdgeLabel').value;
-    edgeData.runConfigFrom = newRunConfigFrom;
-    edgeData.runConfigTo = newRunConfigTo;
-    console.log(edgeData);
-    clearEditEdgeDialog(document);
-    callback(edgeData);
+export function saveEdgeToConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
+    edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
+    nodesCopy[nodeIndex].label = document.getElementById('deviceNameFrom').value;
+    nodesCopy[nodeIndex].type = document.getElementById('deviceTypeFrom').value;
+    edgesCopy[edgeIndex].ipAddressTo = document.getElementById('ipAddressFrom').value;
+    edgesCopy[edgeIndex].gatewayTo = document.getElementById('gatewayFrom').value;
 }
 
-/!**
- * Cancels editing of edge and hides Edit Edge dialog.
- *!/
-function cancelEdgeEdit(document, callback) {
-    clearEditEdgeDialog(document);
-    callback(null);
+export function saveEdgeTwoConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndexFrom, nodeIndexTo) {
+    edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
+    nodesCopy[nodeIndexFrom].label = document.getElementById('deviceNameFrom').value;
+    nodesCopy[nodeIndexFrom].type = document.getElementById('deviceTypeFrom').value;
+    nodesCopy[nodeIndexTo].label = document.getElementById('deviceNameTo').value;
+    nodesCopy[nodeIndexTo].type = document.getElementById('deviceTypeTo').value;
+    edgesCopy[edgeIndex].ipAddressFrom = document.getElementById('ipAddressFrom').value;
+    edgesCopy[edgeIndex].gatewayFrom = document.getElementById('gatewayFrom').value;
+    edgesCopy[edgeIndex].ipAddressTo = document.getElementById('ipAddressTo').value;
+    edgesCopy[edgeIndex].gatewayTo = document.getElementById('gatewayTo').value;
 }
 
-/!**
- * Clears and hides Edit Edge dialog.
- *!/
-function clearEditEdgeDialog(document) {
-    document.getElementById('btnSaveEdge').onclick = null;
-    document.getElementById('btnCancelEdgeEdit').onclick = null;
-    document.getElementById('editEdgeDialog').style.display = 'none';
+export function initializeEdgeFromConfig(edgesCopy, edgeIndex, nodeToConfig) {
+    document.getElementById('inpEdgeLabel').value = edgesCopy[edgeIndex].label;
+    document.getElementById('deviceNameFrom').value = nodeToConfig[0].label;
+    document.getElementById('deviceTypeFrom').value = nodeToConfig[0].type;
+    document.getElementById('ipAddressFrom').value = edgesCopy[edgeIndex].ipAddressFrom;
+    document.getElementById('gatewayFrom').value = edgesCopy[edgeIndex].gatewayFrom;
 }
-*/
+
+export function initializeEdgeToConfig(edgesCopy, edgeIndex, nodeToConfig) {
+    document.getElementById('inpEdgeLabel').value = edgesCopy[edgeIndex].label;
+    document.getElementById('deviceNameFrom').value = nodeToConfig[1].label;
+    document.getElementById('deviceTypeFrom').value = nodeToConfig[1].type;
+    document.getElementById('ipAddressFrom').value = edgesCopy[edgeIndex].ipAddressTo;
+    document.getElementById('gatewayFrom').value = edgesCopy[edgeIndex].gatewayTo;
+}
+
+export function initializeEdgeTwoConfig(edgesCopy, edgeIndex, nodeToConfig) {
+    document.getElementById('inpEdgeLabel').value = edgesCopy[edgeIndex].label;
+    document.getElementById('deviceNameFrom').value = nodeToConfig[0].label;
+    document.getElementById('deviceTypeFrom').value = nodeToConfig[0].type;
+    document.getElementById('deviceNameTo').value = nodeToConfig[1].label;
+    document.getElementById('deviceTypeTo').value = nodeToConfig[1].type;
+    document.getElementById('ipAddressFrom').value = edgesCopy[edgeIndex].ipAddressFrom;
+    document.getElementById('gatewayFrom').value = edgesCopy[edgeIndex].gatewayFrom;
+    document.getElementById('ipAddressTo').value = edgesCopy[edgeIndex].ipAddressTo;
+    document.getElementById('gatewayTo').value = edgesCopy[edgeIndex].gatewayTo;
+}
+
+export function showInitializeEdgeDialog(nodeToConfig, nodeIndex, edgesCopy, edgeIndex) {
+    if (nodeToConfig[0] === 0) { //to
+        initializeEdgeToConfig(edgesCopy, edgeIndex, nodeToConfig);
+    }
+    else if (nodeToConfig[1] === 0) {   //from
+        initializeEdgeFromConfig(edgesCopy, edgeIndex, nodeToConfig);
+    }
+    else {
+        initializeEdgeTwoConfig(edgesCopy, edgeIndex, nodeToConfig);
+    }
+}
+
+export function saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
+    if (nodeIndex[0] === 0) {
+        saveEdgeToConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex[1]);
+    }
+    else if (nodeIndex[1] === 0) {
+        saveEdgeFromConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex[0]);
+    }
+    else {
+        saveEdgeTwoConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex[0], nodeIndex[1]);
+    }
+    closeEditDialogEdge()
+    return {nodesCopy, edgesCopy};
+}
+
+export function closeEditDialogEdge() {
+    closeEdgeDialog();
+    hideEditButtons();
+}
