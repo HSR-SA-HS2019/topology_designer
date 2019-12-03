@@ -51,14 +51,13 @@ const EditNodeDialog = () => (
                 <button type="button" className="btn btn-success" id="btnSaveNode">
                     OK
                 </button>
-
                 <button type="button" className="btn btn-default" id="btnCancelNodeEdit">
                     Cancel
                 </button>
-
             </div>
         </form>
     </div>
+
 );
 
 export default EditNodeDialog;

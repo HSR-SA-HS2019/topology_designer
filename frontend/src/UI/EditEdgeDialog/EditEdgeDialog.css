@@ -4,13 +4,12 @@
     bottom: 0;
     z-index: 299;
     width: 100%;
-    height: 240px;
+    height: 270px;
     background-color: #f9f9f9;
     border-style: solid;
     border-width: 2px;
     border-color: #E0E0E0;
     padding: 10px;
-    padding-top: 0;
     text-align: left;
 }
 
@@ -19,27 +18,8 @@
 }
 
 #editEdgeDialog button {
-    margin: 5px;
+    margin-right: 5px;
 }
-
-textarea {
-    width: 100%;
-    display: block;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-}
-
 
 #editEdgeDialog .col-sm-4 {
     width: 100%;
@@ -58,6 +38,7 @@ textarea {
 
 #editEdgeDialog .form-group {
     vertical-align: center;
+    margin-bottom: 8px;
 }
 
 .deviceInfos {

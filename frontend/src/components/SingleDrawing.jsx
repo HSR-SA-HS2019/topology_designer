@@ -1,17 +1,33 @@
 import GraphVis from 'react-graph-vis';
 import React from 'react';
-import {graphVisLocales} from '../functions/GlobalConstants';
+import {graphVisLocales, palette} from '../functions/GlobalConstants';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
-import {exportTopology, readFileAsync, importTopology} from '../functions/YamlFileFunctions';
-import {activateEdgeButtons, addEdge, getSelectedEdge, hideEdgeButtons, showInitializeEdgeDialog, saveEdgeConfig, closeEditDialogEdge} from '../functions/EdgeFunctions';
-import {deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
+import {exportTopology, importTopology, readFileAsync} from '../functions/YamlFileFunctions';
+import {
+    activateEdgeButtons,
+    addEdge,
+    closeEditDialogEdge,
+    getSelectedEdge,
+    saveEdgeConfig,
+    showInitializeEdgeDialog
+} from '../functions/EdgeFunctions';
+import {closeDeleteTopologyDialog, deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
 import './SingleDrawing.css';
 import axios from "axios";
 import logo from '../Logo.png';
-import {activateNodeButtons, hideNodeButtons, requiredId, requiredNode, addNode, closeEditDialogNode, saveNodeConfig, initializeNodeConfig} from "../functions/NodeFunctions";
+import {
+    activateNodeButtons,
+    addNode,
+    closeNodeDialog,
+    initializeNodeConfig,
+    requiredId,
+    requiredNode,
+    saveNodeConfig
+} from "../functions/NodeFunctions";
 import yamljs from "yamljs";
-import {activateDeleteButton, hideDeleteButton, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
+import {activateDeleteButton, hideAllButtons, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
+import DeleteTopologyDialog from "../UI/DeleteTopologyDialog/DeleteTopologyDialog";
 
 class SingleDrawing extends React.Component {
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
@@ -52,7 +68,7 @@ class SingleDrawing extends React.Component {
                         to: {enabled: false},
                         from: {enabled: false},
                     },
-                    color: {color: 'black', hover: 'black'},
+                    color: {color: palette.black, hover: palette.black},
                     width: 2,
                     hoverWidth: function (width) {
                         return width * 2;
@@ -95,8 +111,7 @@ class SingleDrawing extends React.Component {
                 },
 
                 deselectEdge: () => {
-                    hideEdgeButtons();
-                    hideDeleteButton();
+                    hideAllButtons();
                 },
 
                 selectNode: () => {
@@ -108,23 +123,18 @@ class SingleDrawing extends React.Component {
                     activateDeleteButton();
                 },
                 deselectNode: () => {
-                    hideNodeButtons();
-                    hideDeleteButton();
+                    hideAllButtons();
                 }
             },
             topology_name: 'topology designer',
             devices: []
         };
-        this.initNetworkInstance = this.initNetworkInstance.bind(this);
         this.exportTopologyHelper = this.exportTopologyHelper.bind(this);
         this.deleteTopology = this.deleteTopology.bind(this);
         this.newEdge = this.newEdge.bind(this);
         this.editEdge = this.editEdge.bind(this);
         this.createButtons = this.createButtons.bind(this);
-        this.setNetworkState = this.setNetworkState.bind(this);
     }
-
-    initNetworkInstance = (networkInstance) => { this.network = networkInstance; };
 
     setNetworkInstance = nw => {
         this.network = nw;
@@ -132,8 +142,17 @@ class SingleDrawing extends React.Component {
     };
 
     deleteTopology = () => {
-        this.setState({graphVis: {nodes: [], edges: []}});
-        hideEditButtons();
+        document.getElementById("deleteTopologyDialog").style.display = "flex";
+        document.getElementById('btnDeleteTopology').onclick = () => {
+            this.clearNetworkState();
+            closeDeleteTopologyDialog();
+            hideEditButtons();
+        };
+        document.getElementById('btnCancelDeleteTopology').onclick = () => {
+            closeDeleteTopologyDialog();
+            hideEditButtons();
+        };
+
     };
 
     deleteElement = () => {
@@ -141,11 +160,14 @@ class SingleDrawing extends React.Component {
         let deleteEdges = this.network.getSelection().edges;
         let allNodes = this.state.graphVis.nodes.slice();
         let allEdges = this.state.graphVis.edges.slice();
+
         allEdges = updatePorts(deleteEdges, this.network.body.nodes, allEdges);
         let newNodes = deleteItem(allNodes, deleteNodes);
         let newEdges = deleteItem(allEdges, deleteEdges);
+
         hideEditButtons();
-        this.setState({graphVis: {nodes: newNodes, edges: newEdges}});
+
+        this.setNetworkState(newNodes, newEdges);
     };
 
     exportTopologyHelper = () => {
@@ -153,20 +175,22 @@ class SingleDrawing extends React.Component {
     };
 
     exportTopologyAsImage = () => {
-        let filename = this.state.topology_name + '.png';
-        let canvas = document.querySelector('.vis-network canvas');
-        var dataURL = canvas.toDataURL();
-        console.log(dataURL);
-        let image = document.getElementById("canvasImg");
-        let link = document.createElement('a');
-        link.setAttribute('href', image.src);
-        link.setAttribute('download', filename);
-        link.click();
+        // let filename = this.state.topology_name + '.png';
+        // let canvas = document.querySelector('.vis-network canvas');
+        // var dataURL = canvas.toDataURL();
+        // console.log(dataURL);
+        // let image = document.getElementById("canvasImg");
+        // let link = document.createElement('a');
+        // link.setAttribute('href', image.src);
+        // link.setAttribute('download', filename);
+        // link.click();
     };
 
-    readFile = () => { document.querySelector('input[type=file]').click(); };
+    readFile = () => {
+        document.querySelector('input[type=file]').click();
+    };
 
-    readYaml = async() => {
+    readYaml = async () => {
         if (window.File && window.FileReader && window.FileList && window.Blob) {
             try {
                 let file = document.querySelector('input[type=file]').files[0];
@@ -179,13 +203,13 @@ class SingleDrawing extends React.Component {
                     this.setState({topology_name: data.topology_name});
                     this.setState({graphVis: {nodes: data.nodes, edges: data.edges}});
                 } else {
-                    alert("Wrong Filetype: " + file.name);
+                    console.warn("Wrong Filetype: " + file.name);
                 }
             } catch (e) {
                 console.warn(e.message)
             }
         } else {
-            alert("Your browser is too old to support HTML5 File API");
+            console.warn("Your browser is too old to support HTML5 File API");
         }
     };
 
@@ -207,12 +231,12 @@ class SingleDrawing extends React.Component {
         this.state.devices.forEach(function (item) {
             let button = document.getElementById(item.defaultName);
             button.onclick = () => {
-                self.addNewNodeViaDevices(item);
+                self.addNewNode(item);
             };
         })
     };
 
-    addNewNodeViaDevices = (item) => {
+    addNewNode(item) {
         let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
         let edgesCopy = this.state.graphVis.edges.slice();
         let nodes = addNode(item, nodesCopy);
@@ -226,30 +250,37 @@ class SingleDrawing extends React.Component {
         if (selection.nodes.length === 2) {
             let edges = addEdge(selection, edgesCopy, nodes);
             let nodesCopy = this.state.graphVis.nodes.slice();
-            this.setState({graphVis: {nodes: nodesCopy, edges: edges}});
+            this.setNetworkState(nodesCopy, edges);
         }
     };
 
     editEdge = () => {
+        hideAllButtons();
         let {edgesCopy, nodesCopy, edgeIndex, fromIndex, toIndex} = getSelectedEdge(this.network.getSelection().edges[0], this.state.graphVis.edges.slice(), this.state.graphVis.nodes.slice());
         let nodeToConfig = requiredNode(nodesCopy, fromIndex, toIndex);
         let nodeIndex = requiredId(nodeToConfig, fromIndex, toIndex);
-        showInitializeEdgeDialog(nodeToConfig, nodeIndex, edgesCopy, edgeIndex)
+        showInitializeEdgeDialog(nodeToConfig, nodeIndex, edgesCopy, edgeIndex);
 
         document.getElementById('btnSaveEdge').onclick = () => {
             let data = saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex);
             this.setNetworkState(data.nodesCopy, data.edgesCopy);
         };
-        document.getElementById('btnCancelEdgeEdit').onclick = () => { closeEditDialogEdge(); };
+        document.getElementById('btnCancelEdgeEdit').onclick = () => {
+            closeEditDialogEdge();
+        };
         document.getElementById('editEdgeDialog').style.display = 'block';
     };
 
-    setNetworkState = (nodesCopy, edgesCopy) => {
-        this.setState({graphVis: {nodes: [], edges: []}});
+    setNetworkState(nodesCopy, edgesCopy) {
         this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
-    };
+    }
+
+    clearNetworkState() {
+        this.setState({graphVis: {nodes: [], edges: []}});
+    }
 
     editNode = () => {
+        hideAllButtons();
         let edges = this.network.getSelection().edges;
         let currentId = this.network.getSelection().nodes[0];
         let nodesCopy = this.state.graphVis.nodes.slice();
@@ -258,12 +289,17 @@ class SingleDrawing extends React.Component {
         initializeNodeConfig(nodesCopy, nodeIndex, currentId, edges, edgesCopy);
         document.getElementById('btnSaveNode').onclick = () => {
             saveNodeConfig(nodesCopy, nodeIndex);
-            closeEditDialogNode();
+            closeNodeDialog();
+            hideEditButtons();
             this.setNetworkState(nodesCopy, edgesCopy);
         };
-        document.getElementById('btnCancelNodeEdit').onclick = () => { closeEditDialogNode() };
-        document.getElementById('editNodeDialog').style.display = 'block';
+        document.getElementById('btnCancelNodeEdit').onclick = () => {
+            closeNodeDialog();
+            hideEditButtons();
+        };
+        document.getElementById('editNodeDialog').style.display = 'flex';
     };
+
 
     render() {
         return (
@@ -285,7 +321,7 @@ class SingleDrawing extends React.Component {
                     <span onClick={this.deleteElement} className="delete" id="deleteButton"> <i
                         className="fas fa-times"/>Delete</span>
                     <span className="separator" onClick={this.exportTopologyHelper}><i className="fa fa-download"/>Export YAML</span>
-                    <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/>Export Image</span>
+                    <span onClick={this.exportTopologyAsImage()}><i className="fa fa-picture-o"/>Export Image</span>
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
                     <span className="delete" onClick={this.deleteTopology}><i
                         className="fa fa-trash"/>Clear All</span>
@@ -296,7 +332,7 @@ class SingleDrawing extends React.Component {
                         <div>
                             <input type="file" className="filePicker" onChange={this.readYaml}/>
                         </div>
-                        <img id="canvasImg" alt=""/>
+                        <img id="canvasImg" src="" alt=""/>
                     </div>
                 </div>
                 <form className="nameForm">
@@ -307,6 +343,8 @@ class SingleDrawing extends React.Component {
                 <img className="logo" src={logo} alt=""/>
                 <EditNodeDialog/>
                 <EditEdgeDialog/>
+                <DeleteTopologyDialog/>
+
             </div>
         );
     }

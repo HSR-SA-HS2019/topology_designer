@@ -1,5 +1,3 @@
-import {hideEditButtons} from "./GlobalFunctions";
-
 export function addNode(item, nodesCopy) {
     let number = 0;
     for (let n in nodesCopy) {
@@ -39,10 +37,9 @@ export function requiredNode(nodesCopy, fromIndex, toIndex) {
 export function requiredId(nodeToConfig, fromIndex, toIndex) {
     if (nodeToConfig[1] === 0) {
         return [fromIndex, 0];
-    } else if (nodeToConfig[0] === 0){
+    } else if (nodeToConfig[0] === 0) {
         return [0, toIndex];
-    }
-    else {
+    } else {
         return [fromIndex, toIndex];
     }
 }
@@ -111,9 +108,4 @@ export function initializeNodeConfig(nodesCopy, nodeIndex, currentId, edges, edg
     document.getElementById('runConfig').value = nodesCopy[nodeIndex].runConfig;
     document.getElementById('nodeDeviceType').value = nodesCopy[nodeIndex].type;
     document.getElementById('connections').innerText = getConnections(currentId, edges, nodesCopy, edgesCopy);
-}
-
-export function closeEditDialogNode() {
-    closeNodeDialog();
-    hideEditButtons();
 }

@@ -61,3 +61,9 @@ function updatePortNumbersEdges(portLimit, edges, nodeId) {
     }
     return edges;
 }
+
+export function closeDeleteTopologyDialog() {
+    document.getElementById('btnCancelDeleteTopology').onclick = null;
+    document.getElementById('btnDeleteTopology').onclick = null;
+    document.getElementById('deleteTopologyDialog').style.display = 'none';
+}
