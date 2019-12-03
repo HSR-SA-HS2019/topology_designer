@@ -3,14 +3,14 @@ import React from 'react';
 import {graphVisLocales, palette} from '../functions/GlobalConstants';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
-import {exportTopology} from '../functions/YamlFileFunctions';
+import {exportTopology, importTopology, readFileAsync} from '../functions/YamlFileFunctions';
 import {
     activateEdgeButtons,
     addEdge,
-    closeEdgeDialog,
+    closeEditDialogEdge,
     getSelectedEdge,
-    intializeEdgeConfig,
-    saveEdgeConfig
+    saveEdgeConfig,
+    showInitializeEdgeDialog
 } from '../functions/EdgeFunctions';
 import {closeDeleteTopologyDialog, deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
 import './SingleDrawing.css';
@@ -18,18 +18,19 @@ import axios from "axios";
 import logo from '../Logo.png';
 import {
     activateNodeButtons,
+    addNode,
     closeNodeDialog,
     initializeNodeConfig,
     requiredId,
     requiredNode,
     saveNodeConfig
 } from "../functions/NodeFunctions";
+import yamljs from "yamljs";
 import {activateDeleteButton, hideAllButtons, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
 import DeleteTopologyDialog from "../UI/DeleteTopologyDialog/DeleteTopologyDialog";
 
 class SingleDrawing extends React.Component {
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
-
     constructor(props) {
         super(props);
         this.state = {
@@ -42,7 +43,6 @@ class SingleDrawing extends React.Component {
                 locales: graphVisLocales,
                 clickToUse: false,
                 layout: {},
-
                 nodes: {
                     font: {size: 18},
                     borderWidth: 0,
@@ -99,8 +99,7 @@ class SingleDrawing extends React.Component {
                         damping: 0.3
                     }
                 },
-                // Turn configuration panel off
-                configure: false,
+                configure: false,       // Turn configuration panel off
             },
             events: {
                 selectEdge: () => {
@@ -177,10 +176,11 @@ class SingleDrawing extends React.Component {
 
     exportTopologyAsImage = () => {
         // let filename = this.state.topology_name + '.png';
-        // var image = document.getElementById("canvasImg");
-        // image.data.setAttribute('crossOrigin', 'anonymous');
-        // console.log(image);
-        // var link = document.createElement('a');
+        // let canvas = document.querySelector('.vis-network canvas');
+        // var dataURL = canvas.toDataURL();
+        // console.log(dataURL);
+        // let image = document.getElementById("canvasImg");
+        // let link = document.createElement('a');
         // link.setAttribute('href', image.src);
         // link.setAttribute('download', filename);
         // link.click();
@@ -190,27 +190,28 @@ class SingleDrawing extends React.Component {
         document.querySelector('input[type=file]').click();
     };
 
-    readYaml = () => {
+    readYaml = async () => {
         if (window.File && window.FileReader && window.FileList && window.Blob) {
-            var file = document.querySelector('input[type=file]').files[0];
-            var reader = new FileReader();
-            console.log(file);
-            var regex = /\.yaml/i;
-
-            if (file.name.match(regex)) {
-                reader.onload = function (event) {
-                    console.log(event.target.result);
+            try {
+                let file = document.querySelector('input[type=file]').files[0];
+                let regex = /\.yaml/i;
+                if (file.name.match(regex)) {
+                    this.setState({graphVis: {nodes: [], edges: []}});
+                    let contentBuffer = await readFileAsync(file);
+                    let yamlString = yamljs.parse(contentBuffer);
+                    let data = importTopology(yamlString, this.state.devices);
+                    this.setState({topology_name: data.topology_name});
+                    this.setState({graphVis: {nodes: data.nodes, edges: data.edges}});
+                } else {
+                    console.warn("Wrong Filetype: " + file.name);
                 }
-            } else {
-                console.log("Wrong Filetype: " + file.type);
+            } catch (e) {
+                console.warn(e.message)
             }
-            reader.readAsText(file);
-
         } else {
-            console.log("Your browser is too old to support HTML5 File API");
+            console.warn("Your browser is too old to support HTML5 File API");
         }
     };
-
 
     getDeviceInfos = async (url) => {
         let res = await axios.get(url);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
@@ -219,15 +220,13 @@ class SingleDrawing extends React.Component {
         this.initializeClickEvent();
     };
 
-
-    createButtons() {
+    createButtons = () => {
         this.state.devices.forEach(function (item) {
             initializeButtons(item);
         })
-    }
+    };
 
-
-    initializeClickEvent() {
+    initializeClickEvent = () => {
         let self = this;
         this.state.devices.forEach(function (item) {
             let button = document.getElementById(item.defaultName);
@@ -235,29 +234,14 @@ class SingleDrawing extends React.Component {
                 self.addNewNode(item);
             };
         })
-    }
+    };
 
     addNewNode(item) {
         let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
         let edgesCopy = this.state.graphVis.edges.slice();
-        let number = 0;
-
-        for (let n in nodesCopy) {
-            if (nodesCopy[n].group === item.name) {
-                number = number + 1;
-            }
-        }
-        nodesCopy.push({
-            label: item.defaultName + number,
-            group: item.name,
-            type: item.type,
-            image: item.icon,
-            runConfig: ""
-        });
-
-        this.setNetworkState(nodesCopy, edgesCopy);
-    }
-
+        let nodes = addNode(item, nodesCopy);
+        this.setState({graphVis: {nodes: nodes, edges: edgesCopy}});
+    };
 
     newEdge = () => {
         let selection = this.network.getSelection();
@@ -271,19 +255,18 @@ class SingleDrawing extends React.Component {
     };
 
     editEdge = () => {
-        let {edgesCopy, nodesCopy, edgeIndex, fromId, fromIndex, toIndex} = getSelectedEdge(this.network.getSelection().edges[0], this.state.graphVis.edges.slice(), this.state.graphVis.nodes.slice());
+        hideAllButtons();
+        let {edgesCopy, nodesCopy, edgeIndex, fromIndex, toIndex} = getSelectedEdge(this.network.getSelection().edges[0], this.state.graphVis.edges.slice(), this.state.graphVis.nodes.slice());
         let nodeToConfig = requiredNode(nodesCopy, fromIndex, toIndex);
-        let nodeIndex = requiredId(nodeToConfig, fromId, fromIndex, toIndex);
-        intializeEdgeConfig(edgesCopy, edgeIndex, nodeToConfig);
+        let nodeIndex = requiredId(nodeToConfig, fromIndex, toIndex);
+        showInitializeEdgeDialog(nodeToConfig, nodeIndex, edgesCopy, edgeIndex);
+
         document.getElementById('btnSaveEdge').onclick = () => {
-            saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex);
-            closeEdgeDialog();
-            hideEditButtons();
-            this.setNetworkState(nodesCopy, edgesCopy);
+            let data = saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex);
+            this.setNetworkState(data.nodesCopy, data.edgesCopy);
         };
         document.getElementById('btnCancelEdgeEdit').onclick = () => {
-            closeEdgeDialog();
-            hideEditButtons();
+            closeEditDialogEdge();
         };
         document.getElementById('editEdgeDialog').style.display = 'block';
     };
@@ -297,6 +280,7 @@ class SingleDrawing extends React.Component {
     }
 
     editNode = () => {
+        hideAllButtons();
         let edges = this.network.getSelection().edges;
         let currentId = this.network.getSelection().nodes[0];
         let nodesCopy = this.state.graphVis.nodes.slice();
@@ -341,6 +325,7 @@ class SingleDrawing extends React.Component {
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
                     <span className="delete" onClick={this.deleteTopology}><i
                         className="fa fa-trash"/>Clear All</span>
+                    {/*<span onClick={this.createButtons()}>Click the shit out of me!</span>*/}
                 </div>
                 <div className="Buttons">
                     <div> {/* handlebars? */}

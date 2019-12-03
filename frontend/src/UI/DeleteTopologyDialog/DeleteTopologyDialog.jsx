@@ -4,12 +4,12 @@ import './DeleteTopologyDialog.css';
 const DeleteTopologyDialog = () => (
     <div id="flexBox">
         <div id="deleteTopologyDialog">
-            <div className="connectionNameWrapper">
-                <label htmlFor="inpEdgeLabel" className="col-sm-4 control-label">
+            <div id="labelWrapper">
+                <label htmlFor="deleteLabel" className="deleteLabel">
                     Are you sure, you want to delete the entire topology?
                 </label>
-
             </div>
+
 
             <div className="button-form">
 

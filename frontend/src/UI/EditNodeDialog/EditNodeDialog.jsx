@@ -4,7 +4,7 @@ import './EditNodeDialog.css';
 const EditNodeDialog = () => (
     <div id="editNodeDialog">
         <div className="operationName">
-            Edit Node
+            Edit Device
         </div>
 
         <form className="form-horizontal">

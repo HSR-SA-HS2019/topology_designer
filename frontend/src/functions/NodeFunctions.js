@@ -1,3 +1,20 @@
+export function addNode(item, nodesCopy) {
+    let number = 0;
+    for (let n in nodesCopy) {
+        if (nodesCopy[n].group === item.name) {
+            number = number + 1;
+        }
+    }
+    nodesCopy.push({
+        label: item.defaultName + number,
+        group: item.name,
+        type: item.type,
+        image: item.icon,
+        runConfig: ""
+    });
+    return nodesCopy;
+}
+
 export function requiredNode(nodesCopy, fromIndex, toIndex) {
     function hideSecondDevice() {
         document.getElementById("secondDevice").style.display = "none";
@@ -5,21 +22,23 @@ export function requiredNode(nodesCopy, fromIndex, toIndex) {
 
     if (nodesCopy[fromIndex].group !== "virtual_network_devices" && nodesCopy[toIndex].group !== "virtual_network_devices") {
         document.getElementById("secondDevice").style.display = "flex";
-        return nodesCopy[toIndex];
+        return [nodesCopy[fromIndex], nodesCopy[toIndex]];
     } else if (nodesCopy[fromIndex].group !== "virtual_network_devices") {
         hideSecondDevice();
-        return nodesCopy[fromIndex];
+        return [nodesCopy[fromIndex], 0];
     } else {
         hideSecondDevice();
-        return nodesCopy[toIndex];
+        return [0, nodesCopy[toIndex]];
     }
 }
 
-export function requiredId(nodeToConfig, fromId, fromIndex, toIndex) {
-    if (nodeToConfig.id === fromId) {
-        return fromIndex
+export function requiredId(nodeToConfig, fromIndex, toIndex) {
+    if (nodeToConfig[1] === 0) {
+        return [fromIndex, 0];
+    } else if (nodeToConfig[0] === 0) {
+        return [0, toIndex];
     } else {
-        return toIndex
+        return [fromIndex, toIndex];
     }
 }
 

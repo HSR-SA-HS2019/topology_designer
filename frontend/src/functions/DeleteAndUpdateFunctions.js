@@ -1,3 +1,4 @@
+
 export function deleteItem(originalArray, deleteArray){
     for (let n1 in deleteArray) {
         for (let n2 in originalArray){
@@ -34,7 +35,7 @@ export function updatePorts(deletedEdges, nodes, allEdges) {
 }
 
 function updatePortNumbersEdges(portLimit, edges, nodeId) {
-    for (let e in edges){
+    for (let e in edges) {
         if (edges[e].from === nodeId) {
             if (edges[e].portFrom > portLimit) {
                 edges[e].portFrom--;

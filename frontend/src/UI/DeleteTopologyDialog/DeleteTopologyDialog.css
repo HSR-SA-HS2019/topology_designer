@@ -29,16 +29,14 @@
 }
 
 
-
-
 #deleteTopologyDialog button {
     margin: 5px;
 }
 
 
-#deleteTopologyDialog .col-sm-4 {
-    width: 100%;
+#deleteTopologyDialog .deleteLabel {
     top: 40%;
+    position: relative;
 }
 
 
