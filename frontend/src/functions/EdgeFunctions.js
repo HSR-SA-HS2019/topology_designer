@@ -131,7 +131,7 @@ export function saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
     else {
         saveEdgeTwoConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex[0], nodeIndex[1]);
     }
-    closeEditDialogEdge()
+    closeEditDialogEdge();
     return {nodesCopy, edgesCopy};
 }
 

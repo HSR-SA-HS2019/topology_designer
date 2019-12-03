@@ -3,34 +3,13 @@ import React from 'react';
 import {graphVisLocales} from '../functions/GlobalConstants';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
-import {
-    exportTopology,
-    readFileAsync,
-    importTopology
-} from '../functions/YamlFileFunctions';
-import {
-    activateEdgeButtons,
-    addEdge,
-    getSelectedEdge,
-    hideEdgeButtons,
-    showInitializeEdgeDialog,
-    saveEdgeConfig,
-    closeEditDialogEdge
-} from '../functions/EdgeFunctions';
+import {exportTopology, readFileAsync, importTopology} from '../functions/YamlFileFunctions';
+import {activateEdgeButtons, addEdge, getSelectedEdge, hideEdgeButtons, showInitializeEdgeDialog, saveEdgeConfig, closeEditDialogEdge} from '../functions/EdgeFunctions';
 import {deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
 import './SingleDrawing.css';
 import axios from "axios";
 import logo from '../Logo.png';
-import {
-    activateNodeButtons,
-    hideNodeButtons,
-    requiredId,
-    requiredNode,
-    addNode,
-    closeEditDialogNode,
-    saveNodeConfig,
-    initializeNodeConfig
-} from "../functions/NodeFunctions";
+import {activateNodeButtons, hideNodeButtons, requiredId, requiredNode, addNode, closeEditDialogNode, saveNodeConfig, initializeNodeConfig} from "../functions/NodeFunctions";
 import yamljs from "yamljs";
 import {activateDeleteButton, hideDeleteButton, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
 
@@ -54,7 +33,7 @@ class SingleDrawing extends React.Component {
                     shape: 'image',
                     size: 30,
                     shadow: {
-                        enabled: true,
+                        enabled: false,
                         color: '#2D6480',
                         size: 10,
                         x: 0,
