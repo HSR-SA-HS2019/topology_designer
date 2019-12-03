@@ -14,6 +14,7 @@ export const palette = {
     red: '#F06292',
     ruby: '#EC407A',
     orange: '#FF7043',
+    topologydesignerblue: '#2d6480',
 };
 
 
