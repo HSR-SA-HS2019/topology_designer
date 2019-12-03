@@ -1,3 +1,5 @@
+import {hideEdgeButtons} from "./EdgeFunctions";
+
 /**
  * Callback function for adding new node to GraphVis.
  */
@@ -17,6 +19,12 @@ export function hideEditButtons() {
     document.getElementById("editNodeButton").style.display = "none";
     document.getElementById("editEdgeButton").style.display = "none";
 
+}
+
+export function hideAllButtons() {
+    hideEditButtons();
+    hideEdgeButtons();
+    hideDeleteButton();
 }
 
 

@@ -1,0 +1,43 @@
+#flexBox {
+    display: flex;
+    align-items: center;
+}
+
+#deleteTopologyDialog {
+    display: none;
+    position: fixed;
+    z-index: 299;
+    height: 150px;
+    background-color: #f9f9f9;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #E0E0E0;
+    padding: 10px;
+    padding-top: 0;
+    text-align: left;
+    align-self: center;
+    left: 50%;
+    margin-left: -165px;
+}
+
+#deleteTopologyDialog .button-form {
+    position: absolute;
+    margin-top: 40px;
+    left: 50%;
+    margin-left: -65px;
+    align-self: center;
+}
+
+
+#deleteTopologyDialog button {
+    margin: 5px;
+}
+
+
+#deleteTopologyDialog .deleteLabel {
+    top: 40%;
+    position: relative;
+}
+
+
+

@@ -75,6 +75,7 @@
 
 .nameForm input {
     border: none;
+    margin-left: 5px;
 }
 
 input[type=file] {
@@ -89,10 +90,6 @@ input[type=file] {
 
 .separator {
     border-top: solid darkgray 2px;
-}
-
-.nameForm input {
-    margin-left: 5px;
 }
 
 .iconBar span:hover {

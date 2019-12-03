@@ -112,11 +112,9 @@ export function initializeEdgeTwoConfig(edgesCopy, edgeIndex, nodeToConfig) {
 export function showInitializeEdgeDialog(nodeToConfig, nodeIndex, edgesCopy, edgeIndex) {
     if (nodeToConfig[0] === 0) { //to
         initializeEdgeToConfig(edgesCopy, edgeIndex, nodeToConfig);
-    }
-    else if (nodeToConfig[1] === 0) {   //from
+    } else if (nodeToConfig[1] === 0) {   //from
         initializeEdgeFromConfig(edgesCopy, edgeIndex, nodeToConfig);
-    }
-    else {
+    } else {
         initializeEdgeTwoConfig(edgesCopy, edgeIndex, nodeToConfig);
     }
 }
@@ -124,14 +122,12 @@ export function showInitializeEdgeDialog(nodeToConfig, nodeIndex, edgesCopy, edg
 export function saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
     if (nodeIndex[0] === 0) {
         saveEdgeToConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex[1]);
-    }
-    else if (nodeIndex[1] === 0) {
+    } else if (nodeIndex[1] === 0) {
         saveEdgeFromConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex[0]);
-    }
-    else {
+    } else {
         saveEdgeTwoConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex[0], nodeIndex[1]);
     }
-    closeEditDialogEdge()
+    closeEditDialogEdge();
     return {nodesCopy, edgesCopy};
 }
 
