@@ -9,7 +9,8 @@ import {
     addEdge,
     closeEdgeDialog,
     getSelectedEdge,
-    hideEdgeButtons
+    intializeEdgeConfig,
+    saveEdgeConfig
 } from '../functions/EdgeFunctions';
 import {closeDeleteTopologyDialog, deleteItem, updatePorts} from "../functions/DeleteAndUpdateFunctions";
 import './SingleDrawing.css';
@@ -18,12 +19,12 @@ import logo from '../Logo.png';
 import {
     activateNodeButtons,
     closeNodeDialog,
-    getConnections,
-    hideNodeButtons,
+    initializeNodeConfig,
     requiredId,
-    requiredNode
+    requiredNode,
+    saveNodeConfig
 } from "../functions/NodeFunctions";
-import {activateDeleteButton, hideDeleteButton, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
+import {activateDeleteButton, hideAllButtons, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
 import DeleteTopologyDialog from "../UI/DeleteTopologyDialog/DeleteTopologyDialog";
 
 class SingleDrawing extends React.Component {
@@ -111,8 +112,7 @@ class SingleDrawing extends React.Component {
                 },
 
                 deselectEdge: () => {
-                    hideEdgeButtons();
-                    hideDeleteButton();
+                    hideAllButtons();
                 },
 
                 selectNode: () => {
@@ -124,23 +124,17 @@ class SingleDrawing extends React.Component {
                     activateDeleteButton();
                 },
                 deselectNode: () => {
-                    hideNodeButtons();
-                    hideDeleteButton();
+                    hideAllButtons();
                 }
             },
             topology_name: 'topology designer',
             devices: []
         };
-        this.initNetworkInstance = this.initNetworkInstance.bind(this);
         this.exportTopologyHelper = this.exportTopologyHelper.bind(this);
         this.deleteTopology = this.deleteTopology.bind(this);
         this.newEdge = this.newEdge.bind(this);
         this.editEdge = this.editEdge.bind(this);
         this.createButtons = this.createButtons.bind(this);
-    }
-
-    initNetworkInstance(networkInstance) {
-        this.network = networkInstance;
     }
 
     setNetworkInstance = nw => {
@@ -174,7 +168,7 @@ class SingleDrawing extends React.Component {
 
         hideEditButtons();
 
-        this.setState({graphVis: {nodes: newNodes, edges: newEdges}});
+        this.setNetworkState(newNodes, newEdges);
     };
 
     exportTopologyHelper = () => {
@@ -238,12 +232,12 @@ class SingleDrawing extends React.Component {
         this.state.devices.forEach(function (item) {
             let button = document.getElementById(item.defaultName);
             button.onclick = () => {
-                self.addNewNodeViaDevices(item);
+                self.addNewNode(item);
             };
         })
     }
 
-    addNewNodeViaDevices(item) {
+    addNewNode(item) {
         let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
         let edgesCopy = this.state.graphVis.edges.slice();
         let number = 0;
@@ -260,8 +254,8 @@ class SingleDrawing extends React.Component {
             image: item.icon,
             runConfig: ""
         });
-        this.setState({graphVis: {nodes: [], edges: []}});
-        this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+
+        this.setNetworkState(nodesCopy, edgesCopy);
     }
 
 
@@ -272,8 +266,7 @@ class SingleDrawing extends React.Component {
         if (selection.nodes.length === 2) {
             let edges = addEdge(selection, edgesCopy, nodes);
             let nodesCopy = this.state.graphVis.nodes.slice();
-            this.setState({graphVis: {nodes: [], edges: []}});
-            this.setState({graphVis: {nodes: nodesCopy, edges: edges}});
+            this.setNetworkState(nodesCopy, edges);
         }
     };
 
@@ -281,9 +274,9 @@ class SingleDrawing extends React.Component {
         let {edgesCopy, nodesCopy, edgeIndex, fromId, fromIndex, toIndex} = getSelectedEdge(this.network.getSelection().edges[0], this.state.graphVis.edges.slice(), this.state.graphVis.nodes.slice());
         let nodeToConfig = requiredNode(nodesCopy, fromIndex, toIndex);
         let nodeIndex = requiredId(nodeToConfig, fromId, fromIndex, toIndex);
-        this.intializeEdgeConfig(edgesCopy, edgeIndex, nodeToConfig);
+        intializeEdgeConfig(edgesCopy, edgeIndex, nodeToConfig);
         document.getElementById('btnSaveEdge').onclick = () => {
-            this.saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex);
+            saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex);
             closeEdgeDialog();
             hideEditButtons();
             this.setNetworkState(nodesCopy, edgesCopy);
@@ -296,28 +289,11 @@ class SingleDrawing extends React.Component {
     };
 
     setNetworkState(nodesCopy, edgesCopy) {
-        this.clearNetworkState();
         this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
     }
 
     clearNetworkState() {
         this.setState({graphVis: {nodes: [], edges: []}});
-    }
-
-    saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
-        edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
-        nodesCopy[nodeIndex].label = document.getElementById('deviceNameFrom').value;
-        nodesCopy[nodeIndex].type = document.getElementById('deviceTypeFrom').value;
-        edgesCopy[edgeIndex].ipAddress = document.getElementById('ipAddressFrom').value;
-        edgesCopy[edgeIndex].gateway = document.getElementById('gatewayFrom').value;
-    }
-
-    intializeEdgeConfig(edgesCopy, edgeIndex, nodeToConfig) {
-        document.getElementById('inpEdgeLabel').value = edgesCopy[edgeIndex].label;
-        document.getElementById('deviceNameFrom').value = nodeToConfig.label;
-        document.getElementById('deviceTypeFrom').value = nodeToConfig.type;
-        document.getElementById('ipAddressFrom').value = edgesCopy[edgeIndex].ipAddress;
-        document.getElementById('gatewayFrom').value = edgesCopy[edgeIndex].gateway;
     }
 
     editNode = () => {
@@ -326,9 +302,9 @@ class SingleDrawing extends React.Component {
         let nodesCopy = this.state.graphVis.nodes.slice();
         let edgesCopy = this.state.graphVis.edges.slice();
         let nodeIndex = nodesCopy.findIndex(x => x.id === currentId);
-        this.initializeNodeConfig(nodesCopy, nodeIndex, currentId, edges, edgesCopy);
+        initializeNodeConfig(nodesCopy, nodeIndex, currentId, edges, edgesCopy);
         document.getElementById('btnSaveNode').onclick = () => {
-            this.saveNodeConfig(nodesCopy, nodeIndex);
+            saveNodeConfig(nodesCopy, nodeIndex);
             closeNodeDialog();
             hideEditButtons();
             this.setNetworkState(nodesCopy, edgesCopy);
@@ -337,21 +313,9 @@ class SingleDrawing extends React.Component {
             closeNodeDialog();
             hideEditButtons();
         };
-        document.getElementById('editNodeDialog').style.display = 'block';
+        document.getElementById('editNodeDialog').style.display = 'flex';
     };
 
-    saveNodeConfig(nodesCopy, nodeIndex) {
-        nodesCopy[nodeIndex].label = document.getElementById('inpNodeLabel').value;
-        nodesCopy[nodeIndex].runConfig = document.getElementById('runConfig').value;
-        nodesCopy[nodeIndex].type = document.getElementById('nodeDeviceType').value;
-    }
-
-    initializeNodeConfig(nodesCopy, nodeIndex, currentId, edges, edgesCopy) {
-        document.getElementById('inpNodeLabel').value = nodesCopy[nodeIndex].label;
-        document.getElementById('runConfig').value = nodesCopy[nodeIndex].runConfig;
-        document.getElementById('nodeDeviceType').value = nodesCopy[nodeIndex].type;
-        document.getElementById('connections').innerText = getConnections(currentId, edges, nodesCopy, edgesCopy);
-    }
 
     render() {
         return (

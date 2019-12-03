@@ -67,3 +67,16 @@ export function closeNodeDialog() {
     document.getElementById('btnCancelNodeEdit').onclick = null;
     document.getElementById('editNodeDialog').style.display = 'none';
 }
+
+export function saveNodeConfig(nodesCopy, nodeIndex) {
+    nodesCopy[nodeIndex].label = document.getElementById('inpNodeLabel').value;
+    nodesCopy[nodeIndex].runConfig = document.getElementById('runConfig').value;
+    nodesCopy[nodeIndex].type = document.getElementById('nodeDeviceType').value;
+}
+
+export function initializeNodeConfig(nodesCopy, nodeIndex, currentId, edges, edgesCopy) {
+    document.getElementById('inpNodeLabel').value = nodesCopy[nodeIndex].label;
+    document.getElementById('runConfig').value = nodesCopy[nodeIndex].runConfig;
+    document.getElementById('nodeDeviceType').value = nodesCopy[nodeIndex].type;
+    document.getElementById('connections').innerText = getConnections(currentId, edges, nodesCopy, edgesCopy);
+}

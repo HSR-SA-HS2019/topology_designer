@@ -3,9 +3,9 @@ import './EditEdgeDialog.css';
 
 const EditEdgeDialog = () => (
     <div id="editEdgeDialog">
-        {/*<div className="operationName">
+        <div className="operationName">
             Edit Edge
-        </div>*/}
+        </div>
 
         <form className="form-horizontal">
             <div className="form-group">
@@ -80,17 +80,13 @@ const EditEdgeDialog = () => (
                     </div>
                 </div>
             </div>
-
             <div className="button-form">
-
                 <button type="button" className="btn btn-success" id="btnSaveEdge">
                     OK
                 </button>
-
                 <button type="button" className="btn btn-default" id="btnCancelEdgeEdit">
                     Cancel
                 </button>
-
             </div>
         </form>
     </div>

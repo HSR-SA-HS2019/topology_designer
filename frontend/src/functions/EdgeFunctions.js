@@ -39,6 +39,22 @@ export function activateEdgeButtons() {
     document.getElementById("editNodeButton").style.display = "none";
 }
 
+export function saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex) {
+    edgesCopy[edgeIndex].label = document.getElementById('inpEdgeLabel').value;
+    nodesCopy[nodeIndex].label = document.getElementById('deviceNameFrom').value;
+    nodesCopy[nodeIndex].type = document.getElementById('deviceTypeFrom').value;
+    edgesCopy[edgeIndex].ipAddress = document.getElementById('ipAddressFrom').value;
+    edgesCopy[edgeIndex].gateway = document.getElementById('gatewayFrom').value;
+}
+
+export function intializeEdgeConfig(edgesCopy, edgeIndex, nodeToConfig) {
+    document.getElementById('inpEdgeLabel').value = edgesCopy[edgeIndex].label;
+    document.getElementById('deviceNameFrom').value = nodeToConfig.label;
+    document.getElementById('deviceTypeFrom').value = nodeToConfig.type;
+    document.getElementById('ipAddressFrom').value = edgesCopy[edgeIndex].ipAddress;
+    document.getElementById('gatewayFrom').value = edgesCopy[edgeIndex].gateway;
+}
+
 export function getSelectedEdge(currentId, edgesCopy, nodesCopy) {
     let edgeIndex = edgesCopy.findIndex(x => x.id === currentId);
     let fromId = edgesCopy[edgeIndex].from;
@@ -53,6 +69,8 @@ export function closeEdgeDialog() {
     document.getElementById('btnCancelEdgeEdit').onclick = null;
     document.getElementById('editEdgeDialog').style.display = 'none';
 }
+
+
 /*
 
 /!**

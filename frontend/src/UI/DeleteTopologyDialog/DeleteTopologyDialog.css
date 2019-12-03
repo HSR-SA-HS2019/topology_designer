@@ -22,10 +22,13 @@
 
 #deleteTopologyDialog .button-form {
     position: absolute;
+    margin-top: 40px;
     left: 50%;
     margin-left: -65px;
     align-self: center;
 }
+
+
 
 
 #deleteTopologyDialog button {
@@ -35,20 +38,8 @@
 
 #deleteTopologyDialog .col-sm-4 {
     width: 100%;
-
+    top: 40%;
 }
 
-.form-horizontal .control-label {
-    padding-top: 7px;
-    margin-bottom: 0;
-    text-align: left;
-}
 
-.col-sm-7 {
-    width: 100%;
-}
-
-#deleteTopologyDialog .form-group {
-    vertical-align: center;
-}
 

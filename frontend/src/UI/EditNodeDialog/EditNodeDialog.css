@@ -1,5 +1,6 @@
 #editNodeDialog {
     display: none;
+    flex-direction: column;
     position: absolute;
     bottom: 0;
     z-index: 299;
@@ -26,17 +27,15 @@
 
 #editNodeDialog .form-group {
     vertical-align: center;
+    margin-bottom: 8px;
 }
 
 #editNodeDialog button {
-    margin: 5px;
+    margin-right: 5px;
 }
 
 .button-form {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    margin-left: 5px;
+    position: relative;
 }
 
 .nodeConfigWrapper {
