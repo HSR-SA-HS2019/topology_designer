@@ -129,7 +129,7 @@ export function importTopology(data, deviceData){
     let topology_name = data.description;
     let virtual_network_devices = data.virtual_network_devices;    //Object
     let docker_containers = data.docker_containers;    //Object
-    let virtual_machines = data.virual_machines;    //Object
+    let virtual_machines = data.virtual_machines;    //Object
     let connections = data.connections; // Array
     let runConfigs = data.running_configs;  //Object
     let idCounter = 0;

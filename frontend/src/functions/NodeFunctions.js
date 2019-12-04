@@ -21,7 +21,6 @@ export function requiredNode(nodesCopy, fromIndex, toIndex) {
     function hideSecondDevice() {
         document.getElementById("secondDevice").style.display = "none";
     }
-
     if (nodesCopy[fromIndex].group !== "virtual_network_devices" && nodesCopy[toIndex].group !== "virtual_network_devices") {
         document.getElementById("secondDevice").style.display = "flex";
         return [nodesCopy[fromIndex], nodesCopy[toIndex]];
