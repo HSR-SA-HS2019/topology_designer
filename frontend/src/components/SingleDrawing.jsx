@@ -145,6 +145,30 @@ class SingleDrawing extends React.Component {
         this.setState({graphVis: {nodes: data.nodes, edges: data.edges}});
     };
 
+    getDeviceInfos = async (url) => {
+        let res = await axios.get(url/*, {
+            headers: {"Access-Control-Allow-Origin": '*'}}*/);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
+        this.setState({devices: res.data});
+        this.createButtons();
+        this.initializeClickEvent();
+    };
+
+    createButtons = () => {
+        this.state.devices.forEach(function (item) {
+            initializeButtons(item);
+        })
+    };
+
+    initializeClickEvent = () => {
+        let self = this;
+        this.state.devices.forEach(function (item) {
+            let button = document.getElementById(item.defaultName);
+            button.onclick = () => {
+                self.addNewNode(item);
+            };
+        })
+    };
+
     deleteTopology = () => {
         document.getElementById("deleteTopologyDialog").style.display = "flex";
         document.getElementById('btnDeleteTopology').onclick = () => {
@@ -160,14 +184,9 @@ class SingleDrawing extends React.Component {
     };
 
     deleteElement = () => {
-        let deleteNodes = this.network.getSelection().nodes;
-        let deleteEdges = this.network.getSelection().edges;
-        let allNodes = this.state.graphVis.nodes.slice();
-        let allEdges = this.state.graphVis.edges.slice();
-
-        allEdges = updatePorts(deleteEdges, this.network.body.nodes, allEdges);
-        let newNodes = deleteItem(allNodes, deleteNodes);
-        let newEdges = deleteItem(allEdges, deleteEdges);
+        let allEdges = updatePorts(this.network.getSelection().edges, this.network.body.nodes, this.state.graphVis.edges.slice());
+        let newNodes = deleteItem(this.state.graphVis.nodes.slice(), this.network.getSelection().nodes);
+        let newEdges = deleteItem(allEdges, this.network.getSelection().edges);
 
         hideEditButtons();
 
@@ -181,7 +200,8 @@ class SingleDrawing extends React.Component {
     exportTopologyAsImage = () => {
         // let filename = this.state.topology_name + '.png';
         // let canvas = document.querySelector('.vis-network canvas');
-        // var dataURL = canvas.toDataURL();
+        // console.log(canvas);
+        // let dataURL = canvas.toDataURL("image/png");
         // console.log(dataURL);
         // let image = document.getElementById("canvasImg");
         // let link = document.createElement('a');
@@ -216,29 +236,6 @@ class SingleDrawing extends React.Component {
         } else {
             console.warn("Your browser is too old to support HTML5 File API");
         }
-    };
-
-    getDeviceInfos = async (url) => {
-        let res = await axios.get(url);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
-        this.setState({devices: res.data});
-        this.createButtons();
-        this.initializeClickEvent();
-    };
-
-    createButtons = () => {
-        this.state.devices.forEach(function (item) {
-            initializeButtons(item);
-        })
-    };
-
-    initializeClickEvent = () => {
-        let self = this;
-        this.state.devices.forEach(function (item) {
-            let button = document.getElementById(item.defaultName);
-            button.onclick = () => {
-                self.addNewNode(item);
-            };
-        })
     };
 
     addNewNode(item) {
@@ -307,7 +304,6 @@ class SingleDrawing extends React.Component {
         document.getElementById('editNodeDialog').style.display = 'flex';
     };
 
-
     render() {
         return (
             <div className="single-drawing-box">
@@ -328,7 +324,7 @@ class SingleDrawing extends React.Component {
                     <span onClick={this.deleteElement} className="delete" id="deleteButton"> <i
                         className="fas fa-times"/>Delete</span>
                     <span className="separator" onClick={this.exportTopologyHelper}><i className="fa fa-download"/>Export YAML</span>
-                    <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/>Export Image</span>
+                    <span onClick={this.exportTopologyAsImage} crossOrigin="anonymous"><i className="fa fa-picture-o"/>Export Image</span>
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
                     <span className="delete" onClick={this.deleteTopology}><i
                         className="fa fa-trash"/>Clear All</span>

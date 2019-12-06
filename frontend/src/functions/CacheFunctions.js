@@ -45,8 +45,5 @@ export function loadCache() {
         edges.push(JSON.parse(localStorage.getItem('myEdge' + iterator)));
         iterator++;
     }
-    console.log(name);
-    console.log(nodes);
-    console.log(edges);
     return {nodes, edges, name};
 }
