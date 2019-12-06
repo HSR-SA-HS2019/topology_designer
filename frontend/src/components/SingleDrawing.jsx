@@ -134,11 +134,16 @@ class SingleDrawing extends React.Component {
         this.newEdge = this.newEdge.bind(this);
         this.editEdge = this.editEdge.bind(this);
         this.createButtons = this.createButtons.bind(this);
+        this.exportTopologyAsImage = this.exportTopologyAsImage.bind(this);
     }
 
     setNetworkInstance = nw => {
         this.network = nw;
         this.getDeviceInfos(this.deviceInfosUrl);
+        this.network.on("afterDrawing", function (ctx) {
+            let dataURL = ctx.canvas.toDataURL();
+            document.getElementById('canvasImg').src = dataURL;
+        });
     };
 
     deleteTopology = () => {
@@ -174,16 +179,13 @@ class SingleDrawing extends React.Component {
         exportTopology(this.network.body.data.nodes._data, this.network.body.data.edges._data, this.state.topology_name)
     };
 
-    exportTopologyAsImage = () => {
-        // let filename = this.state.topology_name + '.png';
-        // let canvas = document.querySelector('.vis-network canvas');
-        // var dataURL = canvas.toDataURL();
-        // console.log(dataURL);
-        // let image = document.getElementById("canvasImg");
-        // let link = document.createElement('a');
-        // link.setAttribute('href', image.src);
-        // link.setAttribute('download', filename);
-        // link.click();
+    exportTopologyAsImage = async () => {
+        let filename = this.state.topology_name + '.png';
+        let image = await document.getElementById("canvasImg");
+        var link = document.createElement('a');
+        link.setAttribute('href', image.src);
+        link.setAttribute('download', filename);
+        link.click();
     };
 
     readFile = () => {
@@ -321,18 +323,17 @@ class SingleDrawing extends React.Component {
                     <span onClick={this.deleteElement} className="delete" id="deleteButton"> <i
                         className="fas fa-times"/>Delete</span>
                     <span className="separator" onClick={this.exportTopologyHelper}><i className="fa fa-download"/>Export YAML</span>
-                    <span onClick={this.exportTopologyAsImage()}><i className="fa fa-picture-o"/>Export Image</span>
+                    <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/>Export Image</span>
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
                     <span className="delete" onClick={this.deleteTopology}><i
                         className="fa fa-trash"/>Clear All</span>
-                    {/*<span onClick={this.createButtons()}>Click the shit out of me!</span>*/}
                 </div>
                 <div className="Buttons">
                     <div> {/* handlebars? */}
                         <div>
                             <input type="file" className="filePicker" onChange={this.readYaml}/>
                         </div>
-                        <img id="canvasImg" src="" alt=""/>
+                        <img id="canvasImg" crossOrigin="Anonymous" alt=""/>
                     </div>
                 </div>
                 <form className="nameForm">
