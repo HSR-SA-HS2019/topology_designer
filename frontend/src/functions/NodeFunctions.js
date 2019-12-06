@@ -1,8 +1,11 @@
+
 export function addNode(item, nodesCopy) {
     let number = 0;
     for (let n in nodesCopy) {
-        if (nodesCopy[n].group === item.name) {
-            number = number + 1;
+        if (nodesCopy.hasOwnProperty(n)){
+            if (nodesCopy[n].group === item.name) {
+                number = number + 1;
+            }
         }
     }
     nodesCopy.push({
@@ -19,7 +22,6 @@ export function requiredNode(nodesCopy, fromIndex, toIndex) {
     function hideSecondDevice() {
         document.getElementById("secondDevice").style.display = "none";
     }
-
     if (nodesCopy[fromIndex].group !== "virtual_network_devices" && nodesCopy[toIndex].group !== "virtual_network_devices") {
         document.getElementById("secondDevice").style.display = "flex";
         return [nodesCopy[fromIndex], nodesCopy[toIndex]];
@@ -48,18 +50,26 @@ export function getConnections(node, edges, allNodes, allEdges) {
         return "No Connections"
     }
     for (let i in edges) {
-        for (let j in allEdges) {
-            if (edges[i] === allEdges[j].id) {
-                if (node === allEdges[j].from) {
-                    for (let k in allNodes) {
-                        if (allNodes[k].id === allEdges[j].to) {
-                            portString = portString + "Gi" + allEdges[j].portFrom + ": " + allNodes[k].label + "\n ";
-                        }
-                    }
-                } else if (node === allEdges[j].to) {
-                    for (let k in allNodes) {
-                        if (allNodes[k].id === allEdges[j].from) {
-                            portString = portString + "Gi" + allEdges[j].portTo + ": " + allNodes[k].label + "\n ";
+        if (edges.hasOwnProperty(i)){
+            for (let j in allEdges) {
+                if (allEdges.hasOwnProperty(j)){
+                    if (edges[i] === allEdges[j].id) {
+                        if (node === allEdges[j].from) {
+                            for (let k in allNodes) {
+                                if (allNodes.hasOwnProperty(k)){
+                                    if (allNodes[k].id === allEdges[j].to) {
+                                        portString = portString + "Gi" + allEdges[j].portFrom + ": " + allNodes[k].label + "\n ";
+                                    }
+                                }
+                            }
+                        } else if (node === allEdges[j].to) {
+                            for (let k in allNodes) {
+                                if (allNodes.hasOwnProperty(k)) {
+                                    if (allNodes[k].id === allEdges[j].from) {
+                                        portString = portString + "Gi" + allEdges[j].portTo + ": " + allNodes[k].label + "\n ";
+                                    }
+                                }
+                            }
                         }
                     }
                 }
