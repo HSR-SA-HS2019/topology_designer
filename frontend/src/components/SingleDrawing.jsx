@@ -31,6 +31,7 @@ import DeleteTopologyDialog from "../UI/DeleteTopologyDialog/DeleteTopologyDialo
 
 class SingleDrawing extends React.Component {
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
+
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +52,7 @@ class SingleDrawing extends React.Component {
                     shadow: {
                         enabled: false,
                         color: '#2D6480',
-                        size: 10,
+                        size: 20,
                         x: 0,
                         y: 0
                     },
@@ -134,16 +135,11 @@ class SingleDrawing extends React.Component {
         this.newEdge = this.newEdge.bind(this);
         this.editEdge = this.editEdge.bind(this);
         this.createButtons = this.createButtons.bind(this);
-        this.exportTopologyAsImage = this.exportTopologyAsImage.bind(this);
     }
 
     setNetworkInstance = nw => {
         this.network = nw;
         this.getDeviceInfos(this.deviceInfosUrl);
-        this.network.on("afterDrawing", function (ctx) {
-            let dataURL = ctx.canvas.toDataURL();
-            document.getElementById('canvasImg').src = dataURL;
-        });
     };
 
     deleteTopology = () => {
@@ -179,14 +175,7 @@ class SingleDrawing extends React.Component {
         exportTopology(this.network.body.data.nodes._data, this.network.body.data.edges._data, this.state.topology_name)
     };
 
-    exportTopologyAsImage = async () => {
-        let filename = this.state.topology_name + '.png';
-        let image = await document.getElementById("canvasImg");
-        var link = document.createElement('a');
-        link.setAttribute('href', image.src);
-        link.setAttribute('download', filename);
-        link.click();
-    };
+
 
     readFile = () => {
         document.querySelector('input[type=file]').click();
@@ -306,7 +295,7 @@ class SingleDrawing extends React.Component {
     render() {
         return (
             <div className="single-drawing-box">
-                <div className="drawingContent">
+                <div className="drawingContent" id="drawingContent">
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
@@ -323,13 +312,12 @@ class SingleDrawing extends React.Component {
                     <span onClick={this.deleteElement} className="delete" id="deleteButton"> <i
                         className="fas fa-times"/>Delete</span>
                     <span className="separator" onClick={this.exportTopologyHelper}><i className="fa fa-download"/>Export YAML</span>
-                    <span onClick={this.exportTopologyAsImage}><i className="fa fa-picture-o"/>Export Image</span>
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
                     <span className="delete" onClick={this.deleteTopology}><i
                         className="fa fa-trash"/>Clear All</span>
                 </div>
                 <div className="Buttons">
-                    <div> {/* handlebars? */}
+                    <div>
                         <div>
                             <input type="file" className="filePicker" onChange={this.readYaml}/>
                         </div>
