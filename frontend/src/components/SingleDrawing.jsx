@@ -51,7 +51,7 @@ class SingleDrawing extends React.Component {
                     size: 30,
                     shadow: {
                         enabled: false,
-                        color: '#2D6480',
+                        color: palette.topologydesignerblue,
                         size: 20,
                         x: 0,
                         y: 0
