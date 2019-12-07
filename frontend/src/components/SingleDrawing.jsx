@@ -28,10 +28,11 @@ import {
 import yamljs from "yamljs";
 import {activateDeleteButton, hideAllButtons, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
 import DeleteTopologyDialog from "../UI/DeleteTopologyDialog/DeleteTopologyDialog";
-import {cacheAllData, loadCache, cacheTopologyName} from "../functions/CacheFunctions";
+import {cacheAllData, cacheTopologyName, loadCache} from "../functions/CacheFunctions";
 
 class SingleDrawing extends React.Component {
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
+
     constructor(props) {
         super(props);
         this.state = {
@@ -198,7 +199,6 @@ class SingleDrawing extends React.Component {
     };
 
 
-
     readFile = () => {
         document.querySelector('input[type=file]').click();
     };
@@ -322,7 +322,6 @@ class SingleDrawing extends React.Component {
                         <div>
                             <input type="file" className="filePicker" onChange={this.readYaml}/>
                         </div>
-                        <img id="canvasImg" src="" alt=""/>
                     </div>
                 </div>
                 <form className="nameForm">
