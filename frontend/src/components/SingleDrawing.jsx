@@ -28,10 +28,10 @@ import {
 import yamljs from "yamljs";
 import {activateDeleteButton, hideAllButtons, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
 import DeleteTopologyDialog from "../UI/DeleteTopologyDialog/DeleteTopologyDialog";
+import {cacheAllData, loadCache, cacheTopologyName} from "../functions/CacheFunctions";
 
 class SingleDrawing extends React.Component {
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
-
     constructor(props) {
         super(props);
         this.state = {
@@ -140,12 +140,40 @@ class SingleDrawing extends React.Component {
     setNetworkInstance = nw => {
         this.network = nw;
         this.getDeviceInfos(this.deviceInfosUrl);
+        let data = loadCache();
+        this.setState({topology_name: data.name});
+        this.setState({graphVis: {nodes: data.nodes, edges: data.edges}});
+    };
+
+    getDeviceInfos = async (url) => {
+        let res = await axios.get(url/*, {
+            headers: {"Access-Control-Allow-Origin": '*'}}*/);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
+        this.setState({devices: res.data});
+        this.createButtons();
+        this.initializeClickEvent();
+    };
+
+    createButtons = () => {
+        this.state.devices.forEach(function (item) {
+            initializeButtons(item);
+        })
+    };
+
+    initializeClickEvent = () => {
+        let self = this;
+        this.state.devices.forEach(function (item) {
+            let button = document.getElementById(item.defaultName);
+            button.onclick = () => {
+                self.addNewNode(item);
+            };
+        })
     };
 
     deleteTopology = () => {
         document.getElementById("deleteTopologyDialog").style.display = "flex";
         document.getElementById('btnDeleteTopology').onclick = () => {
             this.clearNetworkState();
+            localStorage.clear();
             closeDeleteTopologyDialog();
             hideEditButtons();
         };
@@ -153,18 +181,12 @@ class SingleDrawing extends React.Component {
             closeDeleteTopologyDialog();
             hideEditButtons();
         };
-
     };
 
     deleteElement = () => {
-        let deleteNodes = this.network.getSelection().nodes;
-        let deleteEdges = this.network.getSelection().edges;
-        let allNodes = this.state.graphVis.nodes.slice();
-        let allEdges = this.state.graphVis.edges.slice();
-
-        allEdges = updatePorts(deleteEdges, this.network.body.nodes, allEdges);
-        let newNodes = deleteItem(allNodes, deleteNodes);
-        let newEdges = deleteItem(allEdges, deleteEdges);
+        let allEdges = updatePorts(this.network.getSelection().edges, this.network.body.nodes, this.state.graphVis.edges.slice());
+        let newNodes = deleteItem(this.state.graphVis.nodes.slice(), this.network.getSelection().nodes);
+        let newEdges = deleteItem(allEdges, this.network.getSelection().edges);
 
         hideEditButtons();
 
@@ -193,6 +215,7 @@ class SingleDrawing extends React.Component {
                     let data = importTopology(yamlString, this.state.devices);
                     this.setState({topology_name: data.topology_name});
                     this.setState({graphVis: {nodes: data.nodes, edges: data.edges}});
+                    cacheAllData(this.state.graphVis.nodes, this.state.graphVis.edges, this.state.topology_name);
                 } else {
                     console.warn("Wrong Filetype: " + file.name);
                 }
@@ -204,34 +227,11 @@ class SingleDrawing extends React.Component {
         }
     };
 
-    getDeviceInfos = async (url) => {
-        let res = await axios.get(url);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
-        this.setState({devices: res.data});
-        this.createButtons();
-        this.initializeClickEvent();
-    };
-
-    createButtons = () => {
-        this.state.devices.forEach(function (item) {
-            initializeButtons(item);
-        })
-    };
-
-    initializeClickEvent = () => {
-        let self = this;
-        this.state.devices.forEach(function (item) {
-            let button = document.getElementById(item.defaultName);
-            button.onclick = () => {
-                self.addNewNode(item);
-            };
-        })
-    };
-
     addNewNode(item) {
         let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
         let edgesCopy = this.state.graphVis.edges.slice();
         let nodes = addNode(item, nodesCopy);
-        this.setState({graphVis: {nodes: nodes, edges: edgesCopy}});
+        this.setNetworkState(nodes, edgesCopy);
     };
 
     newEdge = () => {
@@ -254,6 +254,7 @@ class SingleDrawing extends React.Component {
 
         document.getElementById('btnSaveEdge').onclick = () => {
             let data = saveEdgeConfig(edgesCopy, edgeIndex, nodesCopy, nodeIndex);
+            this.clearNetworkState();
             this.setNetworkState(data.nodesCopy, data.edgesCopy);
         };
         document.getElementById('btnCancelEdgeEdit').onclick = () => {
@@ -264,6 +265,7 @@ class SingleDrawing extends React.Component {
 
     setNetworkState(nodesCopy, edgesCopy) {
         this.setState({graphVis: {nodes: nodesCopy, edges: edgesCopy}});
+        cacheAllData(nodesCopy, edgesCopy, this.state.topology_name);
     }
 
     clearNetworkState() {
@@ -291,11 +293,10 @@ class SingleDrawing extends React.Component {
         document.getElementById('editNodeDialog').style.display = 'flex';
     };
 
-
     render() {
         return (
             <div className="single-drawing-box">
-                <div className="drawingContent" id="drawingContent">
+                <div className="drawingContent">
                     <GraphVis
                         graph={this.state.graphVis}
                         options={this.state.options}
@@ -321,19 +322,21 @@ class SingleDrawing extends React.Component {
                         <div>
                             <input type="file" className="filePicker" onChange={this.readYaml}/>
                         </div>
-                        <img id="canvasImg" crossOrigin="Anonymous" alt=""/>
+                        <img id="canvasImg" src="" alt=""/>
                     </div>
                 </div>
                 <form className="nameForm">
                     <input type="text"
                            value={this.state.topology_name}
-                           onChange={(event) => this.setState({topology_name: event.target.value})}/>
+                           onChange={(event) => {
+                               this.setState({topology_name: event.target.value});
+                               cacheTopologyName(event.target.value);
+                           }}/>
                 </form>
                 <img className="logo" src={logo} alt=""/>
                 <EditNodeDialog/>
                 <EditEdgeDialog/>
                 <DeleteTopologyDialog/>
-
             </div>
         );
     }
