@@ -86,11 +86,6 @@ export function activateNodeButtons() {
     document.getElementById("editEdgeButton").style.display = "none";
 }
 
-export function hideNodeButtons() {
-    document.getElementById("editNodeButton").disabled = true;
-    document.getElementById("editNodeButton").style.display = "none";
-}
-
 export function closeNodeDialog() {
     document.getElementById('btnSaveNode').onclick = null;
     document.getElementById('btnCancelNodeEdit').onclick = null;

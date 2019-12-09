@@ -227,7 +227,7 @@ class SingleDrawing extends React.Component {
         }
     };
 
-    addNewNode(item) {
+    addNewNode = (item) => {
         let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
         let edgesCopy = this.state.graphVis.edges.slice();
         let nodes = addNode(item, nodesCopy);
