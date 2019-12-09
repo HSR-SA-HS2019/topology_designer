@@ -300,3 +300,5 @@ backend/.vscode
 frontend/.idea
 .vscode
 
+/backend/env/
+

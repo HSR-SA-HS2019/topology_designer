@@ -28,10 +28,11 @@ import {
 import yamljs from "yamljs";
 import {activateDeleteButton, hideAllButtons, hideEditButtons, initializeButtons} from "../functions/GlobalFunctions";
 import DeleteTopologyDialog from "../UI/DeleteTopologyDialog/DeleteTopologyDialog";
-import {cacheAllData, loadCache, cacheTopologyName} from "../functions/CacheFunctions";
+import {cacheAllData, cacheTopologyName, loadCache} from "../functions/CacheFunctions";
 
 class SingleDrawing extends React.Component {
     deviceInfosUrl = "http://127.0.0.1:8000/api/";
+
     constructor(props) {
         super(props);
         this.state = {
@@ -51,7 +52,7 @@ class SingleDrawing extends React.Component {
                     size: 30,
                     shadow: {
                         enabled: false,
-                        color: '#2D6480',
+                        color: palette.topologydesignerblue,
                         size: 20,
                         x: 0,
                         y: 0
@@ -197,18 +198,6 @@ class SingleDrawing extends React.Component {
         exportTopology(this.network.body.data.nodes._data, this.network.body.data.edges._data, this.state.topology_name)
     };
 
-    exportTopologyAsImage = () => {
-        // let filename = this.state.topology_name + '.png';
-        // let canvas = document.querySelector('.vis-network canvas');
-        // console.log(canvas);
-        // let dataURL = canvas.toDataURL("image/png");
-        // console.log(dataURL);
-        // let image = document.getElementById("canvasImg");
-        // let link = document.createElement('a');
-        // link.setAttribute('href', image.src);
-        // link.setAttribute('download', filename);
-        // link.click();
-    };
 
     readFile = () => {
         document.querySelector('input[type=file]').click();
@@ -238,7 +227,7 @@ class SingleDrawing extends React.Component {
         }
     };
 
-    addNewNode(item) {
+    addNewNode = (item) => {
         let nodesCopy = this.state.graphVis.nodes.slice(); // this will create a copy with the same items
         let edgesCopy = this.state.graphVis.edges.slice();
         let nodes = addNode(item, nodesCopy);
@@ -324,18 +313,15 @@ class SingleDrawing extends React.Component {
                     <span onClick={this.deleteElement} className="delete" id="deleteButton"> <i
                         className="fas fa-times"/>Delete</span>
                     <span className="separator" onClick={this.exportTopologyHelper}><i className="fa fa-download"/>Export YAML</span>
-                    <span onClick={this.exportTopologyAsImage} crossOrigin="anonymous"><i className="fa fa-picture-o"/>Export Image</span>
                     <span onClick={this.readFile}><i className="fa fa-upload"/>Import Yaml</span>
                     <span className="delete" onClick={this.deleteTopology}><i
                         className="fa fa-trash"/>Clear All</span>
-                    {/*<span onClick={this.createButtons()}>Click the shit out of me!</span>*/}
                 </div>
                 <div className="Buttons">
                     <div>
                         <div>
                             <input type="file" className="filePicker" onChange={this.readYaml}/>
                         </div>
-                        <img id="canvasImg" src="" alt=""/>
                     </div>
                 </div>
                 <form className="nameForm">
