@@ -31,7 +31,6 @@ import DeleteTopologyDialog from "../UI/DeleteTopologyDialog/DeleteTopologyDialo
 import {cacheAllData, cacheTopologyName, loadCache} from "../functions/CacheFunctions";
 
 class SingleDrawing extends React.Component {
-    deviceInfosUrl = "http://127.0.0.1:8000/api/";
 
     constructor(props) {
         super(props);
@@ -140,15 +139,14 @@ class SingleDrawing extends React.Component {
 
     setNetworkInstance = nw => {
         this.network = nw;
-        this.getDeviceInfos(this.deviceInfosUrl);
+        this.getDeviceInfos('/api/');
         let data = loadCache();
         this.setState({topology_name: data.name});
         this.setState({graphVis: {nodes: data.nodes, edges: data.edges}});
     };
 
     getDeviceInfos = async (url) => {
-        let res = await axios.get(url/*, {
-            headers: {"Access-Control-Allow-Origin": '*'}}*/);   //local --> http://127.0.0.1:8000/api/1, server --> http://10.20.1.12:8000/api/1
+        let res = await axios.get(url);
         this.setState({devices: res.data});
         this.createButtons();
         this.initializeClickEvent();
@@ -188,7 +186,6 @@ class SingleDrawing extends React.Component {
         let allEdges = updatePorts(this.network.getSelection().edges, this.network.body.nodes, this.state.graphVis.edges.slice());
         let newNodes = deleteItem(this.state.graphVis.nodes.slice(), this.network.getSelection().nodes);
         let newEdges = deleteItem(allEdges, this.network.getSelection().edges);
-
         hideEditButtons();
 
         this.setNetworkState(newNodes, newEdges);
