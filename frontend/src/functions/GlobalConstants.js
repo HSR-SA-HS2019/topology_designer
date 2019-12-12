@@ -18,23 +18,5 @@ export const palette = {
 };
 
 
-export let graphVisLocales;
-graphVisLocales = {
-    en: {
-        edit: 'Edit',
-        del: 'Delete',
-        back: 'Back',
-        addNode: 'Add Node',
-        addEdge: 'Add Edge',
-        editNode: 'Edit Node',
-        editEdge: 'Edit Edge',
-        addDescription: 'Click in the empty space to place a new vertex.',
-        edgeDescription: 'Drag an edge from the selected vertex to connect it to another vertex.',
-        editEdgeDescription: 'Drag the end of the edge to the vertex with which you want to connect it.',
-        createEdgeError: 'You cannot attach edges to a cluster.',
-        deleteClusterError: 'Clusters cannot be deleted.',
-        editClusterError: 'Clusters cannot be modified.',
-        exportTopology: 'Export Topology',
-    }
-};
+
 

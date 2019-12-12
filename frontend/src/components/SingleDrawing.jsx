@@ -1,6 +1,6 @@
 import GraphVis from 'react-graph-vis';
 import React from 'react';
-import {graphVisLocales, palette} from '../functions/GlobalConstants';
+import {palette} from '../functions/GlobalConstants';
 import EditNodeDialog from '../UI/EditNodeDialog/EditNodeDialog';
 import EditEdgeDialog from '../UI/EditEdgeDialog/EditEdgeDialog';
 import {exportTopology, importTopology, readFileAsync} from '../functions/YamlFileFunctions';
@@ -41,7 +41,6 @@ class SingleDrawing extends React.Component {
                 height: '100%',
                 width: '100%',
                 locale: 'en',
-                locales: graphVisLocales,
                 clickToUse: false,
                 layout: {},
                 nodes: {
