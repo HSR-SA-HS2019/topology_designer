@@ -109,6 +109,7 @@ export function exportTopology(nodes, edges, name){
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+    return StringData;
 }
 
 export function readFileAsync(file) {
@@ -201,7 +202,7 @@ export function importTopology(data, deviceData){
         }
     }
 
-    if(connections.length !== 0){
+    if(connections !== undefined){
         let portFrom = 0;
         let portTo = 0;
         let idFrom = 0;
