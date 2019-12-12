@@ -29,7 +29,7 @@ let Topology = '---\n' +
     '      ipv4address: 10.1.1.10\n' +
     '      gatewayv4: 10.1.1.1\n';
 
-let data = yamljs.parse(Topology);
+let yamlData = yamljs.parse(Topology);
 
 let emptyTopology = '---\n' +
     'description: foo bar\n' +
@@ -126,7 +126,7 @@ test('empty exportTopology', () => {
 });
 
 test('importTopology', () => {
-    expect(importTopology(data, device_data)).toEqual({topology_name, nodes, edges});
+    expect(importTopology(yamlData, device_data)).toEqual({topology_name, nodes, edges});
 });
 
 test('empty importTopology', () => {
