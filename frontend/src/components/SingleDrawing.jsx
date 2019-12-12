@@ -209,9 +209,12 @@ class SingleDrawing extends React.Component {
                     this.setState({graphVis: {nodes: [], edges: []}});
                     let contentBuffer = await readFileAsync(file);
                     let yamlString = yamljs.parse(contentBuffer);
+                    console.log(contentBuffer);
+                    console.log(this.state.devices);
                     let data = importTopology(yamlString, this.state.devices);
                     this.setState({topology_name: data.topology_name});
                     this.setState({graphVis: {nodes: data.nodes, edges: data.edges}});
+                    console.log(this.state.graphVis);
                     cacheAllData(this.state.graphVis.nodes, this.state.graphVis.edges, this.state.topology_name);
                 } else {
                     console.warn("Wrong Filetype: " + file.name);
