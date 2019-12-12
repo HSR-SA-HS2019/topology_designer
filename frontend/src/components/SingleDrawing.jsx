@@ -191,7 +191,7 @@ class SingleDrawing extends React.Component {
     };
 
     exportTopologyHelper = () => {
-        exportTopology(this.network.body.data.nodes._data, this.network.body.data.edges._data, this.state.topology_name)
+        exportTopology(this.state.graphVis.nodes, this.state.graphVis.edges, this.state.topology_name)
     };
 
 
