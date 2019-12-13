@@ -68,7 +68,7 @@ class SingleDrawing extends React.Component {
                         to: {enabled: false},
                         from: {enabled: false},
                     },
-                    color: {color: palette.black, hover: palette.black},
+                    color: {color: palette.topologydesignerblue, hover: palette.topologydesignerblue},
                     width: 2,
                     hoverWidth: function (width) {
                         return width * 2;
