@@ -1,7 +1,7 @@
 import React from 'react';
 import './DeleteTopologyDialog.css';
 
-class DeleteTopologyDialog {
+class DeleteTopologyDialog extends React.Component {
     render() {
         return (
             <div id="flexBox">

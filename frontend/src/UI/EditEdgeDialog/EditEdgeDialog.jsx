@@ -1,7 +1,7 @@
 import React from 'react';
 import './EditEdgeDialog.css';
 
-class EditEdgeDialog {
+class EditEdgeDialog extends React.Component {
     render() {
         return (
             <div id="editEdgeDialog">
